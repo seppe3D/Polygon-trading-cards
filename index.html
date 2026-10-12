@@ -102,8 +102,6 @@ a{color:var(--amber-soft)}
   .menu-btn{padding:9px 11px;gap:6px}
   .coinpill{padding:7px 10px;font-size:14px}
   .avbtn{width:38px;height:38px;font-size:15px}
-  /* Leeg kaartvak pas tonen als er echt een pakje geopend wordt */
-  .stage:has(.stage-placeholder){display:none}
 }
 
 /* Paginatitel met info-icoontje */
@@ -172,6 +170,90 @@ a{color:var(--amber-soft)}
   width:max-content;max-width:calc(100vw - 24px);padding:12px 16px;background:rgba(29,34,41,.97);border:1px solid var(--yellow);border-radius:16px;
   box-shadow:0 14px 34px -8px rgba(0,0,0,.7);color:var(--ink);font-weight:600;animation:menu-in .25s ease both}
 .update-bar .btn{width:auto}
+/* Vernieuwknop in de kopregel (licht op als er een nieuwe versie is) */
+.iconbtn{position:relative;width:44px;height:44px;border-radius:50%;border:2px solid var(--line);background:rgba(21,24,29,.8);color:var(--ink);font-size:18px;cursor:pointer;display:grid;place-items:center;padding:0;flex-shrink:0;transition:border-color .15s,transform .15s}
+.iconbtn:hover{border-color:var(--green-soft);transform:translateY(-1px)}
+.iconbtn.spin span{display:inline-block;animation:spin .8s linear infinite}
+.iconbtn.has-update{border-color:var(--yellow);box-shadow:0 0 0 0 rgba(232,195,76,.7);animation:pulse-ring 1.8s ease-out infinite}
+.iconbtn.has-update::after{content:"";position:absolute;top:-2px;right:-2px;width:12px;height:12px;border-radius:50%;background:#E0584B;border:2px solid var(--bg)}
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes pulse-ring{0%{box-shadow:0 0 0 0 rgba(232,195,76,.6)}100%{box-shadow:0 0 0 12px rgba(232,195,76,0)}}
+@media (max-width:640px){.iconbtn{width:38px;height:38px;font-size:15px}}
+
+/* Meldingen rechtsboven (beloningen, opwaarderingen) */
+.toasts{position:fixed;top:14px;left:0;right:0;z-index:1001;display:grid;justify-items:center;gap:8px;pointer-events:none;padding:0 12px}
+.toast{max-width:min(460px,100%);padding:12px 18px;background:rgba(29,34,41,.97);border:1px solid var(--yellow);border-radius:16px;box-shadow:0 14px 34px -8px rgba(0,0,0,.7);color:var(--ink);font-weight:600;animation:menu-in .25s ease both;transition:opacity .4s,transform .4s}
+.toast.out{opacity:0;transform:translateY(-8px)}
+
+/* Today: hub naast de Wordle (kaart, opdrachten, nieuws, klassement) */
+.hub{display:grid;gap:14px;align-content:start;min-width:0}
+.hub-tabs{flex-wrap:wrap;justify-self:start;border-radius:16px}
+.hub-tabs button{position:relative;font-size:14px;padding:7px 12px}
+.hub-tabs .dot{position:absolute;top:2px;right:2px;width:9px;height:9px;border-radius:50%;background:#E0584B}
+.hub-body{background:rgba(35,41,50,.82);border:1px solid var(--line);border-radius:18px;padding:16px 18px;min-height:220px}
+.hub-body .stage{min-height:0}
+.hub-body h4{margin:14px 0 6px;font:800 15px var(--body);color:var(--yellow-soft)}
+.hub-body h4:first-child{margin-top:0}
+.hub-body .hint{margin-bottom:10px;font-size:14.5px}
+.zoomable{background:none;border:0;padding:0;cursor:zoom-in;display:block;width:min(340px,80vw,calc((100vh - 300px) * .714));color:inherit}
+.quest-list,.news-list,.board-list{list-style:none;margin:0;padding:0;display:grid;gap:8px}
+.quest{display:flex;align-items:center;gap:12px;padding:10px 12px;border:1px solid var(--line);border-radius:14px;background:rgba(21,24,29,.55)}
+.quest.done{opacity:.6}
+.quest.ready{border-color:var(--green);background:rgba(93,163,82,.14)}
+.quest-main{flex:1;min-width:0;display:grid;gap:5px}
+.quest-main strong{font-size:15px}
+.quest-main small{color:var(--muted);font-weight:600}
+.qbar{height:8px;border-radius:999px;background:var(--wblack);overflow:hidden}
+.qbar span{display:block;height:100%;background:var(--green);border-radius:999px;transition:width .4s ease}
+.quest-reward{font:800 14px var(--body);color:var(--yellow-soft);white-space:nowrap}
+.news-item{display:flex;gap:10px;align-items:flex-start;padding:8px 2px;border-bottom:1px solid var(--line)}
+.news-item:last-child{border-bottom:0}
+.news-ico{font-size:20px;line-height:1.2}
+.news-item p{margin:0;font-size:15px}
+.news-item small{color:var(--muted)}
+.board-row{display:flex;align-items:center;gap:10px;padding:7px 10px;border-radius:12px;background:rgba(21,24,29,.5)}
+.board-row.me{outline:2px solid var(--green);color:var(--green-soft)}
+.board-rank{width:22px;font-weight:800;color:var(--muted)}
+.board-name{flex:1;font-weight:700;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.board-score{font:800 15px var(--body);font-variant-numeric:tabular-nums}
+.board-score.lost{color:#F0897E}
+.share-row{display:flex;justify-content:center;margin-top:6px}
+
+/* Kaartlevels (opwaarderen met dubbels) */
+.lvl-badge{position:absolute;left:-6px;top:-8px;z-index:3;background:linear-gradient(135deg,#F5D97A,#C99A1E);color:#2a1d00;border-radius:var(--r-sm);padding:2px 8px;font:800 12px var(--body);letter-spacing:-.05em;box-shadow:0 2px 8px rgba(0,0,0,.4)}
+.card .glitter{position:absolute;inset:0;z-index:1;pointer-events:none;mix-blend-mode:screen;
+  background:radial-gradient(circle at 20% 30%,rgba(255,255,255,.9) 0 1px,transparent 2px),radial-gradient(circle at 70% 20%,rgba(255,255,255,.85) 0 1px,transparent 2px),radial-gradient(circle at 40% 70%,rgba(255,255,255,.9) 0 1.5px,transparent 2.5px),radial-gradient(circle at 85% 60%,rgba(255,255,255,.8) 0 1px,transparent 2px),linear-gradient(115deg,transparent 35%,rgba(255,240,180,.45) 48%,transparent 60%);
+  background-size:100% 100%,100% 100%,100% 100%,100% 100%,250% 250%;animation:glitter 3.5s linear infinite}
+@keyframes glitter{0%{background-position:0 0,0 0,0 0,0 0,120% 0;opacity:.75}50%{opacity:1}100%{background-position:0 0,0 0,0 0,0 0,-120% 0;opacity:.75}}
+.lvl-up{display:grid;gap:8px;justify-items:center;text-align:center;max-width:340px}
+.lvl-up p{margin:0;color:var(--ink-soft);font-size:14.5px}
+
+/* Cosmetica: kaartranden, profielringen en titels */
+.cw[class*="frame-"]::before{content:"";position:absolute;inset:-2.4cqw;border-radius:8.5cqw;z-index:0}
+.cw[class*="frame-"] .card{z-index:1}
+.cw.frame-gold::before{background:linear-gradient(135deg,#FFF1BE,#D9A61C 30%,#FFF6D6 50%,#B8860B 75%,#F5D97A)}
+.cw.frame-neon::before{background:linear-gradient(90deg,#2FE0D0,#E040FB,#2FE0D0);background-size:200% 100%;box-shadow:0 0 14px #2FE0D0,0 0 22px #E040FB;animation:frame-move 3s linear infinite}
+.cw.frame-holo::before{background:conic-gradient(from var(--fa,0deg),#ff6b6b,#ffd93d,#6bff95,#4dd0ff,#b06bff,#ff6b6b);animation:frame-spin 4s linear infinite;filter:saturate(.9) brightness(1.05)}
+@property --fa{syntax:'<angle>';inherits:false;initial-value:0deg}
+@keyframes frame-spin{to{--fa:360deg}}
+@keyframes frame-move{to{background-position:200% 0}}
+.ring-green{border-color:#5DA352 !important;box-shadow:0 0 0 2px #5DA352,0 0 10px rgba(93,163,82,.7)}
+.ring-gold{border-color:#E8C34C !important;box-shadow:0 0 0 2px #E8C34C,0 0 12px rgba(232,195,76,.75)}
+.ring-rainbow{border-color:transparent !important;box-shadow:0 0 0 3px #ff6b6b,0 0 0 5px #ffd93d,0 0 0 7px #4dd0ff,0 0 14px rgba(176,107,255,.8)}
+.title-chip{display:inline-block;margin-left:6px;padding:2px 8px;border-radius:999px;background:rgba(201,180,88,.18);border:1px solid var(--yellow);color:var(--yellow-soft);font:700 11.5px var(--body);vertical-align:middle;white-space:nowrap}
+.cos-group{margin-bottom:14px}
+.cos-group h4{margin:0 0 2px}
+.cos-group > small{display:block;margin-bottom:8px}
+.cos-list{display:grid;gap:8px}
+.cos-item{display:flex;align-items:center;gap:12px;padding:8px 12px;border:1px solid var(--line);border-radius:14px;background:rgba(21,24,29,.55)}
+.cos-item.on{border-color:var(--green)}
+.cos-name{flex:1;font-weight:700}
+.cos-prev{width:34px;height:34px;border-radius:50%;flex-shrink:0;background:var(--bg2);border:2px solid var(--line)}
+.frame-prev{border-radius:8px;width:28px;height:38px;border:4px solid}
+.frame-prev.frame-gold{border-color:#D9A61C;background:#FFF6D6}
+.frame-prev.frame-neon{border-color:#2FE0D0;box-shadow:0 0 8px #E040FB;background:#1b1f26}
+.frame-prev.frame-holo{border-image:conic-gradient(#ff6b6b,#ffd93d,#6bff95,#4dd0ff,#b06bff,#ff6b6b) 1;background:#1b1f26}
+.index-list .badge{margin:0 auto 0 6px}
 
 /* Ideeënbus */
 .ideas-grid{grid-template-columns:minmax(0,.8fr) minmax(0,1.2fr)}
@@ -462,8 +544,6 @@ a{color:var(--amber-soft)}
 /* Team kiezen: één rij die horizontaal scrolt, zodat de pagina niet lang wordt */
 .battle-pick{display:flex;gap:14px;overflow-x:auto;padding:14px 6px 12px 14px;margin-top:4px;scroll-snap-type:x proximity}
 .battle-pick .pick{flex:0 0 126px;scroll-snap-align:start}
-.battle-layout{display:grid;gap:18px;align-items:start}
-@media (min-width:1000px){.battle-layout{grid-template-columns:auto minmax(0,1fr)}.battle-layout .battle-log{max-height:430px}.battle-layout .battle-result{margin-top:0}}
 @media (max-width:560px){.battle-pick .pick{flex-basis:118px}}
 .pick{position:relative;background:none;border:0;padding:0;cursor:pointer;text-align:left;color:inherit;font:inherit;transition:transform .15s ease,opacity .15s ease;opacity:.72}
 .pick:hover{transform:translateY(-3px);opacity:1}
@@ -473,7 +553,6 @@ a{color:var(--amber-soft)}
 .pick-num[hidden]{display:none}
 .arena{display:grid;grid-template-columns:1fr auto 1fr;gap:20px;align-items:start;width:min(600px,100%);margin-top:6px}
 .fighter{display:grid;gap:8px;justify-items:center}
-.fighter-name{font:700 15px var(--body);color:var(--ink-soft)}
 .fighter-card{position:relative;width:100%;max-width:min(240px,calc((100vh - 300px) * .714))}
 .fighter.hit .fighter-card{animation:shake .4s ease}
 .fighter.ko .fighter-card .card{filter:grayscale(1) brightness(.55);transition:filter .3s}
@@ -483,9 +562,6 @@ a{color:var(--amber-soft)}
 .hpfill.low{background:#E0584B}
 .hptext{font:700 14px var(--body);color:var(--ink-soft);font-variant-numeric:tabular-nums}
 .bench{display:flex;gap:6px}
-.bench-dot{width:12px;height:12px;border-radius:50%;background:var(--green-soft)}
-.bench-dot.now{outline:2px solid #fff;outline-offset:2px}
-.bench-dot.out{background:var(--line)}
 .vs{align-self:center;font:800 30px var(--display);color:var(--yellow-soft)}
 @media (max-width:560px){.arena{gap:10px}.vs{font-size:20px}}
 .dmg-pop{position:absolute;top:32%;left:50%;z-index:5;pointer-events:none;font:800 36px var(--display);color:#F0897E;text-shadow:0 2px 10px rgba(0,0,0,.7);animation:dmgpop .8s ease-out forwards}
@@ -648,7 +724,8 @@ const PARTICLE_COLORS = {
   cat: ['#2FA79E', '#8fe0da']
 };
 
-const state = { session: null, recovery: IS_RECOVERY_LINK, cards: [], owned: new Map(), play: null, name: '', avatarUrl: null, friendCode: '', wallet: 0, incomingRequests: 0, incomingBattles: 0, welcomeAvailable: false, isAdmin: false, tab: 'today', page: 0 };
+const state = { session: null, recovery: IS_RECOVERY_LINK, cards: [], owned: new Map(), play: null, name: '', avatarUrl: null, friendCode: '', wallet: 0, incomingRequests: 0, incomingBattles: 0, welcomeAvailable: false, isAdmin: false, tab: 'today', page: 0,
+  levels: new Map(), badges: new Set(), equipped: { frame: null, ring: null, title: null }, v12: false };
 
 // Werkt alle plekken bij die het polycoins-saldo tonen (topbalk + account-tab)
 function syncCoinUI() {
@@ -738,7 +815,7 @@ async function route() {
 
 async function loadData() {
   const uid = state.session.user.id;
-  const [cards, mine, prof, wallet, requests, admin, battlesIn, welcome] = await Promise.all([
+  const [cards, mine, prof, wallet, requests, admin, battlesIn, welcome, cosm, levels, badges] = await Promise.all([
     sb.from('cards').select('*').order('id'),
     sb.from('user_cards').select('card_id').eq('user_id', uid),
     sb.from('profiles').select('display_name, avatar_url, friend_code').eq('id', uid).maybeSingle(),
@@ -746,7 +823,11 @@ async function loadData() {
     sb.from('friend_requests').select('id', { count: 'exact', head: true }).eq('recipient_id', uid),
     sb.from('admins').select('user_id').eq('user_id', uid).maybeSingle(),
     sb.from('tbattles').select('player_a, player_b, status, moved:state->moved').eq('mode', 'pvp').in('status', ['pending', 'active']).or(`player_a.eq.${uid},player_b.eq.${uid}`),
-    sb.from('welcome_packs').select('user_id').eq('user_id', uid).maybeSingle()
+    sb.from('welcome_packs').select('user_id').eq('user_id', uid).maybeSingle(),
+    // Uitbreiding v12 (niet fataal als het script nog niet uitgevoerd is)
+    sb.from('profiles').select('equipped_frame, equipped_ring, equipped_title').eq('id', uid).maybeSingle(),
+    sb.from('card_levels').select('card_id, level').eq('user_id', uid),
+    sb.from('collection_rewards').select('person').eq('user_id', uid)
   ]);
   for (const r of [cards, mine, prof, wallet]) if (r.error) throw new Error(r.error.message);
   // Niet fataal: enkel voor het bolletje op de Vrienden-tab
@@ -765,6 +846,48 @@ async function loadData() {
   state.avatarUrl = prof.data?.avatar_url || null;
   state.friendCode = prof.data?.friend_code || '';
   state.wallet = wallet.data?.polycoins || 0;
+  state.v12 = !levels.error;
+  state.levels = new Map((levels.data || []).map(r => [r.card_id, r.level]));
+  state.badges = new Set((badges.data || []).map(r => r.person));
+  state.equipped = { frame: cosm.data?.equipped_frame || null, ring: cosm.data?.equipped_ring || null, title: cosm.data?.equipped_title || null };
+}
+
+// ---------- Cosmetica, levels en meldingen ----------
+const TITLE_NAMES = { title_coffee: 'Koffiebaas', title_wizard: 'Wordle Wizard', title_boss: 'Battle Boss', title_collector: 'Meesterverzamelaar' };
+const ringCls = key => key ? ` ${key.replace('ring_', 'ring-')}` : '';
+const titleChip = key => TITLE_NAMES[key] ? `<span class="title-chip">${esc(TITLE_NAMES[key])}</span>` : '';
+const myLevel = id => state.levels.get(id) || 1;
+const stars = n => '★'.repeat(n);
+// Opties voor renderCard bij je eigen kaarten: level + gekozen kaartrand
+const mineOpts = c => ({ level: myLevel(c.id), frame: state.equipped.frame });
+
+function toast(html, ms = 5000) {
+  let box = $('#toasts');
+  if (!box) { box = document.createElement('div'); box.id = 'toasts'; box.className = 'toasts'; document.body.appendChild(box); }
+  const t = document.createElement('div');
+  t.className = 'toast'; t.setAttribute('role', 'status'); t.innerHTML = html;
+  box.appendChild(t);
+  setTimeout(() => { t.classList.add('out'); setTimeout(() => t.remove(), 400); }, ms);
+}
+
+// Volledige pagina's en het volledige boek belonen (server bepaalt en betaalt; elke beloning maar één keer)
+let collectionBusy = false;
+async function checkCollection() {
+  if (collectionBusy || !state.v12 || !state.session) return;
+  collectionBusy = true;
+  try {
+    const { data, error } = await sb.rpc('claim_collection_rewards');
+    if (error || !data?.length) return;
+    for (const r of data) {
+      state.badges.add(r.person);
+      state.wallet += r.reward;
+      toast(r.person === '*BOOK*'
+        ? `🏆 <strong>Volledig boek!</strong> +${r.reward} 🪙 en de titel <em>Meesterverzamelaar</em> (zet hem aan in de Shop).`
+        : `🏅 Pagina <strong>${esc(r.person)}</strong> compleet! +${r.reward} 🪙`, 7000);
+    }
+    syncCoinUI();
+    if (state.tab === 'book') renderView();
+  } finally { collectionBusy = false; }
 }
 
 // Telt per card_id hoeveel exemplaren een gebruiker bezit, op basis van ruwe user_cards-rijen
@@ -905,16 +1028,48 @@ function renderCardBack(c) {
   return `<div class="cw"><div class="cardback r-${c.rarity}" role="img" aria-label="Achterkant van de kaart"></div></div>`;
 }
 
-function openZoom(card) {
+// mine: eigen kaart → met level, kaartrand en de knop om op te waarderen
+function openZoom(card, { mine = false } = {}) {
   const dlg = $('#zoom');
-  let showingBack = false, busy = false;
+  let showingBack = false, busy = false, changed = false;
+  const front = () => renderCard(card, mine ? mineOpts(card) : {});
+  const upHtml = () => {
+    if (!mine || !state.v12 || card.rarity === 'cat') return '';
+    const lv = myLevel(card.id), extra = Math.max(0, (state.owned.get(card.id) || 0) - 1);
+    if (lv >= 3) return `<div class="lvl-up"><p>${stars(3)} Maximaal opgewaardeerd: +20% HP, ATK en DEF in Battle.</p></div>`;
+    return extra >= 2
+      ? `<div class="lvl-up"><button class="btn small" id="zoomUp" type="button">⬆️ Opwaarderen naar ${stars(lv + 1)} · kost 2 dubbels</button>
+         <p>+10% HP, ATK en DEF in Battle per level.</p></div>`
+      : `<div class="lvl-up"><p>Nog ${2 - extra} ${2 - extra === 1 ? 'dubbel' : 'dubbels'} nodig om op te waarderen naar ${stars(lv + 1)} (+10% HP, ATK en DEF in Battle).</p></div>`;
+  };
   dlg.innerHTML = `<div class="zoombox">
     <button type="button" class="zoom-card" id="zoomCard" aria-label="Kaart omdraaien">
-      <div class="zoom-inner" id="zoomInner">${renderCard(card)}</div>
+      <div class="zoom-inner" id="zoomInner">${front()}</div>
     </button>
     <p class="zoomhint">Tik op de kaart om ze om te draaien</p>
+    <div id="zoomUpBox">${upHtml()}</div>
     <button type="button" class="link" id="zoomClose">Sluiten</button>
   </div>`;
+  const bindUp = () => {
+    const b = $('#zoomUp');
+    if (!b) return;
+    b.onclick = async () => {
+      if (!confirm(`2 dubbels van "${card.name}" gebruiken om de kaart op te waarderen?`)) return;
+      b.disabled = true;
+      const { data, error } = await sb.rpc('upgrade_card', { p_card_id: card.id });
+      if (error) { alert(error.message); b.disabled = false; return; }
+      state.owned.set(card.id, state.owned.get(card.id) - 2);
+      state.levels.set(card.id, data.level);
+      changed = true;
+      showingBack = false;
+      $('#zoomInner').innerHTML = front();
+      $('#zoomUpBox').innerHTML = upHtml();
+      bindUp();
+      toast(`⬆️ <strong>${esc(card.name)}</strong> is nu ${stars(data.level)}!`);
+    };
+  };
+  bindUp();
+  dlg.onclose = () => { if (changed && ['book', 'today', 'shop'].includes(state.tab)) renderView(); };
   const btn = $('#zoomCard'), inner = $('#zoomInner');
   const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
   btn.onclick = async () => {
@@ -922,7 +1077,7 @@ function openZoom(card) {
     busy = true;
     if (!reduce) { btn.classList.add('turning'); await sleep(200); }
     showingBack = !showingBack;
-    inner.innerHTML = showingBack ? renderCardBack(card) : renderCard(card);
+    inner.innerHTML = showingBack ? renderCardBack(card) : front();
     btn.classList.add('turning-back');
     btn.classList.remove('turning');
     if (!reduce) await sleep(200);
@@ -933,7 +1088,7 @@ function openZoom(card) {
   dlg.showModal();
 }
 
-function renderCard(c, { locked = false, count = 1 } = {}) {
+function renderCard(c, { locked = false, count = 1, level = 1, frame = null } = {}) {
   const label = RARITY_LABEL[c.rarity];
   if (locked) {
     return `<div class="cw"><div class="card r-${c.rarity} locked" aria-label="Nog niet verzameld">
@@ -951,14 +1106,20 @@ function renderCard(c, { locked = false, count = 1 } = {}) {
   const flavor = c.flavor_text ? `<div class="flavor">"${esc(c.flavor_text)}"</div>` : '';
   const nameLen = c.name.length;
   const nameCls = nameLen > 22 ? 'cname xxl' : nameLen > 14 ? 'cname xl' : 'cname';
-  return `<div class="cw">
+  // Opgewaardeerde kaart: +10% HP/ATK/DEF per level (zelfde berekening als in Battle)
+  const lv = c.rarity === 'cat' ? 1 : level;
+  const st = v => (lv > 1 && v != null ? Math.round(v * (1 + .1 * (lv - 1))) : v);
+  const frameCls = frame ? ' ' + frame.replace('frame_', 'frame-') : '';
+  return `<div class="cw${frameCls}">
     ${count > 1 ? `<span class="dupe">×${count}</span>` : ''}
+    ${lv > 1 ? `<span class="lvl-badge" title="Level ${lv}">${stars(lv)}</span>` : ''}
     <div class="card r-${c.rarity}">
       <div class="art">${art}</div>
-      <div class="chead"><span class="${nameCls}">${esc(c.name)}</span><span class="hp">HP ${esc(c.hp)}</span></div>
+      ${lv >= 3 ? '<span class="glitter" aria-hidden="true"></span>' : ''}
+      <div class="chead"><span class="${nameCls}">${esc(c.name)}</span><span class="hp">HP ${esc(st(c.hp))}</span></div>
       <div class="cfoot">
         ${flavor}
-        <div class="row1"><span>${label}</span><span>ATK ${esc(c.attack)} / DEF ${esc(c.defense)}</span></div>
+        <div class="row1"><span>${label}</span><span>ATK ${esc(st(c.attack))} / DEF ${esc(st(c.defense))}</span></div>
         ${special}
       </div>
     </div></div>`;
@@ -998,7 +1159,8 @@ function renderMain() {
               <span class="menu-ico">${t.icon}</span>${t.label}${t.badge ? `<span class="tab-badge" data-${t.badge}-badge></span>` : ''}</button>`).join('')}
           </div>
         </nav>
-        <button class="avbtn" id="openAccount" aria-label="Account instellingen"${avStyle}>${state.avatarUrl ? '' : initial}</button>
+        <button class="iconbtn${updateAvailable ? ' has-update' : ''}" id="refreshBtn" type="button" title="Site vernieuwen" aria-label="Site vernieuwen"><span>🔄</span></button>
+        <button class="avbtn${ringCls(state.equipped.ring)}" id="openAccount" aria-label="Account instellingen"${avStyle}>${state.avatarUrl ? '' : initial}</button>
       </div>
     </header>
     <div id="view"></div>
@@ -1006,9 +1168,10 @@ function renderMain() {
   <dialog id="accModal" aria-label="Accountinstellingen"></dialog>
   <dialog id="friendModal" aria-label="Statistieken van vriend"></dialog>
   <dialog id="zoom" aria-label="Kaart bekijken"></dialog>
-  <dialog id="packModal" aria-label="Welkomstpakket"></dialog>
+  <dialog id="packModal" aria-label="Pakje openen"></dialog>
   <dialog id="infoModal" aria-label="Uitleg"></dialog>`;
   $('#openAccount').onclick = () => openAccountModal();
+  $('#refreshBtn').onclick = () => hardReload($('#refreshBtn'));
   const menuBtn = $('#menuBtn'), list = $('#menuList');
   const setMenu = open => { list.hidden = !open; menuBtn.setAttribute('aria-expanded', open); };
   menuBtn.onclick = e => { e.stopPropagation(); setMenu(list.hidden); };
@@ -1024,6 +1187,7 @@ function renderMain() {
   syncFriendBadge();
   syncBattleBadge();
   renderView();
+  checkCollection();
 }
 
 // Bolletjes met meldingen: per menu-item en opgeteld op de menuknop
@@ -1041,7 +1205,12 @@ const INFO = {
     <ul><li>Raad het Engelse woord van 5 letters in maximaal 6 pogingen. Typ of gebruik het toetsenbord op het scherm.</li>
     <li>🟩 juiste letter op de juiste plek · 🟨 letter zit in het woord, maar elders · ⬛ letter zit er niet in.</li>
     <li>Na elke ronde open je een pakje. Hoe minder pogingen, hoe zeldzamer je kaart.</li>
-    <li>Heb je de kaart al? Dan krijg je ze als dubbel om te ruilen, plus wat polycoins. Niet opgelost? Dan krijg je een troostkat.</li></ul>
+    <li>Heb je de kaart al? Dan krijg je ze als dubbel om te ruilen, plus wat polycoins. Niet opgelost? Dan krijg je een troostkat.</li>
+    <li>Met <strong>📋 Kopieer resultaat</strong> deel je je gekleurde vakjes (zonder het woord) in een chat.</li></ul>
+    <p>Rechts vind je ook:</p>
+    <ul><li>🎯 <strong>Opdrachten</strong>: elke dag 3 kleine opdrachten voor extra polycoins. Haal je beloning op voor middernacht.</li>
+    <li>📰 <strong>Nieuws</strong>: legendaries, gewonnen battles en volle pagina's van jou en je vrienden.</li>
+    <li>🏁 <strong>Vandaag</strong>: het klassement van de Wordles van vandaag bij jou en je vrienden.</li></ul>
     <table class="odds-table">
       <thead><tr><th>Pogingen</th><th>Common</th><th>Epic</th><th>Legendary</th></tr></thead>
       <tbody>
@@ -1057,7 +1226,9 @@ const INFO = {
   book: ['Je verzamelboek', `
     <p>Elke collega heeft een eigen pagina met 9 kaarten: 6 commons, 2 epics en 1 legendary. Troostkatten krijgen hun eigen pagina.</p>
     <ul><li>Klik op een kaart om ze groot te bekijken, tik nog eens om ze om te draaien.</li>
-    <li>Achteraan vind je de pagina <strong>Dubbels</strong> met alle kaarten die je meer dan één keer hebt.</li></ul>`],
+    <li>Achteraan vind je de pagina <strong>Dubbels</strong> met alle kaarten die je meer dan één keer hebt.</li>
+    <li>🏅 <strong>Pagina compleet?</strong> Dan krijg je 100 🪙 en een medaille. Het volledige boek (zonder troostkatten) levert 250 🪙 en de titel <em>Meesterverzamelaar</em> op.</li>
+    <li>⬆️ <strong>Opwaarderen</strong>: open een kaart en gebruik 2 dubbels om ze een ★ hoger te zetten (max ★★★). Elke ★ geeft +10% HP, ATK en DEF in Battle. Op ★★★ glinstert de kaart.</li></ul>`],
   stats: ['Statistieken', `<p>Een overzicht van al je Wordles (2 per dag): hoe vaak je speelde, je huidige streak (opeenvolgende dagen), hoe vaak je de Wordle oploste en in hoeveel pogingen.</p>`],
   battle: ['Zo werkt Battle', `
     <p>Kies 3 kaarten, in de volgorde waarin ze vechten. Elke ronde kies jij een zet — tegen een vriend kiezen jullie allebei tegelijk en geheim.</p>
@@ -1078,10 +1249,12 @@ const INFO = {
     <li>De populairste ideeën staan bovenaan. Seppe duidt aan wat 📅 gepland, ✅ klaar of ❌ niet gepland is.</li>
     <li>Je kan je eigen ideeën verwijderen.</li></ul>`],
   shop: ['Shop', `
-    <p>Besteed je polycoins — die verdien je met battles en met dubbele trekkingen.</p>
+    <p>Besteed je polycoins. Die verdien je met battles, opdrachten, volle pagina's en dubbele trekkingen.</p>
     <ul><li><strong>Pakjes</strong>: Basic Pack (1 kaart, 60 🪙) of Epic Pack (3 kaarten, de 3e gegarandeerd epic of legendary, 200 🪙).</li>
     <li><strong>Dubbels verkopen</strong>: common 15 · epic 40 · legendary 100 · troostkat 5 🪙 per extra exemplaar. Je houdt altijd 1 exemplaar.</li>
-    <li><strong>Wordle-hulp</strong> (op Today, tijdens een ronde): een letter onthullen voor 40 🪙 (max 2 per ronde) of een 7e poging voor 60 🪙.</li></ul>`],
+    <li><strong>Opwaarderen</strong>: 2 dubbels maken een kaart een ★ sterker in Battle (max ★★★).</li>
+    <li><strong>Wordle-hulp</strong> (op Today, tijdens een ronde): een letter onthullen voor 40 🪙 (max 2 per ronde) of een 7e poging voor 60 🪙.</li>
+    <li><strong>Cosmetica</strong>: kaartranden, profielringen en titels. Puur voor de show, je kan ze altijd aan- of uitzetten.</li></ul>`],
   trade: ['Traden', `
     <p>Stel een ruil voor aan een vriend. Je kan enkel <strong>dubbels</strong> aanbieden — je houdt altijd minstens 1 exemplaar van elke kaart over.</p>
     <ul><li>Je vriend kan accepteren, een tegenbod doen of annuleren.</li>
@@ -1123,11 +1296,11 @@ function initBackground() {
     color: pick(COLORS), letter: pick(LETTERS), alpha: rnd(.08, .2)
   });
   const resize = () => {
-    const dpr = Math.min(2, devicePixelRatio || 1);
+    const dpr = Math.min(innerWidth < 700 ? 1.5 : 2, devicePixelRatio || 1);
     W = innerWidth; H = innerHeight;
     cv.width = W * dpr; cv.height = H * dpr;
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-    const want = Math.round(Math.min(48, Math.max(16, W * H / 30000)));
+    const want = W < 700 ? Math.round(Math.min(14, Math.max(8, W * H / 36000))) : Math.round(Math.min(48, Math.max(16, W * H / 30000)));
     while (shapes.length < want) shapes.push(make());
     shapes.length = want;
     if (reduce) draw();
@@ -1182,8 +1355,12 @@ function initBackground() {
     for (const b of bits) { b.vy += 520 * dt; b.x += b.vx * dt; b.y += b.vy * dt; b.rot += b.vr * dt; b.life -= dt * .7; }
     bits = bits.filter(b => b.life > 0 && b.y < H + 60);
     draw();
+    if (document.hidden) { running = false; return; }
     requestAnimationFrame(tick);
   }
+  let running = false;
+  const start = () => { if (reduce || running) return; running = true; last = performance.now(); requestAnimationFrame(tick); };
+  document.addEventListener('visibilitychange', () => { if (!document.hidden) start(); });
   addEventListener('resize', resize);
   addEventListener('pointermove', e => {
     ptr.x = e.clientX; ptr.y = e.clientY;
@@ -1191,7 +1368,7 @@ function initBackground() {
   }, { passive: true });
   // Klik of tik op een lege plek: een regen van tegels
   addEventListener('pointerdown', e => {
-    if (reduce || e.target.closest('button,a,input,textarea,select,label,dialog,.card,.cw,.book,.menu,.stage,table,.friend-row,.trade-card,.battle-box,.battle-row,.stat-card,.pick,.mycode')) return;
+    if (reduce || e.target.closest('button,a,input,textarea,select,label,dialog,.card,.cw,.book,.menu,.stage,.hub,table,.friend-row,.trade-card,.battle-box,.battle-row,.stat-card,.pick,.mycode')) return;
     for (let i = 0; i < 16 && bits.length < 120; i++) {
       const a = rnd(0, Math.PI * 2), v = rnd(160, 420);
       bits.push({ x: e.clientX, y: e.clientY, vx: Math.cos(a) * v, vy: Math.sin(a) * v - 220, rot: rnd(0, 6.28), vr: rnd(-8, 8),
@@ -1200,7 +1377,7 @@ function initBackground() {
     }
   });
   resize();
-  if (!reduce) requestAnimationFrame(tick);
+  start();
 }
 
 // ---------- Account-bolletje: naam, e-mail, wachtwoord, profielfoto ----------
@@ -1335,7 +1512,7 @@ function renderView() {
 // Het woord blijft in Supabase: elke gok gaat naar wordle_guess(), die enkel de kleurtjes teruggeeft.
 const ROUNDS = { 1: { icon: '☀️', name: 'Ochtend' }, 2: { icon: '🌤️', name: 'Middag' } };
 const KB_ROWS = ['QWERTYUIOP', 'ASDFGHJKL', '⏎ZXCVBNM⌫'];
-const wordle = { data: null, slot: null, input: '', busy: false, timer: null, loadedAt: 0 };
+const wordle = { data: null, slot: null, input: '', busy: false, timer: null, loadedAt: 0, hub: null };
 let WORDS = null; // geldige gokwoorden (words.txt), één keer geladen
 
 async function loadWords() {
@@ -1423,6 +1600,7 @@ function drawToday(view) {
       ${s.open ? `
         <div class="wboard" id="wboard" style="--rows:${s.max_guesses || 6}">${boardHtml(s)}</div>
         <p class="msg wmsg${isDone(s) ? ' ok' : ''}" id="wmsg" role="alert">${roundSummary(s)}</p>
+        <div class="share-row" id="shareRow">${isDone(s) ? shareBtnHtml() : ''}</div>
         ${isDone(s) ? '' : `<div class="wkeys" id="wkeys">${keyboardHtml(s)}</div>
         <div class="whelp" id="whelp">${helpHtml(s)}</div>`}`
       : `<div class="round-closed">
@@ -1431,12 +1609,12 @@ function drawToday(view) {
           <p class="countdown" id="wcount"></p>
         </div>`}
     </div>
-    <div class="stage" id="stage" aria-live="polite">${card
-      ? `<div class="cardflip">${renderCard(card)}</div>`
-      : '<p class="stage-placeholder">Los de Wordle op en open je pakje.</p>'}</div>
+    <aside class="hub" id="hub" aria-label="Vandaag">${hubHtml(card)}</aside>
   </section>`;
   attachWelcome();
   bindRoundTabs(view);
+  bindShare(s);
+  bindHub(card);
   // Eén handler op het hele toetsenbord: blijft werken als de toetsen opnieuw getekend worden
   const keys = $('#wkeys');
   if (keys) keys.onclick = e => { const b = e.target.closest('[data-key]'); if (b) wordleKey(b.dataset.key); };
@@ -1459,6 +1637,141 @@ function drawToday(view) {
     tick();
     wordle.timer = setInterval(tick, 1000);
   }
+}
+
+// ---------- Today-hub: kaart van de ronde, opdrachten, nieuws en klassement ----------
+const HUB_TABS = [
+  { id: 'card', label: '🎴 Kaart' },
+  { id: 'quests', label: '🎯 Opdrachten' },
+  { id: 'news', label: '📰 Nieuws' },
+  { id: 'board', label: '🏁 Vandaag' },
+];
+function hubHtml(card) {
+  if (!wordle.hub || (wordle.hub === 'card' && !card)) wordle.hub = card ? 'card' : 'quests';
+  return `<div class="seg hub-tabs" role="tablist">${HUB_TABS.filter(t => t.id !== 'card' || card).map(t =>
+    `<button type="button" role="tab" data-hub="${t.id}" class="${t.id === wordle.hub ? 'on' : ''}" aria-selected="${t.id === wordle.hub}">${t.label}</button>`).join('')}</div>
+    <div class="hub-body" id="hubBody" role="tabpanel"></div>`;
+}
+function bindHub(card) {
+  const hub = $('#hub');
+  hub.querySelectorAll('[data-hub]').forEach(b => b.onclick = () => {
+    wordle.hub = b.dataset.hub;
+    hub.querySelectorAll('[data-hub]').forEach(x => { x.classList.toggle('on', x === b); x.setAttribute('aria-selected', x === b); });
+    drawHub(card);
+  });
+  drawHub(card);
+}
+const v12Missing = '<p class="hint">Deze functie wordt binnenkort geactiveerd.</p>';
+async function drawHub(card) {
+  const body = $('#hubBody');
+  if (!body) return;
+  const tab = wordle.hub;
+  if (tab === 'card') {
+    body.innerHTML = `<div class="stage"><button type="button" class="zoomable" id="hubCard" aria-label="${esc(card.name)} groot bekijken">${renderCard(card, mineOpts(card))}</button>
+      <p class="hint" style="margin:0">Je kaart van deze ronde. Tik om ze groot te bekijken.</p></div>`;
+    $('#hubCard').onclick = () => openZoom(card, { mine: true });
+    return;
+  }
+  body.innerHTML = '<p class="hint">Laden…</p>';
+  const rpc = { quests: 'quest_state', news: 'activity_feed', board: 'wordle_board_today' }[tab];
+  const { data, error } = await sb.rpc(rpc);
+  if (wordle.hub !== tab || !$('#hubBody')) return;
+  if (error) { body.innerHTML = v12Missing; return; }
+  if (tab === 'quests') drawQuests(body, data);
+  else if (tab === 'news') drawNews(body, data);
+  else drawBoard(body, data);
+}
+function syncQuestDot(quests) {
+  const b = document.querySelector('[data-hub="quests"]');
+  if (!b) return;
+  b.querySelector('.dot')?.remove();
+  if (quests.some(q => !q.claimed && q.progress >= q.target)) b.insertAdjacentHTML('beforeend', '<span class="dot" aria-label="beloning klaar"></span>');
+}
+function drawQuests(body, quests) {
+  syncQuestDot(quests);
+  body.innerHTML = `<p class="hint">Elke dag 3 nieuwe opdrachten, voor iedereen dezelfde. Haal je beloning op voor middernacht.</p>
+    <ul class="quest-list">${quests.map(q => {
+      const ready = !q.claimed && q.progress >= q.target;
+      return `<li class="quest${q.claimed ? ' done' : ready ? ' ready' : ''}">
+        <div class="quest-main"><strong>${esc(q.title)}</strong>
+          <div class="qbar"><span style="width:${Math.round(q.progress / q.target * 100)}%"></span></div>
+          <small>${q.progress}/${q.target}</small></div>
+        ${q.claimed ? '<span class="pill">✓ Opgehaald</span>'
+          : ready ? `<button class="btn small" data-claim="${esc(q.key)}" type="button">Ophalen +${q.reward} 🪙</button>`
+          : `<span class="quest-reward">${q.reward} 🪙</span>`}
+      </li>`;
+    }).join('')}</ul>`;
+  body.querySelectorAll('[data-claim]').forEach(b => b.onclick = async () => {
+    b.disabled = true;
+    const { data, error } = await sb.rpc('claim_quest', { p_key: b.dataset.claim });
+    if (error) { alert(error.message); b.disabled = false; return; }
+    setWallet(data.wallet);
+    toast(`🎯 Opdracht voltooid! +${data.reward} 🪙`);
+    drawHub(null);
+  });
+}
+const timeAgo = iso => {
+  const sec = (Date.now() - new Date(iso).getTime()) / 1000;
+  if (sec < 60) return 'zonet';
+  if (sec < 3600) return `${Math.floor(sec / 60)} min geleden`;
+  if (sec < 86400) return `${Math.floor(sec / 3600)} u geleden`;
+  const d = Math.floor(sec / 86400);
+  return d === 1 ? 'gisteren' : `${d} dagen geleden`;
+};
+// Toont nooit de naam van een kaart die jij zelf nog niet hebt
+function newsLine(a) {
+  const me = state.session.user.id;
+  const who = `<strong>${a.user_id === me ? 'Jij' : esc(a.display_name)}</strong>`;
+  const c = a.data?.card ? cardById(a.data.card) : null;
+  const known = c && (state.owned.get(c.id) || state.isAdmin);
+  const cardTxt = c ? (known ? `<strong>${esc(c.name)}</strong>` : `een kaart van ${esc(c.person)}`) : 'een kaart';
+  switch (a.kind) {
+    case 'legendary': return ['🌟', `${who} trok ${c && known ? `de legendary <strong>${esc(c.name)}</strong>` : `een legendary${c ? ` van ${esc(c.person)}` : ''}`}!`];
+    case 'battle_win': {
+      const opp = a.data?.opponent === me ? 'jou' : esc(a.other_name || 'een vriend');
+      return ['⚔️', `${who} won een battle tegen ${opp}${a.data?.forfeit ? ' (opgave)' : ''}.`];
+    }
+    case 'page_complete': return ['🏅', `${who} vervolledigde de pagina van <strong>${esc(a.data?.person || '?')}</strong>.`];
+    case 'book_complete': return ['🏆', `${who} verzamelde het volledige boek!`];
+    case 'max_level': return ['⭐', `${who} waardeerde ${cardTxt} op tot ${stars(3)}.`];
+    default: return null;
+  }
+}
+function drawNews(body, items) {
+  const lines = items.map(a => [a, newsLine(a)]).filter(x => x[1]);
+  body.innerHTML = lines.length
+    ? `<ul class="news-list">${lines.map(([a, [ico, txt]]) => `<li class="news-item"><span class="news-ico" aria-hidden="true">${ico}</span>
+        <div><p>${txt}</p><small>${timeAgo(a.created_at)}</small></div></li>`).join('')}</ul>`
+    : '<p class="hint">Nog geen nieuws. Hier verschijnen legendaries, gewonnen battles en volle pagina\'s van jou en je vrienden.</p>';
+}
+function drawBoard(body, rows) {
+  const me = state.session.user.id;
+  body.innerHTML = [1, 2].map(slot => {
+    const list = rows.filter(r => r.slot === slot);
+    return `<h4>${ROUNDS[slot].icon} ${ROUNDS[slot].name}</h4>${list.length
+      ? `<ol class="board-list">${list.map((r, i) => `<li class="board-row${r.user_id === me ? ' me' : ''}">
+          <span class="board-rank">${i + 1}</span><span class="board-name">${r.user_id === me ? 'Jij' : esc(r.name)}</span>
+          <span class="board-score ${r.status}">${r.status === 'won' ? r.attempts : 'X'}/${r.max}</span></li>`).join('')}</ol>`
+      : '<p class="hint">Nog niemand klaar.</p>'}`;
+  }).join('') + '<p class="hint" style="margin:12px 0 0">Jij en je vrienden. Minder pogingen = hoger.</p>';
+}
+
+// Resultaat kopiëren om te delen (zonder het woord)
+const shareBtnHtml = () => '<button class="link" id="shareBtn" type="button">📋 Kopieer resultaat</button>';
+function shareText(s) {
+  const sq = { g: '🟩', y: '🟨', x: '⬛' };
+  const day = new Date().toLocaleDateString('nl-BE', { day: 'numeric', month: 'short', timeZone: 'Europe/Brussels' });
+  return `Polygon Wordle · ${day} ${ROUNDS[s.slot].icon} ${s.status === 'won' ? s.attempts : 'X'}/${s.max_guesses || 6}\n`
+    + s.rows.map(r => Array.from(r.r, x => sq[x] || '⬛').join('')).join('\n');
+}
+function bindShare(s) {
+  const b = $('#shareBtn');
+  if (!b) return;
+  b.onclick = async () => {
+    const txt = shareText(s);
+    try { await navigator.clipboard.writeText(txt); b.textContent = '✓ Gekopieerd!'; }
+    catch (_) { prompt('Kopieer je resultaat:', txt); }
+  };
 }
 
 // Wordle-hulp uit de Shop: onthulde letters + knoppen
@@ -1567,8 +1880,8 @@ async function submitGuess(s) {
     msg.className = 'msg wmsg ok'; msg.innerHTML = roundSummary(s);
     $('#roundTabs').innerHTML = roundTabsHtml();
     bindRoundTabs($('#view'));
-    const stage = $('#stage');
-    stage.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    $('#shareRow').innerHTML = shareBtnHtml();
+    bindShare(s);
     await revealCard(data);
   } else {
     $('#roundTabs').innerHTML = roundTabsHtml();
@@ -1648,8 +1961,17 @@ function confettiHtml() {
 }
 
 async function revealCard(res) {
-  const stage = $('#stage');
   const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const dlg = $('#packModal');
+  dlg.innerHTML = `<div class="packbox"><h2>Je pakje</h2><div class="stage" id="packStage"></div><div id="packDone"></div></div>`;
+  dlg.onclose = () => {
+    dlg.onclose = null;
+    wordle.hub = 'card';
+    if (state.tab === 'today' && $('#roundTabs')) drawToday($('#view'));
+    checkCollection();
+  };
+  dlg.showModal();
+  const stage = $('#packStage');
   await openPack(stage, [res.card]);
   const text = res.solved
     ? (res.isDuplicate
@@ -1658,7 +1980,9 @@ async function revealCard(res) {
             : `Opgelost in ${res.attempts} ${plural(res.attempts)}. Je had "${esc(res.card.name)}" al — omgezet in ${res.coinsEarned} polycoins.`)
         : `Opgelost in ${res.attempts} ${plural(res.attempts)}. Je trok een ${RARITY_LABEL[res.rarity]}-kaart.`)
     : `Niet opgelost${res.answer ? ` — het woord was ${esc(res.answer)}` : ''}. Je krijgt een troostkat.`;
-  stage.insertAdjacentHTML('beforeend', `${!reduce && res.rarity === 'legendary' ? confettiHtml() : ''}<p class="result">${text}</p>`);
+  stage.insertAdjacentHTML('beforeend', `${!reduce && res.rarity === 'legendary' ? confettiHtml() : ''}`);
+  $('#packDone').innerHTML = `<p class="result">${text}</p><button class="btn small" id="packClose" type="button">Verder</button>`;
+  $('#packClose').onclick = () => dlg.close();
 }
 
 // ---------- Welkomstpakket (eenmalig, 3 random commons) ----------
@@ -1681,11 +2005,13 @@ function attachWelcome() {
     for (const c of data) state.owned.set(c.id, (state.owned.get(c.id) || 0) + 1);
     const dlg = $('#packModal');
     dlg.innerHTML = `<div class="packbox"><h2>Je welkomstpakket</h2><div class="stage" id="packStage"></div><div id="packDone"></div></div>`;
+    dlg.onclose = () => { dlg.onclose = null; renderMain(); };
     dlg.showModal();
     await openPack($('#packStage'), data);
     $('#packDone').innerHTML = `<p class="result">Deze 3 kaarten staan nu in je boek. Veel plezier met verzamelen!</p>
       <button class="btn small" id="packClose" type="button">Verder</button>`;
-    $('#packClose').onclick = () => { dlg.close(); renderMain(); };
+    dlg.onclose = () => { dlg.onclose = null; renderMain(); };
+    $('#packClose').onclick = () => dlg.close();
   };
 }
 
@@ -1728,9 +2054,9 @@ function drawBook(view, groups, animate) {
   view.innerHTML = `<div class="book"><div class="spread">
     <nav class="index-page" aria-label="Collega's">
       <h3 class="index-title">Verzamelboek ${infoBtn('book')}</h3>
-      <p class="sub">${have}/${total} kaarten${dupes ? ` · ${dupes} dubbel` : ''}</p>
+      <p class="sub">${have}/${total} kaarten${dupes ? ` · ${dupes} dubbel` : ''}${state.badges.has('*BOOK*') ? ' · 🏆 volledig' : ''}</p>
       <ul class="index-list">${groups.map((x, i) =>
-        `<li${x.dupes ? ' class="index-dupes"' : ''}><button data-i="${i}" aria-current="${i === state.page}">${esc(x.name)}<span class="frac">${x.dupes ? `${dupes} extra` : `${ownedIn(x)}/${x.cards.length}`}</span></button></li>`).join('')}</ul>
+        `<li${x.dupes ? ' class="index-dupes"' : ''}><button data-i="${i}" aria-current="${i === state.page}">${esc(x.name)}${state.badges.has(x.name) ? '<span class="badge" title="Pagina compleet">🏅</span>' : ''}<span class="frac">${x.dupes ? `${dupes} extra` : `${ownedIn(x)}/${x.cards.length}`}</span></button></li>`).join('')}</ul>
     </nav>
     <div class="page-body${animate ? ' turning' : ''}">
       <h3 class="pname">${esc(g.name)}</h3>
@@ -1741,7 +2067,7 @@ function drawBook(view, groups, animate) {
       <div class="grid">${g.cards.map(c => {
         const n = ownedCount(c.id);
         return n
-          ? `<button class="slot" type="button" data-zoom="${c.id}" aria-label="${esc(c.name)} groot bekijken">${renderCard(c, { count: n })}</button>`
+          ? `<button class="slot" type="button" data-zoom="${c.id}" aria-label="${esc(c.name)} groot bekijken">${renderCard(c, { count: n, ...(state.owned.get(c.id) ? mineOpts(c) : {}) })}</button>`
           : `<div class="slot">${renderCard(c, { locked: true })}</div>`;
       }).join('')}</div>
       <div class="pageturn">
@@ -1758,7 +2084,7 @@ function drawBook(view, groups, animate) {
   $('#prevp', view).onclick = () => { state.page = Math.max(0, state.page - 1); drawBook(view, groups, true); };
   $('#nextp', view).onclick = () => { state.page = Math.min(groups.length - 1, state.page + 1); drawBook(view, groups, true); };
   view.querySelectorAll('[data-zoom]').forEach(b => {
-    b.onclick = () => openZoom(state.cards.find(c => c.id === Number(b.dataset.zoom)));
+    b.onclick = () => { const id = Number(b.dataset.zoom); openZoom(cardById(id), { mine: !!state.owned.get(id) }); };
   });
 }
 
@@ -1832,7 +2158,7 @@ function statsHtml(plays, extraCards = '') {
 }
 
 // ---------- Tab: Vrienden ----------
-const friendAv = p => `<span class="friend-av" style="${p.avatar_url ? `background-image:url('${esc(p.avatar_url)}')` : ''}">${p.avatar_url ? '' : esc((p.display_name || '?').charAt(0).toUpperCase())}</span>`;
+const friendAv = p => `<span class="friend-av${ringCls(p.equipped_ring)}" style="${p.avatar_url ? `background-image:url('${esc(p.avatar_url)}')` : ''}">${p.avatar_url ? '' : esc((p.display_name || '?').charAt(0).toUpperCase())}</span>`;
 
 async function renderFriends(view) {
   view.innerHTML = `<section class="col" style="max-width:none"><p class="hint">Laden…</p></section>`;
@@ -1852,6 +2178,9 @@ async function renderFriends(view) {
     const { data: profs, error: pErr } = await sb.from('profiles').select('id, display_name, avatar_url').in('id', ids);
     if (pErr) { view.innerHTML = `<section class="col"><p class="msg err">${esc(pErr.message)}</p></section>`; return; }
     for (const p of profs || []) profiles[p.id] = p;
+    // Cosmetica van vrienden (v12, niet fataal)
+    const { data: cos } = await sb.from('profiles').select('id, equipped_ring, equipped_title').in('id', ids);
+    for (const c of cos || []) if (profiles[c.id]) Object.assign(profiles[c.id], c);
   }
   const prof = id => profiles[id] || { id, display_name: '…' };
   const friends = friendIds.map(prof).sort((a, b) => (a.display_name || '').localeCompare(b.display_name || ''));
@@ -1898,7 +2227,7 @@ async function renderFriends(view) {
           <li class="friend-row">
             <button class="friend-open" data-open="${f.id}" type="button">
               ${friendAv(f)}
-              <span class="friend-name">${esc(f.display_name)}</span>
+              <span class="friend-name">${esc(f.display_name)}${titleChip(f.equipped_title)}</span>
               <span class="friend-more" aria-hidden="true">Statistieken ›</span>
             </button>
             <button class="link danger" data-remove="${f.id}" type="button">Verwijderen</button>
@@ -1962,13 +2291,15 @@ async function renderFriends(view) {
 // Pop-up met de statistieken en verzameling van een vriend
 async function openFriendStats(f) {
   const dlg = $('#friendModal');
-  const head = `<div class="statbox-head">${friendAv(f)}<h2>${esc(f.display_name)}</h2></div>`;
+  const head = `<div class="statbox-head">${friendAv(f)}<h2>${esc(f.display_name)}${titleChip(f.equipped_title)}</h2></div>`;
   dlg.innerHTML = `<div class="accbox statbox">${head}<p class="hint">Statistieken laden…</p></div>`;
   dlg.showModal();
-  const [plays, cards] = await Promise.all([
+  const [plays, cards, badges] = await Promise.all([
     loadPlays(f.id, true).then(data => ({ data }), error => ({ error })),
     sb.from('user_cards').select('card_id').eq('user_id', f.id),
+    sb.from('collection_rewards').select('person').eq('user_id', f.id),
   ]);
+  const pages = (badges.data || []).filter(b => b.person !== '*BOOK*').length;
   const err = plays.error || cards.error;
   const collectible = state.cards.filter(c => c.rarity !== 'cat');
   const owned = new Set((cards.data || []).map(r => r.card_id));
@@ -1976,7 +2307,8 @@ async function openFriendStats(f) {
   const legendaries = collectible.filter(c => c.rarity === 'legendary' && owned.has(c.id)).length;
   const extra = `
     <div class="stat-card"><span class="stat-num">${have}/${collectible.length}</span><span class="stat-label">Kaarten verzameld</span></div>
-    <div class="stat-card"><span class="stat-num">${legendaries}</span><span class="stat-label">Legendaries</span></div>`;
+    <div class="stat-card"><span class="stat-num">${legendaries}</span><span class="stat-label">Legendaries</span></div>
+    ${badges.error ? '' : `<div class="stat-card"><span class="stat-num">🏅 ${pages}</span><span class="stat-label">Volle pagina's</span></div>`}`;
   dlg.innerHTML = `<div class="accbox statbox">
     ${head}
     ${err ? `<p class="msg err">${esc(err.message)}</p>` : statsHtml(plays.data || [], extra)}
@@ -2195,11 +2527,9 @@ const SHOP = {
     basic: { name: 'Basic Pack', price: 60, count: 1, desc: '1 kaart · 75% common, 22% epic, 3% legendary' },
     epic: { name: 'Epic Pack', price: 200, count: 3, desc: '3 kaarten · de 3e is gegarandeerd epic of legendary' },
   },
-  buy: { common: 150, epic: 400, legendary: 1000 },
   sell: { common: 15, epic: 40, legendary: 100, cat: 5 },
   hint: 40, extra: 60,
 };
-const shopState = { person: '' };
 const setWallet = w => { if (typeof w === 'number') { state.wallet = w; syncCoinUI(); } };
 
 function renderShop(view) {
@@ -2224,17 +2554,21 @@ function renderShop(view) {
               <button class="btn small" data-buy-pack="${k}" type="button" ${state.wallet < p.price ? 'disabled' : ''}>Kopen · ${p.price} 🪙</button></div>
           </div>`).join('')}</div>
 
+        <h3 style="margin-top:20px">Cosmetica</h3>
+        <div id="cosmetics"><p class="hint">Laden…</p></div>
+
       </div>
       <div>
-        <h3>Dubbels verkopen</h3>
-        ${dupes.length ? `<p class="hint" style="margin-bottom:6px">Je houdt altijd 1 exemplaar. Alles verkopen levert ${dupeTotal} 🪙 op.</p>
+        <h3>Dubbels verkopen of opwaarderen</h3>
+        ${dupes.length ? `<p class="hint" style="margin-bottom:6px">Je houdt altijd 1 exemplaar. Alles verkopen levert ${dupeTotal} 🪙 op.${state.v12 ? ' Met 2 dubbels waardeer je een kaart op: +10% HP/ATK/DEF in Battle per ★ (max ★★★).' : ''}</p>
           <div class="shop-list">${dupes.map(c => {
-            const extra = state.owned.get(c.id) - 1, price = SHOP.sell[c.rarity];
+            const extra = state.owned.get(c.id) - 1, price = SHOP.sell[c.rarity], lv = myLevel(c.id);
             return `<div class="battle-row">
-              <span class="trade-chip r-${c.rarity}">${esc(c.name)}</span>
+              <span class="trade-chip r-${c.rarity}">${lv > 1 ? stars(lv) + ' ' : ''}${esc(c.name)}</span>
               <span class="battle-row-text"><small>${extra} extra · ${price} 🪙 per stuk</small></span>
               <button class="link" data-sell="${c.id}" data-count="1" type="button">Verkoop 1</button>
               ${extra > 1 ? `<button class="link" data-sell="${c.id}" data-count="${extra}" type="button">Alle ${extra} (+${extra * price})</button>` : ''}
+              ${state.v12 && c.rarity !== 'cat' && extra >= 2 && lv < 3 ? `<button class="link" data-upgrade="${c.id}" type="button">⬆️ Naar ${stars(lv + 1)}</button>` : ''}
             </div>`;
           }).join('')}</div>`
           : '<p class="hint">Je hebt geen dubbels om te verkopen.</p>'}
@@ -2262,8 +2596,23 @@ function renderShop(view) {
     const dup = data.cards.filter(c => c.is_duplicate).length;
     $('#packDone').innerHTML = `<p class="result">${dup ? `${dup === data.cards.length ? 'Allemaal dubbels' : `${dup} dubbel${dup > 1 ? 's' : ''}`} — die kan je verkopen of ruilen.` : 'Allemaal nieuwe kaarten voor je boek!'}</p>
       <button class="btn small" id="packClose" type="button">Verder</button>`;
-    $('#packClose').onclick = () => { dlg.close(); renderShop(view); };
+    dlg.onclose = () => { dlg.onclose = null; if (state.tab === 'shop') renderShop(view); checkCollection(); };
+    $('#packClose').onclick = () => dlg.close();
   });
+
+  view.querySelectorAll('[data-upgrade]').forEach(b => b.onclick = async () => {
+    const c = cardById(b.dataset.upgrade), lv = myLevel(c.id);
+    if (!confirm(`2 dubbels van "${c.name}" gebruiken om op te waarderen naar ${stars(lv + 1)}?`)) return;
+    b.disabled = true;
+    const { data, error } = await sb.rpc('upgrade_card', { p_card_id: c.id });
+    if (error) { msg(error.message); b.disabled = false; return; }
+    state.owned.set(c.id, state.owned.get(c.id) - 2);
+    state.levels.set(c.id, data.level);
+    renderShop(view);
+    msg(`"${c.name}" is nu ${stars(data.level)}.`, true);
+  });
+
+  drawCosmetics($('#cosmetics'), msg);
 
   view.querySelectorAll('[data-sell]').forEach(b => b.onclick = async () => {
     const c = cardById(b.dataset.sell), n = Number(b.dataset.count);
@@ -2276,6 +2625,58 @@ function renderShop(view) {
     renderShop(view);
     msg(`Verkocht: ${data.sold}× "${c.name}" voor ${data.earned} polycoins.`, true);
   });
+}
+
+// Kaartranden, profielringen en titels (schema-v12): kopen en aan/uit zetten
+const COSMETIC_GROUPS = [
+  ['frame', 'Kaartranden', 'Een rand rond al jouw kaarten in je boek.'],
+  ['ring', 'Profielringen', 'Een ring rond je profielfoto, ook zichtbaar voor je vrienden.'],
+  ['title', 'Titels', 'Staat naast je naam in de vriendenlijst van anderen.'],
+];
+async function drawCosmetics(box, msg) {
+  if (!box) return;
+  const { data, error } = await sb.rpc('cosmetics_state');
+  if (!box.isConnected) return;
+  if (error) { box.innerHTML = v12Missing; return; }
+  box.innerHTML = COSMETIC_GROUPS.map(([kind, label, desc]) => `<div class="cos-group"><h4>${label}</h4><small class="hint">${desc}</small>
+    <div class="cos-list">${data.filter(x => x.kind === kind).map(x => {
+      const on = state.equipped[kind] === x.key;
+      const prev = kind === 'frame' ? `<span class="cos-prev frame-prev ${x.key.replace('frame_', 'frame-')}"></span>`
+        : kind === 'ring' ? `<span class="cos-prev${ringCls(x.key)}"></span>` : '';
+      const action = x.owned
+        ? `<button class="${on ? 'link' : 'btn small'}" data-equip="${kind}" data-key="${on ? '' : esc(x.key)}" type="button">${on ? 'Uitzetten' : 'Gebruiken'}</button>`
+        : x.price == null ? '<small class="hint" style="margin:0">Verdien je met een volledig boek</small>'
+        : `<button class="btn small" data-buy-cos="${esc(x.key)}" type="button" ${state.wallet < x.price ? 'disabled' : ''}>${x.price} 🪙</button>`;
+      return `<div class="cos-item${on ? ' on' : ''}">${prev}<span class="cos-name">${kind === 'title' ? `<span class="title-chip" style="margin:0">${esc(x.name)}</span>` : esc(x.name)}</span>${action}</div>`;
+    }).join('')}</div></div>`).join('');
+
+  box.querySelectorAll('[data-buy-cos]').forEach(b => b.onclick = async () => {
+    const item = data.find(x => x.key === b.dataset.buyCos);
+    if (!confirm(`"${item.name}" kopen voor ${item.price} polycoins?`)) return;
+    b.disabled = true;
+    const { data: res, error: err } = await sb.rpc('buy_cosmetic', { p_key: item.key });
+    if (err) { msg(err.message); b.disabled = false; return; }
+    setWallet(res.wallet);
+    await sb.rpc('equip_cosmetic', { p_kind: item.kind, p_key: item.key });
+    state.equipped[item.kind] = item.key;
+    afterEquip();
+    msg(`Gekocht en meteen in gebruik: ${item.name}.`, true);
+    drawCosmetics(box, msg);
+  });
+  box.querySelectorAll('[data-equip]').forEach(b => b.onclick = async () => {
+    const kind = b.dataset.equip, key = b.dataset.key || null;
+    b.disabled = true;
+    const { error: err } = await sb.rpc('equip_cosmetic', { p_kind: kind, p_key: key });
+    if (err) { msg(err.message); b.disabled = false; return; }
+    state.equipped[kind] = key;
+    afterEquip();
+    drawCosmetics(box, msg);
+  });
+}
+// Profielring in de kopregel meteen bijwerken
+function afterEquip() {
+  const av = $('#openAccount');
+  if (av) av.className = 'avbtn' + ringCls(state.equipped.ring);
 }
 
 // ---------- Tab: Ideas — ideeënbus met upvotes (schema-v11-suggestions.sql) ----------
@@ -2488,7 +2889,7 @@ async function renderBattle(view) {
         </div>
         <div class="battle-pick">${owned.map(c => `
           <button class="pick" type="button" data-pick="${c.id}" aria-pressed="false">
-            <span class="pick-num" hidden></span>${renderCard(c)}
+            <span class="pick-num" hidden></span>${renderCard(c, mineOpts(c))}
           </button>`).join('')}</div>
         <div class="battle-actions">
           <span class="battle-or">Tegen de computer:</span>
@@ -2622,7 +3023,7 @@ function sideHtml(b, s, disp, mine) {
   const hp = disp.hp[disp.active], max = side.max[disp.active];
   const pct = Math.max(0, hp / max * 100);
   return `<div class="bt-name">${mine ? 'Jij' : esc(disp.name)}</div>
-    <div class="fighter-card" data-active="${disp.active}">${c ? renderCard(c) : ''}</div>
+    <div class="fighter-card" data-active="${disp.active}">${c ? renderCard(c, { level: (side.lvl || [])[disp.active] || 1 }) : ''}</div>
     <div class="hpbar"><div class="hpfill${pct <= 25 ? ' low' : pct <= 50 ? ' mid' : ''}" style="width:${pct}%"></div></div>
     <div class="hptext">HP ${hp} / ${max}</div>
     <div class="energy" title="Energie">${Array.from({ length: 5 }, (_, i) => `<span class="pip${i < disp.energy ? ' on' : ''}">⚡</span>`).join('')}</div>
@@ -2829,7 +3230,14 @@ function siteFingerprint(doc) {
   return h;
 }
 const CURRENT_FINGERPRINT = siteFingerprint(document);
-let updateShown = false, lastUpdateCheck = 0;
+let updateShown = false, updateAvailable = false, lastUpdateCheck = 0;
+
+// Vernieuwknop: haalt de nieuwste versie van de site (en de woordenlijst) op en herlaadt
+async function hardReload(btn) {
+  if (btn) { btn.disabled = true; btn.classList.add('spin'); }
+  try { await Promise.all([fetch(location.pathname, { cache: 'reload' }), fetch('words.txt', { cache: 'reload' })]); } catch (_) {}
+  location.reload();
+}
 
 async function checkForUpdate() {
   if (updateShown || Date.now() - lastUpdateCheck < 60000) return;
@@ -2838,7 +3246,11 @@ async function checkForUpdate() {
     const res = await fetch(location.pathname + '?check=' + Date.now(), { cache: 'no-store' });
     if (!res.ok) return;
     const doc = new DOMParser().parseFromString(await res.text(), 'text/html');
-    if (siteFingerprint(doc) !== CURRENT_FINGERPRINT) showUpdateBanner();
+    if (siteFingerprint(doc) !== CURRENT_FINGERPRINT) {
+      updateAvailable = true;
+      $('#refreshBtn')?.classList.add('has-update');
+      showUpdateBanner();
+    }
   } catch (_) { /* offline of geblokkeerd: later opnieuw proberen */ }
 }
 
@@ -2851,12 +3263,7 @@ function showUpdateBanner() {
     <button class="btn small" type="button" id="updateNow">Vernieuwen</button>
     <button class="link" type="button" id="updateLater" aria-label="Later">Later</button>`;
   document.body.appendChild(bar);
-  $('#updateNow').onclick = async () => {
-    $('#updateNow').disabled = true;
-    // Eerst de browsercache bijwerken, zodat het herladen zeker de nieuwe versie toont
-    try { await fetch(location.pathname, { cache: 'reload' }); } catch (_) {}
-    location.reload();
-  };
+  $('#updateNow').onclick = () => hardReload($('#updateNow'));
   $('#updateLater').onclick = () => { bar.remove(); setTimeout(() => { updateShown = false; }, 15 * 60000); };
 }
 
