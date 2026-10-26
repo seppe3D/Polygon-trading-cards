@@ -1,5 +1,5 @@
 -- Polygon Trading Cards — uitbreiding v13: de grote update
---   Battle: types, vaardigheden, statuseffecten, synergie en rankings met seizoenen
+--   Battle: 3 keuzes per ronde (🧠 Brein > 😎 Swag > 😂 Humor > 🧠 Brein), synergie en rankings met seizoenen
 --   Extra: wekelijkse events, prestaties, profiel, casino, puzzels, stickers, bureau en huisdier
 -- Voer dit volledige bestand in één keer uit in Supabase SQL Editor (ná v8 t/m v12).
 -- Kies bij de waarschuwing "Run without RLS": het script zet RLS zelf aan. Veilig om opnieuw uit te voeren.
@@ -61,29 +61,18 @@ language sql stable security definer set search_path = public as $$
 $$;
 
 -- =====================================================================
--- 1. Types per collega: ☕ koffie > ⏰ deadline > 📊 meeting > ☕ koffie
+-- 1. Battle met 3 keuzes (zoals steen-papier-schaar)
+--    🧠 Brein wint van 😎 Swag, 😎 Swag wint van 😂 Humor, 😂 Humor wint van 🧠 Brein
+--    Winnaar van de ronde valt aan; gelijkspel = allebei halve schade.
 -- =====================================================================
-create table if not exists public.person_types (
-  person text primary key,
-  ptype text not null check (ptype in ('koffie', 'deadline', 'meeting'))
-);
-alter table public.person_types enable row level security;
-drop policy if exists "types lezen" on public.person_types;
-create policy "types lezen" on public.person_types for select to authenticated using (true);
-grant select on public.person_types to authenticated;
+-- Types per collega van de eerste versie van deze update worden niet meer gebruikt
+drop function if exists public.card_types();
+drop function if exists public._person_type(text);
+drop table if exists public.person_types;
 
--- Collega's zonder vaste keuze krijgen automatisch een type (altijd hetzelfde voor dezelfde naam).
--- Aanpassen kan met: insert into public.person_types values ('Naam', 'koffie') on conflict (person) do update set ptype = excluded.ptype;
-create or replace function public._person_type(p_person text) returns text
-language sql stable security definer set search_path = public as $$
-  select coalesce((select ptype from public.person_types where person = p_person),
-                  (array['koffie', 'deadline', 'meeting'])[1 + abs(hashtext(coalesce(p_person, ''))) % 3]);
-$$;
-
-create or replace function public.card_types() returns jsonb
-language sql stable security definer set search_path = public as $$
-  select coalesce(jsonb_object_agg(person, case when all_cat then 'none' else public._person_type(person) end), '{}'::jsonb)
-  from (select person, bool_and(rarity = 'cat') as all_cat from public.cards group by person) c;
+create or replace function public._tb_beats(p_a text, p_b text) returns boolean
+language sql immutable as $$
+  select (p_a, p_b) in (('brein', 'swag'), ('swag', 'humor'), ('humor', 'brein'));
 $$;
 
 -- Typevoordeel: 1,5× sterk, 0,75× zwak, anders 1
@@ -96,9 +85,9 @@ language sql immutable as $$
 $$;
 
 -- =====================================================================
--- 2. Eén kant van het speelveld: levels, synergie, type, vaardigheid, statussen
+-- 2. Eén kant van het speelveld: levels en synergie
 -- =====================================================================
--- Zonder toegang tot v13 (voorproef) blijft alles zoals vroeger: geen types, vaardigheden of synergie.
+-- Zonder toegang tot v13 (voorproef) blijft alles zoals vroeger: klassieke zetten, geen synergie.
 -- p_user null = computer: dan telt de speler die het gevecht start.
 create or replace function public._tb_side(p_cards int[], p_user uuid) returns jsonb
 language sql stable security definer set search_path = public as $$
@@ -112,7 +101,7 @@ language sql stable security definer set search_path = public as $$
       (1 + 0.1 * (lvl - 1)) * (case when same >= 2 and rarity <> 'cat' and fl.full_ then 1.1 else 1 end) as f
     from t, fl
   )
-  select case when (select full_ from fl) then x.j else x.j - 'type' - 'ab' - 'syn' end from (select jsonb_build_object(
+  select case when (select full_ from fl) then x.j else x.j - 'syn' - 'rps' end from (select jsonb_build_object(
     'cards',  jsonb_agg(id order by ord),
     'hp',     jsonb_agg(round(coalesce(hp, 50) * f)::int order by ord),
     'max',    jsonb_agg(round(coalesce(hp, 50) * f)::int order by ord),
@@ -120,9 +109,8 @@ language sql stable security definer set search_path = public as $$
     'def',    jsonb_agg(round(coalesce(defense, 0) * f)::int order by ord),
     'sp',     jsonb_agg(case when rarity = 'legendary' then (case when (select full_ from fl) then coalesce(nullif(special_power, 0), round(coalesce(attack, 10) * 1.6)::int) else coalesce(special_power, 0) end) else 0 end order by ord),
     'lvl',    jsonb_agg(lvl order by ord),
-    'type',   jsonb_agg(case when rarity = 'cat' then 'none' else public._person_type(person) end order by ord),
-    'ab',     jsonb_agg(case when rarity in ('epic', 'legendary') then rarity end order by ord),
     'syn',    jsonb_agg(syn order by ord),
+    'rps',    (select full_ from fl),
     'burn',   jsonb_agg(0 order by ord),
     'stun',   jsonb_agg(0 order by ord),
     'shield', jsonb_agg(0 order by ord),
@@ -152,8 +140,24 @@ language sql immutable as $$
     when 'epic' then 3 when 'legendary' then 4 end;
 $$;
 
+-- Computer met 3 keuzes: makkelijk en normaal kiezen willekeurig,
+-- moeilijk speelt in de helft van de rondes tegen je meest gekozen zet
+create or replace function public._tb_ai_rps(p_state jsonb, p_diff text) returns jsonb
+language plpgsql volatile as $$
+declare fav text; pick text := (array['brein', 'swag', 'humor'])[1 + floor(random() * 3)::int];
+begin
+  if p_diff = 'hard' and random() < .5 then
+    select e->>'a' into fav from jsonb_array_elements(coalesce(p_state->'events', '[]'::jsonb)) e
+      where e->>'t' = 'rps' group by e->>'a' order by count(*) desc, random() limit 1;
+    if fav is not null then
+      pick := case fav when 'brein' then 'humor' when 'swag' then 'brein' else 'swag' end;
+    end if;
+  end if;
+  return jsonb_build_object('a', pick);
+end $$;
+
 -- =====================================================================
--- 3. Zet van de computer
+-- 3. Zet van de computer (klassieke modus)
 -- =====================================================================
 drop function if exists public._tb_ai(jsonb, text, text);
 create or replace function public._tb_ai(p_state jsonb, p_side text, p_diff text, p_round int) returns jsonb
@@ -210,12 +214,8 @@ end $$;
 
 -- =====================================================================
 -- 4. Eén ronde afwikkelen
---   Vaardigheid (epic 3 ⚡, legendary 4 ⚡), afhankelijk van het type:
---     ☕ koffie   epic: 🛡️ schild (35% HP) + 15% genezen    legendary: zware klap + 🛡️ schild (30% HP)
---     ⏰ deadline epic: aanval + 🔥 brand (3 rondes)         legendary: zware klap + 🔥 brand
---     📊 meeting  epic: lichte aanval + 💫 verdoofd          legendary: zware klap + 💫 verdoofd
---   🔥 brand: 8% van de max HP per ronde · 💫 verdoofd: volgende ronde niet aanvallen
---   🛡️ schild: vangt schade op tot het op is · legendary-klap gaat door verdedigen heen
+--   3-keuzes-modus (beide kanten 'rps'): winnaar van 🧠/😎/😂 valt aan, gelijk = allebei halve schade
+--   Klassieke modus (zoals vroeger): aanval, krachtaanval, verdedigen, special, wisselen
 -- =====================================================================
 create or replace function public._tb_resolve(p_id bigint) returns void
 language plpgsql volatile security definer set search_path = public as $$
@@ -227,6 +227,7 @@ declare
   order_ text[]; dmg int; base float8; crit boolean; guarded boolean; eff float8; absorbed int; sh int; v int;
   ai int; di int; nxt int; i int; w text; mx int;
   v_ca int := 0; v_cb int := 0; reward int; mult int := 1;
+  v_rps boolean; ma text; mb text; cw text;
 begin
   select * into b from public.tbattles where id = p_id for update;
   st := b.state || '{"_act": {}}'::jsonb; ev := coalesce(st->'events', '[]'::jsonb); r := b.round + 1;
@@ -242,7 +243,54 @@ begin
     end if;
   end loop;
 
-  if w is null then
+  v_rps := coalesce((st->'A'->>'rps')::boolean, false) and coalesce((st->'B'->>'rps')::boolean, false);
+
+  if w is null and v_rps then
+    -- 3 keuzes: wie wint de ronde?
+    ma := st->'_act'->'A'->>'a'; mb := st->'_act'->'B'->>'a';
+    if ma not in ('brein', 'swag', 'humor') then ma := (array['brein', 'swag', 'humor'])[1 + floor(random() * 3)::int]; end if;
+    if mb not in ('brein', 'swag', 'humor') then mb := (array['brein', 'swag', 'humor'])[1 + floor(random() * 3)::int]; end if;
+    cw := case when ma = mb then null when public._tb_beats(ma, mb) then 'A' else 'B' end;
+    ev := ev || jsonb_build_object('r', r, 't', 'rps', 'a', ma, 'b', mb, 'w', cw);
+    foreach s in array array['A', 'B'] loop
+      if cw is not null and cw <> s then continue; end if;
+      d := case s when 'A' then 'B' else 'A' end;
+      ai := (st->s->>'active')::int; di := (st->d->>'active')::int;
+      base := greatest((st->s->'atk'->>ai)::int * .25,
+                       (st->s->'atk'->>ai)::int * (.85 + random() * .3) - (st->d->'def'->>di)::int * .5);
+      base := base * (case when cw is null then .8 else 2 end);
+      crit := random() < .1;
+      if crit then base := base * 1.5; end if;
+      dmg := greatest(1, round(base))::int;
+      st := jsonb_set(st, array[d, 'hp', di::text], to_jsonb(greatest(0, (st->d->'hp'->>di)::int - dmg)));
+      ev := ev || jsonb_build_object('r', r, 't', 'atk', 's', s, 'k', case s when 'A' then ma else mb end, 'd', dmg,
+                                     'crit', crit, 'tie', cw is null, 'ai', ai, 'di', di, 'hp', (st->d->'hp'->>di)::int);
+    end loop;
+    for s in select unnest(array['A', 'B']) loop
+      ai := (st->s->>'active')::int;
+      if (st->s->'hp'->>ai)::int = 0 then
+        ev := ev || jsonb_build_object('r', r, 't', 'ko', 's', s, 'i', ai);
+        nxt := null;
+        for i in 0..jsonb_array_length(st->s->'hp') - 1 loop
+          if (st->s->'hp'->>i)::int > 0 then nxt := i; exit; end if;
+        end loop;
+        if nxt is null then
+          w := coalesce(w, case s when 'A' then 'B' else 'A' end);
+        else
+          st := jsonb_set(st, array[s, 'active'], to_jsonb(nxt));
+          ev := ev || jsonb_build_object('r', r, 't', 'enter', 's', s, 'i', nxt);
+        end if;
+      end if;
+    end loop;
+    -- Veiligheidsnet: na 60 rondes wint wie procentueel het meeste HP over heeft
+    if w is null and r >= 60 then
+      w := case when (select sum((h.v)::float8 / m.v::float8) from jsonb_array_elements_text(st->'A'->'hp') with ordinality h(v, n)
+                        join jsonb_array_elements_text(st->'A'->'max') with ordinality m(v, n) using (n))
+                  >= (select sum((h.v)::float8 / m.v::float8) from jsonb_array_elements_text(st->'B'->'hp') with ordinality h(v, n)
+                        join jsonb_array_elements_text(st->'B'->'max') with ordinality m(v, n) using (n))
+               then 'A' else 'B' end;
+    end if;
+  elsif w is null then
     -- 1. Wissels en verdedigen
     for s in select unnest(array['A', 'B']) loop
       if st->'_act'->s->>'a' = 'switch' then
@@ -417,7 +465,7 @@ create or replace function public.tb_act(p_id bigint, p_action text, p_target in
 language plpgsql volatile security definer set search_path = public as $$
 declare
   me uuid := auth.uid();
-  b public.tbattles; s text; o text; v_side jsonb; a int; ai jsonb; cost int;
+  b public.tbattles; s text; o text; v_side jsonb; a int; ai jsonb; cost int; rps boolean;
 begin
   if me is null then raise exception 'Niet ingelogd.'; end if;
   select * into b from public.tbattles where id = p_id for update;
@@ -429,9 +477,23 @@ begin
   if p_action <> 'forfeit' and (b.state->'moved'->>s)::boolean then
     raise exception 'Je hebt deze ronde al gekozen. Wacht op je tegenstander.';
   end if;
-  if p_action not in ('attack', 'power', 'guard', 'special', 'switch', 'forfeit') then raise exception 'Onbekende zet.'; end if;
-
   v_side := b.state->s; a := (v_side->>'active')::int;
+  rps := coalesce((b.state->'A'->>'rps')::boolean, false) and coalesce((b.state->'B'->>'rps')::boolean, false);
+  if rps then
+    if p_action not in ('brein', 'swag', 'humor', 'forfeit') then raise exception 'Kies 🧠 Brein, 😎 Swag of 😂 Humor.'; end if;
+    update public.tbattle_hidden h set action = p_action, target = null where h.battle_id = p_id and h.side = s;
+    update public.tbattles set state = jsonb_set(state, array['moved', s], 'true'), updated_at = now() where id = p_id;
+    if b.mode = 'pve' then
+      ai := public._tb_ai_rps(b.state, b.difficulty);
+      update public.tbattle_hidden h set action = ai->>'a', target = null where h.battle_id = p_id and h.side = o;
+      perform public._tb_resolve(p_id);
+    elsif p_action = 'forfeit' or (b.state->'moved'->>o)::boolean then
+      perform public._tb_resolve(p_id);
+    end if;
+    select * into b from public.tbattles where id = p_id;
+    return to_jsonb(b);
+  end if;
+  if p_action not in ('attack', 'power', 'guard', 'special', 'switch', 'forfeit') then raise exception 'Onbekende zet.'; end if;
   if p_action in ('attack', 'power', 'special') and public._tb_n(b.state, s, 'stun', a) = b.round + 1 then
     raise exception 'Je kaart is verdoofd en kan deze ronde niet aanvallen. Verdedig of wissel.';
   end if;
@@ -462,6 +524,41 @@ begin
 
   select * into b from public.tbattles where id = p_id;
   return to_jsonb(b);
+end $$;
+
+
+-- =====================================================================
+-- Gevecht tegen de computer starten. In de 3-keuzes-modus is de computer milder:
+--   makkelijk = zwakkere kaarten, normaal = zelfde zeldzaamheid, moeilijk = 1 kaart sterker + slimme keuzes
+-- =====================================================================
+create or replace function public.tb_start_pve(p_cards int[], p_difficulty text) returns bigint
+language plpgsql volatile security definer set search_path = public as $$
+declare
+  me uuid := auth.uid();
+  opp int[] := '{}'; c int; rar text; v_id bigint; k int := 0; v13 boolean := public._v13_for(auth.uid());
+begin
+  if me is null then raise exception 'Niet ingelogd.'; end if;
+  if p_difficulty not in ('easy', 'normal', 'hard') then raise exception 'Onbekende moeilijkheid.'; end if;
+  if not public._tb_team_ok(me, p_cards) then raise exception 'Kies 3 verschillende kaarten die je bezit.'; end if;
+  update public.tbattles set status = 'cancelled', updated_at = now()
+    where player_a = me and mode = 'pve' and status = 'active';
+  foreach c in array p_cards loop
+    k := k + 1;
+    select rarity into rar from public.cards where id = c;
+    if rar = 'cat' then rar := 'common'; end if;
+    rar := case p_difficulty
+      when 'easy' then case rar when 'legendary' then 'epic' else 'common' end
+      when 'hard' then case when v13 and k > 1 then rar when rar = 'common' then 'epic' else 'legendary' end
+      else rar end;
+    opp := opp || (select id from public.cards where rarity = rar and not (id = any(opp)) order by random() limit 1);
+  end loop;
+  insert into public.tbattles (mode, difficulty, player_a, status, state)
+  values ('pve', p_difficulty, me, 'active',
+          jsonb_build_object('A', public._tb_side(p_cards, me), 'B', public._tb_side(opp, null), 'events', '[]'::jsonb,
+                             'moved', '{"A": false, "B": false}'::jsonb))
+  returning id into v_id;
+  insert into public.tbattle_hidden (battle_id, side) values (v_id, 'A'), (v_id, 'B');
+  return v_id;
 end $$;
 
 -- =====================================================================
@@ -541,7 +638,6 @@ language sql stable security definer set search_path = public as $$
 $$;
 grant execute on function public.tb_leaderboard() to authenticated;
 grant execute on function public.week_event() to authenticated;
-grant execute on function public.card_types() to authenticated;
 
 -- =====================================================================
 -- 7. Stickers: 6 thema's van 8 stickers (5 gewoon, 2 zeldzaam, 1 episch)
@@ -1723,7 +1819,8 @@ begin
     'public._bj_value(int[])', 'public._memory_layout(date)', 'public._sudoku_solution(date)', 'public._sudoku_givens(date)',
     'public._conn_view(uuid)', 'public._memory_view(uuid)', 'public._sudoku_view(uuid)', 'public._pet_xp(uuid, timestamptz)',
     'public._tb_ai(jsonb, text, text, int)', 'public._tb_eff(text, text)', 'public._tb_ab_cost(jsonb, text, int)',
-    'public._tb_n(jsonb, text, text, int)', 'public._tb_set(jsonb, text, text, int, int)', 'public._person_type(text)'] loop
+    'public._tb_n(jsonb, text, text, int)', 'public._tb_set(jsonb, text, text, int, int)', 'public._tb_beats(text, text)',
+    'public._tb_ai_rps(jsonb, text)'] loop
     execute 'revoke all on function ' || f || ' from public, anon, authenticated';
   end loop;
 end $$;

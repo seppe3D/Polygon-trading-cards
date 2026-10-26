@@ -257,11 +257,8 @@ a{color:var(--amber-soft)}
 /* Voorproef v13: onderdelen enkel tonen voor wie toegang heeft */
 body:not(.v13) .v13-only{display:none !important}
 body.v13 .v13-hide{display:none !important}
+@media (max-width:640px){.topright .pill-turn{display:none}}
 /* ===== v13: types, statussen en battle-effecten ===== */
-.t-koffie{--tc:#B07A45}.t-deadline{--tc:#E0584B}.t-meeting{--tc:#3E7FD6}
-.type-badge{position:absolute;left:50%;bottom:-10px;transform:translateX(-50%);z-index:3;width:clamp(22px,16cqw,34px);aspect-ratio:1;border-radius:50%;display:grid;place-items:center;
-  background:var(--tc);border:2px solid #fff;font-size:clamp(11px,8cqw,17px);box-shadow:0 2px 8px rgba(0,0,0,.45)}
-.type-chip{display:inline-flex;align-items:center;gap:4px;padding:2px 9px;border-radius:999px;background:color-mix(in srgb,var(--tc) 30%,transparent);border:1px solid var(--tc);font:700 12.5px var(--body);color:var(--ink);vertical-align:middle}
 .rank-chip{display:inline-flex;align-items:center;gap:4px;font:800 13px var(--body);white-space:nowrap}
 .rank-chip.r-zilver{color:#d7dde4}.rank-chip.r-goud{color:#F5D97A}.rank-chip.r-platina{color:#7fe0e0}.rank-chip.r-diamant{color:#b9a2ff}.rank-chip.r-brons{color:#e2a676}
 .team-info{margin:6px 0 0;color:var(--ink-soft);font-size:14.5px;min-height:1.4em}
@@ -337,50 +334,119 @@ body.v13 .v13-hide{display:none !important}
 .new-tag{color:var(--yellow-soft);font-weight:800}
 @keyframes stk-pop{from{opacity:0;transform:scale(.2) rotate(-25deg)}to{opacity:1;transform:none}}
 
+/* ===== Battle met 3 keuzes ===== */
+.rps-row{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;width:min(560px,100%)}
+.rps-btn{display:grid;justify-items:center;gap:2px;padding:12px 6px 10px;border:0;border-radius:20px;cursor:pointer;color:#15181D;font:800 17px var(--body);
+  box-shadow:0 6px 0 rgba(0,0,0,.35),0 10px 22px -8px rgba(0,0,0,.6);transition:transform .12s ease,box-shadow .12s ease}
+.rps-btn small{font:700 11.5px var(--body);opacity:.75}
+.rps-icon{font-size:clamp(34px,8vw,46px);line-height:1.1;transition:transform .2s}
+.rps-btn:hover:not(:disabled){transform:translateY(-4px) rotate(-1deg)}
+.rps-btn:hover:not(:disabled) .rps-icon{transform:scale(1.15) rotate(-8deg)}
+.rps-btn:active:not(:disabled){transform:translateY(4px);box-shadow:0 2px 0 rgba(0,0,0,.35)}
+.rps-btn:disabled{opacity:.5;cursor:default}
+.rps-btn.picked{opacity:1;outline:3px solid #fff;outline-offset:2px}
+.rps-brein{background:linear-gradient(160deg,#bcd8ff,#6f9fe0)}
+.rps-swag{background:linear-gradient(160deg,#ffe48a,#e0a92a)}
+.rps-humor{background:linear-gradient(160deg,#ffc2dd,#e8679f)}
+.rps-clash{position:absolute;left:50%;top:42%;z-index:9;transform:translate(-50%,-50%);display:grid;grid-template-columns:auto auto auto;align-items:center;gap:6px 16px;
+  padding:14px 22px;border-radius:22px;background:rgba(15,18,23,.92);border:2px solid var(--yellow);box-shadow:0 18px 40px -10px rgba(0,0,0,.8);pointer-events:none;animation:menu-in .2s ease both}
+.rps-clash strong{grid-column:1 / -1;text-align:center;font:800 18px var(--display);color:var(--yellow-soft)}
+.rps-clash span{font-size:clamp(44px,9vw,64px);line-height:1}
+.rps-clash .rc-vs{font:900 20px var(--display);color:var(--muted)}
+.rc-me{animation:clash-l .5s cubic-bezier(.2,1.4,.4,1) both}
+.rc-op{animation:clash-r .5s cubic-bezier(.2,1.4,.4,1) both}
+.rps-clash .win{filter:drop-shadow(0 0 14px #E8C34C)}
+.rps-clash .lose{filter:grayscale(1) brightness(.6)}
+@keyframes clash-l{from{opacity:0;transform:translateX(-60px) rotate(-30deg)}}
+@keyframes clash-r{from{opacity:0;transform:translateX(60px) rotate(30deg)}}
+
 /* ===== Casino ===== */
-.casino-grid{display:grid;gap:18px;grid-template-columns:repeat(auto-fill,minmax(min(100%,330px),1fr))}
-.game-panel{background:rgba(35,41,50,.9);border:1px solid var(--line);border-radius:18px;padding:16px 18px;display:grid;gap:10px;justify-items:center;align-content:start;text-align:center}
-.game-panel h3{margin:0}
-.game-panel .hint{margin:0;font-size:14px}
-.wheel-wrap{position:relative;width:min(240px,70vw);aspect-ratio:1}
-.wheel{container-type:inline-size;position:absolute;inset:0;border-radius:50%;border:6px solid #F4EFE4;box-shadow:0 0 0 4px #9c8631,0 12px 30px -8px rgba(0,0,0,.7);transition:transform 4.2s cubic-bezier(.12,.75,.15,1)}
-.wheel-label{position:absolute;left:50%;top:50%;font:800 6.5cqw var(--body);color:#fff;text-shadow:0 1px 2px rgba(0,0,0,.6);white-space:nowrap;
+.casino{position:relative}
+.casino-sign{display:inline-flex;align-items:baseline;gap:10px;padding:10px 22px;border-radius:16px;background:#1a0f14;font:900 clamp(22px,5vw,34px) var(--display);letter-spacing:.06em;
+  color:#ffe9a8;text-shadow:0 0 6px #ffcf4a,0 0 18px #ff9d2e;border:3px solid #E8C34C;
+  box-shadow:0 0 0 4px #1a0f14,0 0 0 7px #b8326a,0 0 30px rgba(255,80,160,.35);position:relative}
+.casino-sign em{font-style:normal;color:#ff7ab8;text-shadow:0 0 6px #ff4f9e,0 0 18px #ff2f86}
+.casino-sign::before{content:"";position:absolute;inset:-12px;border-radius:24px;pointer-events:none;
+  background:radial-gradient(circle,#ffe58a 0 2.5px,transparent 3.5px) 0 0/16px 16px;
+  -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;padding:4px;
+  animation:bulbs 1s steps(2) infinite}
+@keyframes bulbs{50%{background-position:8px 0;filter:brightness(1.4)}}
+.casino-grid{display:grid;gap:20px;grid-template-columns:repeat(auto-fill,minmax(min(100%,330px),1fr));margin-top:18px}
+.game-panel{position:relative;border-radius:22px;padding:18px 18px 16px;display:grid;gap:10px;justify-items:center;align-content:start;text-align:center;
+  background:linear-gradient(170deg,#3a1323,#21101a 55%,#170b12);border:3px solid #c99a1e;
+  box-shadow:inset 0 0 0 2px rgba(255,220,120,.25),inset 0 20px 40px -20px rgba(255,120,170,.25),0 16px 34px -12px rgba(0,0,0,.8)}
+.game-panel::after{content:"";position:absolute;left:14px;right:14px;top:8px;height:8px;border-radius:999px;pointer-events:none;
+  background:radial-gradient(circle,#ffe58a 0 2px,transparent 3px) 0 0/14px 8px;animation:bulbs 1.2s steps(2) infinite;opacity:.9}
+.game-panel h3{margin:6px 0 0;font:900 21px var(--display);color:#ffe9a8;text-shadow:0 0 10px rgba(255,190,80,.6);letter-spacing:.03em}
+.game-panel .hint{margin:0;font-size:14px;color:#e9cfd9}
+.game-panel .msg{min-height:1.4em;font-weight:700}
+.game-panel .btn{background:linear-gradient(#ffd75e,#e0a92a);color:#2a1700;box-shadow:0 5px 0 #8a5a10,0 8px 18px -6px rgba(0,0,0,.6)}
+.game-panel .btn:hover:not(:disabled){background:linear-gradient(#ffe48a,#eab43a)}
+.game-panel .btn:active:not(:disabled){box-shadow:0 1px 0 #8a5a10}
+.wheel-wrap{position:relative;width:min(250px,70vw);aspect-ratio:1;margin:8px 0 4px}
+.wheel{container-type:inline-size;position:absolute;inset:0;border-radius:50%;border:7px solid #F4EFE4;box-shadow:0 0 0 6px #c99a1e,0 0 0 9px #5a1430,0 14px 34px -8px rgba(0,0,0,.8);
+  transition:transform 4.2s cubic-bezier(.12,.75,.15,1)}
+.wheel::after{content:"";position:absolute;inset:0;border-radius:50%;background:radial-gradient(circle at 35% 30%,rgba(255,255,255,.28),transparent 45%);pointer-events:none}
+.wheel-label{position:absolute;left:50%;top:50%;font:900 7cqw var(--body);color:#fff;text-shadow:0 1px 3px rgba(0,0,0,.7);white-space:nowrap;
   transform:translate(-50%,-50%) rotate(var(--a)) translateY(-33cqw)}
-.wheel-hub{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:16cqw;aspect-ratio:1;border-radius:50%;background:#F4EFE4;color:#9c8631;display:grid;place-items:center;font-size:8cqw;box-shadow:0 2px 6px rgba(0,0,0,.5)}
-.wheel-pointer{position:absolute;left:50%;top:-14px;transform:translateX(-50%);z-index:2;color:#E8C34C;font-size:30px;text-shadow:0 2px 4px rgba(0,0,0,.6)}
-.reels{display:flex;gap:8px;padding:10px;border-radius:16px;background:linear-gradient(#2a1f12,#3d2c16);border:3px solid #D9A61C;box-shadow:inset 0 4px 12px rgba(0,0,0,.6)}
+.wheel-hub{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:18cqw;aspect-ratio:1;border-radius:50%;background:radial-gradient(circle at 35% 30%,#fff3c4,#c99a1e);color:#5a1430;display:grid;place-items:center;font-size:8cqw;box-shadow:0 3px 8px rgba(0,0,0,.6)}
+.wheel-bulbs{position:absolute;inset:-14px;border-radius:50%;pointer-events:none}
+.wheel-bulbs i{position:absolute;left:50%;top:50%;width:9px;height:9px;margin:-4.5px;border-radius:50%;background:#ffe58a;box-shadow:0 0 8px #ffcf4a;
+  transform:rotate(var(--b)) translateY(calc(min(250px,70vw) / -2 - 7px));animation:blink 1s steps(2) infinite}
+.wheel-bulbs i:nth-child(odd){animation-delay:.5s}
+@keyframes blink{50%{background:#7a4b1a;box-shadow:none}}
+.wheel-pointer{position:absolute;left:50%;top:-20px;transform:translateX(-50%);z-index:2;color:#ff4f9e;font-size:34px;text-shadow:0 0 10px #ff2f86,0 2px 4px rgba(0,0,0,.6)}
+.slot-cabinet{display:grid;grid-template-columns:auto auto;align-items:center;gap:10px}
+.slot-top{font:900 14px var(--display);letter-spacing:.12em;color:#2a1700;background:linear-gradient(#ffe48a,#e0a92a);padding:4px 14px;border-radius:10px 10px 0 0;box-shadow:0 0 14px rgba(255,200,80,.5)}
+.reels{display:flex;gap:8px;padding:12px;border-radius:16px;background:linear-gradient(#2a1f12,#3d2c16);border:4px solid #D9A61C;box-shadow:inset 0 6px 14px rgba(0,0,0,.7),0 0 0 3px #5a1430}
 .reels.win{animation:reel-win .5s ease 3}
-@keyframes reel-win{50%{box-shadow:0 0 26px #E8C34C,inset 0 4px 12px rgba(0,0,0,.6)}}
-.reel{width:68px;height:78px;display:grid;place-items:center;font-size:44px;background:linear-gradient(#fff,#e9e4d6 50%,#fff);border-radius:10px;box-shadow:inset 0 3px 8px rgba(0,0,0,.35)}
+@keyframes reel-win{50%{box-shadow:0 0 30px #ffd75e,inset 0 6px 14px rgba(0,0,0,.7)}}
+.reel{width:68px;height:82px;display:grid;place-items:center;font-size:46px;border-radius:10px;
+  background:linear-gradient(#cfc7b5,#fff 22%,#fff 78%,#cfc7b5);box-shadow:inset 0 3px 8px rgba(0,0,0,.35)}
 .reel.spinning{filter:blur(1.5px)}
 .reel.stop{animation:reel-stop .3s ease}
 @keyframes reel-stop{30%{transform:translateY(8px)}}
-.bet-row{display:flex;align-items:center;gap:6px;flex-wrap:wrap;justify-content:center;font-weight:700;color:var(--ink-soft)}
-.chip{min-width:44px;padding:7px 10px;border-radius:999px;border:2px solid var(--line);background:rgba(21,24,29,.8);color:var(--ink);font:800 14px var(--body);cursor:pointer}
-.chip.on{border-color:var(--yellow);background:rgba(201,180,88,.25);color:var(--yellow-soft)}
-.paytable{font-size:13.5px;color:var(--ink-soft)}
-.paytable summary{cursor:pointer}
+.lever{position:relative;width:16px;height:96px;border-radius:8px;background:linear-gradient(90deg,#9aa1ab,#e6e9ee,#9aa1ab);transform-origin:bottom;transition:transform .25s ease}
+.lever::before{content:"";position:absolute;left:50%;top:-16px;width:28px;height:28px;margin-left:-14px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#ff9fc8,#d1185f);box-shadow:0 3px 6px rgba(0,0,0,.5)}
+.lever.pulled{transform:scaleY(.45)}
+.bet-row{display:flex;align-items:center;gap:6px;flex-wrap:wrap;justify-content:center;font-weight:800;color:#ffe9a8}
+.chip{position:relative;min-width:46px;height:46px;padding:0 6px;border-radius:50%;border:4px dashed rgba(255,255,255,.75);background:#2f6b3a;color:#fff;font:900 13px var(--body);cursor:pointer;
+  box-shadow:0 0 0 3px #1d4a2a,0 4px 8px rgba(0,0,0,.5);transition:transform .12s}
+.chip[data-bet="25"]{background:#3E7FD6;box-shadow:0 0 0 3px #244f8f,0 4px 8px rgba(0,0,0,.5)}
+.chip[data-bet="50"]{background:#d1185f;box-shadow:0 0 0 3px #7d0e39,0 4px 8px rgba(0,0,0,.5)}
+.chip[data-bet="100"]{background:#1b1b1b;box-shadow:0 0 0 3px #c99a1e,0 4px 8px rgba(0,0,0,.5)}
+.chip:hover{transform:translateY(-3px)}
+.chip.on{transform:translateY(-5px) scale(1.08);box-shadow:0 0 0 3px #ffe58a,0 0 16px #ffd75e}
+.paytable{font-size:13px;color:#e9cfd9}
+.paytable summary{cursor:pointer;color:#ffe9a8}
 .paytable p{margin:6px 0 0}
-.bj-panel{background:radial-gradient(circle at 50% 30%,#2f6b3a,#1d4a2a 70%);border-color:#4C8A47}
+.bj-panel{background:radial-gradient(ellipse at 50% 0%,#3b8a49,#1f5a2c 60%,#143d1d);border-color:#c99a1e}
+.bj-felt{font:800 11px var(--body);letter-spacing:.18em;color:rgba(255,236,170,.65);border-top:2px solid rgba(255,236,170,.35);border-bottom:2px solid rgba(255,236,170,.35);padding:3px 10px;border-radius:50%/6px}
 #bjTable{display:grid;gap:10px;justify-items:center;width:100%}
 .bj-row{display:grid;gap:4px;justify-items:center}
-.bj-label{font:700 14px var(--body);color:#d8ecd2}
-.bj-cards{display:flex;gap:6px;min-height:78px}
-.pcard{width:52px;height:74px;border-radius:8px;background:#fff;color:#1b1b1b;display:grid;grid-template-rows:auto 1fr;padding:4px 6px;box-shadow:0 4px 10px rgba(0,0,0,.45);font-family:var(--display)}
-.pcard b{font-size:17px;line-height:1}.pcard i{font-style:normal;font-size:26px;align-self:center;justify-self:center}
+.bj-label{font:800 14px var(--body);color:#ffe9a8}
+.bj-cards{display:flex;gap:6px;min-height:80px}
+.pcard{width:54px;height:78px;border-radius:9px;background:#fff;color:#1b1b1b;display:grid;grid-template-rows:auto 1fr;padding:4px 6px;box-shadow:0 4px 10px rgba(0,0,0,.5);font-family:var(--display)}
+.pcard b{font-size:17px;line-height:1}.pcard i{font-style:normal;font-size:28px;align-self:center;justify-self:center}
 .pcard.red{color:#c8322a}
-.pcard.back{background:repeating-linear-gradient(45deg,#7C4FE0 0 6px,#5b36b0 6px 12px);border:3px solid #fff}
+.pcard.back{background:repeating-linear-gradient(45deg,#b8326a 0 6px,#7d1446 6px 12px);border:3px solid #fff}
 .bj-cards.deal .pcard{animation:deal .35s ease both;animation-delay:calc(var(--i) * 90ms)}
 @keyframes deal{from{opacity:0;transform:translate(40px,-30px) rotate(12deg)}}
-.bj-bet{width:84px;padding:7px 9px;border-radius:10px;border:1px solid var(--line);background:var(--panel);color:var(--ink);font:700 15px var(--body)}
-.scratch-card{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;padding:12px;border-radius:14px;background:linear-gradient(135deg,#E8C34C,#C99A1E);width:min(280px,80vw)}
-.scratch-card.idle{display:grid;place-items:center;height:150px;font-size:60px;grid-template-columns:1fr}
-.scratch-cell{position:relative;height:66px;border-radius:10px;background:#fff8e6;display:grid;place-items:center;overflow:hidden;touch-action:none}
+.bj-bet{width:84px;padding:8px 9px;border-radius:12px;border:2px solid #c99a1e;background:#143d1d;color:#ffe9a8;font:800 15px var(--body);text-align:center}
+.bj-panel .msg.ok{color:#b9f5b0}.bj-panel .msg.err{color:#ffb3a8}
+.scratch-card{position:relative;display:grid;grid-template-columns:repeat(3,1fr);gap:8px;padding:30px 14px 14px;border-radius:14px;width:min(290px,80vw);
+  background:linear-gradient(135deg,#ffe48a,#e0a92a 55%,#c98a12);box-shadow:0 10px 24px -8px rgba(0,0,0,.7);
+  -webkit-mask:radial-gradient(circle at 0 50%,transparent 9px,#000 10px) left/51% 100% no-repeat,radial-gradient(circle at 100% 50%,transparent 9px,#000 10px) right/51% 100% no-repeat;
+  mask:radial-gradient(circle at 0 50%,transparent 9px,#000 10px) left/51% 100% no-repeat,radial-gradient(circle at 100% 50%,transparent 9px,#000 10px) right/51% 100% no-repeat}
+.scratch-card::before{content:"LUCKY POLY";position:absolute;top:7px;left:0;right:0;text-align:center;font:900 14px var(--display);letter-spacing:.2em;color:#7d1446}
+.scratch-card.idle{display:grid;place-items:center;height:170px;font-size:64px;grid-template-columns:1fr}
+.scratch-cell{position:relative;height:66px;border-radius:10px;background:#fff8e6;display:grid;place-items:center;overflow:hidden;touch-action:none;box-shadow:inset 0 2px 5px rgba(0,0,0,.25)}
 .scratch-sym{display:grid;justify-items:center;font-size:24px;line-height:1}
 .scratch-sym b{font:800 12px var(--body);color:#6b5520}
 .scratch-cell canvas{position:absolute;inset:0;width:100%;height:100%;cursor:crosshair;transition:opacity .4s}
 .scratch-cell canvas.gone{opacity:0;pointer-events:none}
-.scratch-cell.match{animation:reel-win .5s ease 3;outline:3px solid #5DA352}
+.scratch-cell.match{animation:reel-win .5s ease 3;outline:3px solid #2f6b3a}
+.casino-note{margin-top:16px;color:var(--muted);font-size:14px}
 
 /* ===== Puzzels ===== */
 .conn{max-width:620px}
@@ -932,7 +998,7 @@ const PARTICLE_COLORS = {
 
 const state = { session: null, recovery: IS_RECOVERY_LINK, cards: [], owned: new Map(), play: null, name: '', avatarUrl: null, friendCode: '', wallet: 0, incomingRequests: 0, incomingBattles: 0, welcomeAvailable: false, isAdmin: false, tab: 'today', page: 0,
   levels: new Map(), badges: new Set(), equipped: { frame: null, ring: null, title: null }, v12: false,
-  types: {}, v13: false, event: null };
+  v13: false, event: null };
 
 // Werkt alle plekken bij die het polycoins-saldo tonen (topbalk + account-tab)
 function syncCoinUI() {
@@ -1022,7 +1088,7 @@ async function route() {
 
 async function loadData() {
   const uid = state.session.user.id;
-  const [cards, mine, prof, wallet, requests, admin, battlesIn, welcome, cosm, levels, badges, types, weekEvent, v13] = await Promise.all([
+  const [cards, mine, prof, wallet, requests, admin, battlesIn, welcome, cosm, levels, badges, weekEvent, v13] = await Promise.all([
     sb.from('cards').select('*').order('id'),
     sb.from('user_cards').select('card_id').eq('user_id', uid),
     sb.from('profiles').select('display_name, avatar_url, friend_code').eq('id', uid).maybeSingle(),
@@ -1036,7 +1102,6 @@ async function loadData() {
     sb.from('card_levels').select('card_id, level').eq('user_id', uid),
     sb.from('collection_rewards').select('person').eq('user_id', uid),
     // Uitbreiding v13 (types per collega en het event van de week)
-    sb.rpc('card_types'),
     sb.rpc('week_event'),
     sb.rpc('v13_status'),
   ]);
@@ -1062,31 +1127,21 @@ async function loadData() {
   state.badges = new Set((badges.data || []).map(r => r.person));
   state.equipped = { frame: cosm.data?.equipped_frame || null, ring: cosm.data?.equipped_ring || null, title: cosm.data?.equipped_title || null };
   // Voorproef: de nieuwe onderdelen (v13) enkel voor wie de server toegang geeft (admins, tot het live staat)
-  state.v13 = !types.error && !v13.error && !!v13.data?.enabled;
-  state.types = state.v13 ? (types.data || {}) : {};
+  state.v13 = !v13.error && !!v13.data?.enabled;
   state.event = state.v13 ? (weekEvent.data || null) : null;
   document.body.classList.toggle('v13', state.v13);
 }
 
-// ---------- Types, vaardigheden en geluid (v13) ----------
-const TYPES = { koffie: { icon: '☕', name: 'Koffie' }, deadline: { icon: '⏰', name: 'Deadline' }, meeting: { icon: '📊', name: 'Meeting' } };
-const BEATS = { koffie: 'deadline', deadline: 'meeting', meeting: 'koffie' };
-const typeOf = c => (c && c.rarity !== 'cat' && TYPES[state.types[c.person]] ? state.types[c.person] : null);
-const effOf = (a, d) => (!a || !d ? 1 : BEATS[a] === d ? 1.5 : BEATS[d] === a ? 0.75 : 1);
-const typeChip = ty => (ty ? `<span class="type-chip t-${ty}" title="Type: ${TYPES[ty].name}">${TYPES[ty].icon} ${TYPES[ty].name}</span>` : '');
-const ABILITIES = {
-  koffie: { name: 'Koffieboost', epic: '🛡️ schild + genezen', leg: '+ 🛡️ schild' },
-  deadline: { name: 'Deadline-druk', epic: 'aanval + 🔥 brand', leg: '+ 🔥 brand' },
-  meeting: { name: 'Eindeloze meeting', epic: 'lichte aanval + 💫 verdoofd', leg: '+ 💫 verdoofd' },
+// ---------- Battle met 3 keuzes en geluid (v13) ----------
+// 🧠 Brein wint van 😎 Swag, 😎 Swag wint van 😂 Humor, 😂 Humor wint van 🧠 Brein
+const RPS = {
+  brein: { icon: '🧠', name: 'Brein', beats: 'swag', hint: 'wint van 😎 Swag' },
+  swag: { icon: '😎', name: 'Swag', beats: 'humor', hint: 'wint van 😂 Humor' },
+  humor: { icon: '😂', name: 'Humor', beats: 'brein', hint: 'wint van 🧠 Brein' },
 };
-// Vaardigheid van een kaart (epics en legendaries); zonder v13 enkel de oude special van legendaries
-function abilityOf(c) {
-  if (!c) return null;
-  const ty = typeOf(c);
-  if (c.rarity === 'legendary') return { name: c.special_name || 'Special', cost: 4, info: state.v13 && ty ? `zware klap ${ABILITIES[ty].leg} · 4 ⚡` : 'door verdediging · 4 ⚡' };
-  if (c.rarity === 'epic' && state.v13 && ty) return { name: ABILITIES[ty].name, cost: 3, info: `${ABILITIES[ty].epic} · 3 ⚡` };
-  return null;
-}
+const isRps = b => !!(b.state?.A?.rps && b.state?.B?.rps);
+// Special van een legendary (klassieke battle)
+const abilityOf = c => (c && c.rarity === 'legendary' ? { name: c.special_name || 'Special', cost: 4, info: 'door verdediging · 4 ⚡' } : null);
 const RANKS = {
   brons: { icon: '🥉', name: 'Brons' }, zilver: { icon: '🥈', name: 'Zilver' }, goud: { icon: '🥇', name: 'Goud' },
   platina: { icon: '💠', name: 'Platina' }, diamant: { icon: '💎', name: 'Diamant' },
@@ -1397,11 +1452,9 @@ function renderCard(c, { locked = false, count = 1, level = 1, frame = null } = 
   const art = c.image_url
     ? `<img src="${esc(c.image_url)}" alt="${esc(c.name)}" loading="lazy">`
     : (c.rarity === 'cat' ? '<span class="ptile cat">🐱</span>' : `<span class="ptile">${initial}</span>`);
-  const epicAb = c.rarity === 'epic' ? abilityOf(c) : null;
   const special = c.special_name
     ? `<div class="special">★ ${esc(c.special_name)}${c.special_power ? ` (${esc(c.special_power)})` : ''}<small>${esc(c.special_desc)}</small></div>`
-    : epicAb ? `<div class="special">★ ${esc(epicAb.name)}<small>${esc(epicAb.info)}</small></div>` : '';
-  const ty = typeOf(c);
+    : '';
   const flavor = c.flavor_text ? `<div class="flavor">"${esc(c.flavor_text)}"</div>` : '';
   const nameLen = c.name.length;
   const nameCls = nameLen > 22 ? 'cname xxl' : nameLen > 14 ? 'cname xl' : 'cname';
@@ -1412,7 +1465,6 @@ function renderCard(c, { locked = false, count = 1, level = 1, frame = null } = 
   return `<div class="cw${frameCls}">
     ${count > 1 ? `<span class="dupe">×${count}</span>` : ''}
     ${lv > 1 ? `<span class="lvl-badge" title="Level ${lv}">${stars(lv)}</span>` : ''}
-    ${ty ? `<span class="type-badge t-${ty}" title="Type: ${TYPES[ty].name}">${TYPES[ty].icon}</span>` : ''}
     <div class="card r-${c.rarity}">
       <div class="art">${art}</div>
       ${lv >= 3 ? '<span class="glitter" aria-hidden="true"></span>' : ''}
@@ -1532,23 +1584,21 @@ const INFO = {
     <p>Elke collega heeft een eigen pagina met 9 kaarten: 6 commons, 2 epics en 1 legendary. Troostkatten krijgen hun eigen pagina.</p>
     <ul><li>Klik op een kaart om ze groot te bekijken, tik nog eens om ze om te draaien.</li>
     <li>Achteraan vind je de pagina <strong>Dubbels</strong> met alle kaarten die je meer dan één keer hebt.</li>
-    <li class="v13-only">Het rondje onderaan een kaart toont het <strong>type</strong> voor Battle: ☕ Koffie, ⏰ Deadline of 📊 Meeting.</li>
     <li>🏅 <strong>Pagina compleet?</strong> Dan krijg je 100 🪙 en een medaille. Het volledige boek (zonder troostkatten) levert 250 🪙 en de titel <em>Meesterverzamelaar</em> op.</li>
     <li>⬆️ <strong>Opwaarderen</strong>: open een kaart en gebruik 2 dubbels om ze een ★ hoger te zetten (max ★★★). Elke ★ geeft +10% HP, ATK en DEF in Battle. Op ★★★ glinstert de kaart.</li></ul>`],
   stats: ['Statistieken', `<p>Een overzicht van al je Wordles (2 per dag): hoe vaak je speelde, je huidige streak (opeenvolgende dagen), hoe vaak je de Wordle oploste en in hoeveel pogingen.</p>`],
   battle: ['Zo werkt Battle', `
-    <p>Kies 3 kaarten, in de volgorde waarin ze vechten. Elke ronde kies jij een zet — tegen een vriend kiezen jullie allebei tegelijk en geheim.</p>
-    <ul><li>⚔️ <strong>Aanval</strong>: normale schade, +1 ⚡ energie.</li>
+    <p class="v13-hide">Kies 3 kaarten, in de volgorde waarin ze vechten. Elke ronde kies jij een zet — tegen een vriend kiezen jullie allebei tegelijk en geheim.</p>
+    <ul class="v13-hide"><li>⚔️ <strong>Aanval</strong>: normale schade, +1 ⚡ energie.</li>
     <li>💥 <strong>Krachtaanval</strong>: 1,7× schade, kost 2 ⚡.</li>
     <li>🛡️ <strong>Verdedigen</strong>: je krijgt deze ronde maar de helft van de schade, +2 ⚡.</li>
     <li class="v13-hide">★ <strong>Special</strong> (legendaries): vaste zware schade die door verdediging gaat, kost 4 ⚡.</li>
-    <li class="v13-only">★ <strong>Vaardigheid</strong> (epics en legendaries): zie hieronder. De klap van een legendary gaat door verdediging heen.</li>
     <li>🔄 <strong>Wisselen</strong>: ruil je kaart met een kaart van je bank. Gebeurt vóór de aanvallen, +1 ⚡.</li></ul>
-    <p>Elke ronde gebeuren eerst de wissels, daarna valt de kaart met de hoogste ATK eerst aan — die mag dus elke ronde als eerste slaan. Valt een kaart uit, dan komt de volgende uit je team erin. Wie eerst 3 kaarten verliest, verliest.</p>
-    <div class="v13-only"><p><strong>Types</strong>: elke collega heeft een type. ☕ Koffie wint van ⏰ Deadline, ⏰ Deadline wint van 📊 Meeting en 📊 Meeting wint van ☕ Koffie. Sterk = 1,5× schade, zwak = 0,75×.</p>
-    <ul><li><strong>Vaardigheden</strong>: epics (3 ⚡) en legendaries (4 ⚡) hebben een vaardigheid volgens hun type: ☕ 🛡️ schild en genezen, ⏰ 🔥 brand (schade elke ronde), 📊 💫 verdoofd (kan volgende ronde niet aanvallen).</li>
-    <li><strong>🤝 Synergie</strong>: 2 kaarten van dezelfde collega in je team krijgen allebei +10%.</li>
-    <li><strong>Voltreffer</strong>: 10% kans op 1,5× schade.</li></ul>
+    <p class="v13-hide">Elke ronde gebeuren eerst de wissels, daarna valt de kaart met de hoogste ATK eerst aan — die mag dus elke ronde als eerste slaan. Valt een kaart uit, dan komt de volgende uit je team erin. Wie eerst 3 kaarten verliest, verliest.</p>
+    <div class="v13-only"><p><strong>Zo vecht je:</strong> elke ronde kiezen jij en je tegenstander tegelijk en geheim één van 3 zetten:</p>
+    <ul><li>🧠 <strong>Brein</strong> wint van 😎 Swag</li><li>😎 <strong>Swag</strong> wint van 😂 Humor</li><li>😂 <strong>Humor</strong> wint van 🧠 Brein</li></ul>
+    <p>Wie de ronde wint, valt aan met de ATK van zijn kaart (tegen de DEF van de andere). Gelijkspel = allebei een kleine klap. Een uitgeschakelde kaart wordt vervangen door de volgende uit je team; wie eerst 3 kaarten verliest, verliest. 10% kans op een voltreffer.</p>
+    <p><strong>🤝 Synergie</strong>: 2 kaarten van dezelfde collega in je team krijgen allebei +10%.</p>
     <p><strong>Rangen</strong>: tegen vrienden win of verlies je punten. 🥉 Brons → 🥈 Zilver (1100) → 🥇 Goud (1200) → 💠 Platina (1350) → 💎 Diamant (1500). Elke maand start een nieuw seizoen op 1000, met een beloning volgens je eindrang.</p></div>
     <p><strong>Polycoins</strong>: computer makkelijk/normaal/moeilijk = 5/10/20 (max 5 per dag). Tegen een vriend: winnaar 25, verliezer 5 (max 3 per dag). Opgeven levert niets op.</p>`],
   friends: ['Vrienden', `
@@ -3312,10 +3362,9 @@ async function renderBattle(view) {
       const per = {};
       for (const c of cs) if (c.rarity !== 'cat') per[c.person] = (per[c.person] || 0) + 1;
       const syn = Object.entries(per).filter(([, n]) => n >= 2).map(([p]) => p);
-      $('#teamInfo').innerHTML = cs.length
-        ? `${cs.map(c => { const ty = typeOf(c); return ty ? TYPES[ty].icon : '🐱'; }).join(' ')}
-           ${syn.length ? ` · <strong>🤝 Synergie:</strong> ${syn.map(esc).join(', ')} (+10% voor die kaarten)` : state.v13 ? ' · Tip: 2 kaarten van dezelfde collega geven 🤝 +10%' : ''}`
-        : (state.v13 ? 'Kies 3 kaarten. ☕ Koffie wint van ⏰ Deadline, ⏰ wint van 📊 Meeting, 📊 wint van ☕.' : '');
+      $('#teamInfo').innerHTML = syn.length
+        ? `<strong>🤝 Synergie:</strong> ${syn.map(esc).join(', ')} (+10% voor die kaarten)`
+        : 'Tip: 2 kaarten van dezelfde collega in je team geven 🤝 +10%. In het gevecht kies je elke ronde 🧠 Brein, 😎 Swag of 😂 Humor.';
     }
     view.querySelectorAll('[data-pve], #challengeBattle, [data-accept-battle]').forEach(b => { b.disabled = !teamReady(); });
   };
@@ -3376,18 +3425,21 @@ function eventText(e, b, names) {
   const st = b.state;
   const card = (s, i) => cardById(st[s].cards[i]);
   const nm = (s, i) => esc(card(s, i)?.name || '?');
+  if (e.t === 'rps') {
+    const mine = me === 'A' ? e.a : e.b, theirs = me === 'A' ? e.b : e.a;
+    const res = !e.w ? 'gelijkspel' : e.w === me ? '<strong>jij wint de ronde</strong>' : `<strong>${esc(names.opp)} wint de ronde</strong>`;
+    return `<span class="who">⚖️</span> ${RPS[mine]?.icon} ${RPS[mine]?.name} tegen ${RPS[theirs]?.icon} ${RPS[theirs]?.name}: ${res}`;
+  }
+  if (e.t === 'atk' && RPS[e.k]) {
+    const c = card(e.s, e.ai ?? st[e.s].active);
+    return `${who(e.s)} ${esc(c?.name || '?')} ${RPS[e.k].icon} ${e.tie ? 'raakt ook' : 'valt aan'}: ${e.d} schade${e.crit ? ' — voltreffer!' : ''}`;
+  }
   if (e.t === 'atk') {
     const c = card(e.s, e.ai ?? st[e.s].active);
     const how = e.k === 'special' ? `★ <strong>${esc(abilityOf(c)?.name || 'Special')}</strong>` : e.k === 'power' ? '💥 krachtaanval' : 'valt aan';
-    const eff = e.eff === 1 ? ' <span class="eff up">super effectief!</span>' : e.eff === -1 ? ' <span class="eff down">niet zo effectief</span>' : '';
+    const eff = '';
     return `${who(e.s)} ${esc(c?.name || '?')} ${how}: ${e.d} schade${eff}${e.crit ? ' — voltreffer!' : ''}${e.guarded ? ' (verdedigd)' : ''}${e.abs ? ` (🛡️ ving ${e.abs} op)` : ''}`;
   }
-  if (e.t === 'ability') return `${who(e.s)} ${nm(e.s, e.i)} ☕ <strong>Koffieboost</strong>: +${e.heal} HP en 🛡️ schild van ${e.shield}`;
-  if (e.t === 'shield') return `${who(e.s)} ${nm(e.s, e.i)} krijgt een 🛡️ schild van ${e.v}`;
-  if (e.t === 'burn') return `${who(e.s)} ${nm(e.s, e.i)} staat in 🔥 brand (3 rondes)`;
-  if (e.t === 'burnt') return `${who(e.s)} ${nm(e.s, e.i)} 🔥 brandt: ${e.d} schade`;
-  if (e.t === 'stun') return `${who(e.s)} ${nm(e.s, e.i)} is 💫 verdoofd en slaat de volgende ronde over`;
-  if (e.t === 'stunned') return `${who(e.s)} ${nm(e.s, e.i)} is 💫 verdoofd en kan niet aanvallen`;
   if (e.t === 'guard') return `${who(e.s)} 🛡️ verdedigt`;
   if (e.t === 'switch') return `${who(e.s)} 🔄 wisselt naar ${nm(e.s, e.i)}`;
   if (e.t === 'ko') return `${who(e.s)} <strong>${nm(e.s, e.i)}</strong> is uitgeschakeld!`;
@@ -3413,18 +3465,18 @@ function sideHtml(b, s, disp, mine) {
   const c = cardById(side.cards[disp.active]);
   const hp = disp.hp[disp.active], max = side.max[disp.active];
   const pct = Math.max(0, hp / max * 100);
-  const ty = (side.type || [])[disp.active];
-  return `<div class="bt-name">${mine ? 'Jij' : esc(disp.name)} ${TYPES[ty] ? `<span class="type-chip t-${ty}">${TYPES[ty].icon}</span>` : ''}</div>
+  const rps = isRps(b);
+  return `<div class="bt-name">${mine ? 'Jij' : esc(disp.name)}</div>
     <div class="fighter-card" data-active="${disp.active}">${c ? renderCard(c, { level: (side.lvl || [])[disp.active] || 1 }) : ''}</div>
     <div class="hpbar"><div class="hpfill${pct <= 25 ? ' low' : pct <= 50 ? ' mid' : ''}" style="width:${pct}%"></div></div>
     <div class="hptext">HP ${hp} / ${max}</div>
     <div class="status-row">${statusHtml(disp, side, disp.active, b.round)}</div>
-    <div class="energy" title="Energie">${Array.from({ length: 5 }, (_, i) => `<span class="pip${i < disp.energy ? ' on' : ''}">⚡</span>`).join('')}</div>
+    ${rps ? '' : `<div class="energy" title="Energie">${Array.from({ length: 5 }, (_, i) => `<span class="pip${i < disp.energy ? ' on' : ''}">⚡</span>`).join('')}</div>`}
     <div class="bench">${side.cards.map((id, i) => {
       if (i === disp.active) return '';
-      const bc = cardById(id), bh = disp.hp[i], bty = (side.type || [])[i];
-      return `<button type="button" class="bench-card${bh <= 0 ? ' out' : ''}" data-bench="${i}" ${mine && bh > 0 ? '' : 'disabled'}>
-        <span>${TYPES[bty] ? TYPES[bty].icon + ' ' : ''}${esc(bc?.name || '?')}</span><span class="bench-hp">${statusHtml(disp, side, i, b.round, true)} ${bh > 0 ? `${bh} HP` : 'uitgeschakeld'}</span></button>`;
+      const bc = cardById(id), bh = disp.hp[i];
+      return `<button type="button" class="bench-card${bh <= 0 ? ' out' : ''}" data-bench="${i}" ${mine && bh > 0 && !rps ? '' : 'disabled'}>
+        <span>${esc(bc?.name || '?')}</span><span class="bench-hp">${statusHtml(disp, side, i, b.round, true)} ${bh > 0 ? `${bh} HP` : 'uitgeschakeld'}</span></button>`;
     }).join('')}</div>`;
 }
 
@@ -3534,6 +3586,19 @@ async function openBattle(view, id, prev = null) {
     if (e.t === 'stun') disp[e.s].stun[e.i] = e.r + 1;
     addLog(e);
     drawSides();
+    if (!reduce && e.t === 'rps') {
+      const mine = me === 'A' ? e.a : e.b, theirs = me === 'A' ? e.b : e.a;
+      const el = document.createElement('div');
+      el.className = 'rps-clash';
+      el.innerHTML = `<span class="rc-me${e.w === me ? ' win' : e.w ? ' lose' : ''}">${RPS[mine].icon}</span><span class="rc-vs">VS</span><span class="rc-op${e.w && e.w !== me ? ' win' : e.w ? ' lose' : ''}">${RPS[theirs].icon}</span>
+        <strong>${!e.w ? 'Gelijkspel!' : e.w === me ? 'Jij wint de ronde!' : `${esc(oppName)} wint de ronde!`}</strong>`;
+      $('.bt-arena')?.appendChild(el);
+      SFX.play(e.w === me ? 'coin' : e.w ? 'stun' : 'tick');
+      await sleep(1300);
+      el.remove();
+      if (!$('#battleLog')) return;
+      continue;
+    }
     if (!reduce) {
       if (e.t === 'atk') {
         // Aanvaller springt naar voren, doelwit schudt
@@ -3610,6 +3675,21 @@ async function openBattle(view, id, prev = null) {
   }
 
   const side = b.state[me], a = side.active;
+  if (isRps(b)) {
+    actions.innerHTML = `<div class="rps-row">${Object.entries(RPS).map(([k, m]) => `<button type="button" class="rps-btn rps-${k}" data-move="${k}">
+      <span class="rps-icon">${m.icon}</span><strong>${m.name}</strong><small>${m.hint}</small></button>`).join('')}</div>`;
+    msg.className = 'msg'; msg.textContent = 'Kies je zet: wie de ronde wint, valt aan. Gelijkspel = allebei een kleine klap.';
+    const sendRps = async move => {
+      actions.querySelectorAll('button').forEach(x => { x.disabled = true; });
+      actions.querySelector(`[data-move="${move}"]`)?.classList.add('picked');
+      const { error: e3 } = await sb.rpc('tb_act', { p_id: b.id, p_action: move });
+      if (e3) { msg.className = 'msg err'; msg.textContent = e3.message; openBattle(view, b.id); return; }
+      openBattle(view, b.id, b);
+    };
+    actions.querySelectorAll('[data-move]').forEach(btn => { btn.onclick = () => sendRps(btn.dataset.move); });
+    if ($('#btForfeit')) $('#btForfeit').onclick = () => { if (confirm('Wil je echt opgeven?')) sendRps('forfeit'); };
+    return;
+  }
   const myCard = cardById(side.cards[a]);
   const hasAb = side.ab ? !!side.ab[a] : side.sp[a] > 0;
   const ab = hasAb ? (abilityOf(myCard) || { name: 'Special', cost: 4, info: '4 ⚡' }) : null;
@@ -3624,15 +3704,8 @@ async function openBattle(view, id, prev = null) {
   actions.innerHTML = Object.entries(MOVES).map(([k, m]) => (k === 'special' && !ab) ? '' :
     `<button type="button" class="move-btn" data-move="${k}" ${can[k] ? '' : 'disabled'}>
       <span class="move-icon">${m.icon}</span><span>${k === 'special' ? esc(ab.name) : m.label}</span><small>${k === 'special' ? esc(ab.info) : m.info}</small></button>`).join('');
-  // Typevoordeel tonen
-  const oty = (b.state[op].type || [])[b.state[op].active], mty = (side.type || [])[a];
-  const fx = effOf(mty, oty), rx = effOf(oty, mty);
-  const matchup = TYPES[mty] && TYPES[oty]
-    ? (fx > 1 ? `<span class="eff up">${TYPES[mty].icon} &gt; ${TYPES[oty].icon} Jij bent sterk: 1,5× schade</span>`
-      : rx > 1 ? `<span class="eff down">${TYPES[oty].icon} &gt; ${TYPES[mty].icon} Je tegenstander is sterk tegen jou</span>`
-      : `<span class="eff">${TYPES[mty].icon} = ${TYPES[oty].icon} Gelijk type-voordeel</span>`) : '';
   msg.className = 'msg';
-  msg.innerHTML = stunned ? '💫 Je kaart is verdoofd: verdedig of wissel deze ronde.' : `Kies je zet. ${matchup}`;
+  msg.textContent = stunned ? '💫 Je kaart is verdoofd: verdedig of wissel deze ronde.' : 'Kies je zet.';
 
   const send = async (move, target = null) => {
     actions.querySelectorAll('button').forEach(x => { x.disabled = true; });
@@ -3751,9 +3824,9 @@ async function renderCasino(view) {
   if (state.tab !== 'casino') return;
   if (wheel.error) { view.innerHTML = `<section class="col">${pageHead('Casino', 'casino')}${notReady}</section>`; return; }
   const seg = 360 / WHEEL.length;
-  view.innerHTML = `<section class="col" style="max-width:none">
+  view.innerHTML = `<section class="col casino" style="max-width:none">
     <div class="battle-top">
-      ${pageHead('Casino', 'casino')}
+      <div class="page-head"><h2 class="casino-sign" aria-label="Casino">POLYGON <em>CASINO</em></h2>${infoBtn('casino')}</div>
       <div class="battle-bar"><span class="coinpill shop-balance">🪙 <span data-coin>${state.wallet}</span></span>${soundBtn()}</div>
     </div>
     <div class="casino-grid">
@@ -3761,6 +3834,7 @@ async function renderCasino(view) {
         <h3>🎡 Rad van fortuin</h3>
         <p class="hint">Elke dag gratis draaien${state.event?.key === 'lucky_wheel' ? ' — <strong>deze week 2 keer!</strong>' : '.'}</p>
         <div class="wheel-wrap">
+          <div class="wheel-bulbs" aria-hidden="true">${Array.from({ length: 20 }, (_, i) => `<i style="--b:${i * 18}deg"></i>`).join('')}</div>
           <div class="wheel-pointer" aria-hidden="true">▼</div>
           <div class="wheel" id="wheel" style="transform:rotate(${casino.wheelAngle}deg);background:conic-gradient(${WHEEL_COLORS.map((c, i) => `${c} ${i * seg}deg ${(i + 1) * seg}deg`).join(',')})">
             ${WHEEL.map((l, i) => `<span class="wheel-label" style="--a:${i * seg + seg / 2}deg">${l}</span>`).join('')}
@@ -3773,7 +3847,11 @@ async function renderCasino(view) {
 
       <div class="game-panel">
         <h3>🎰 Fruitautomaat</h3>
-        <div class="reels" id="reels">${['🍒', '⭐', '💎'].map((x, i) => `<span class="reel" id="reel${i}">${x}</span>`).join('')}</div>
+        <div class="slot-cabinet">
+          <div><div class="slot-top">JACKPOT 💎 ×100</div>
+            <div class="reels" id="reels">${['🍒', '⭐', '💎'].map((x, i) => `<span class="reel" id="reel${i}">${x}</span>`).join('')}</div></div>
+          <div class="lever" id="lever" aria-hidden="true"></div>
+        </div>
         <div class="bet-row">Inzet: ${[10, 25, 50, 100].map(v => `<button type="button" class="chip${casino.bet === v ? ' on' : ''}" data-bet="${v}">${v}</button>`).join('')}</div>
         <button class="btn small" id="spinSlots" type="button">Draai · ${casino.bet} 🪙</button>
         <p class="msg" id="slotMsg" role="status"></p>
@@ -3783,6 +3861,7 @@ async function renderCasino(view) {
 
       <div class="game-panel bj-panel">
         <h3>🃏 Blackjack</h3>
+        <div class="bj-felt">BLACKJACK BETAALT 3 : 2 · DEALER PAST OP 17</div>
         <div id="bjTable"></div>
       </div>
 
@@ -3797,7 +3876,7 @@ async function renderCasino(view) {
         <p class="msg" id="scratchMsg" role="status"></p>
       </div>
     </div>
-    <p class="hint" style="margin-top:14px">Je speelt enkel met polycoins. Gemiddeld wint het casino een klein beetje, dus speel met mate 😉</p>
+    <p class="casino-note">Je speelt enkel met polycoins. Gemiddeld wint het casino een klein beetje, dus speel met mate 😉</p>
   </section>`;
 
   // Rad
@@ -3843,6 +3922,7 @@ async function renderCasino(view) {
     const { data, error } = await sb.rpc('casino_slots', { p_bet: casino.bet });
     if (error) { msg.className = 'msg err'; msg.textContent = error.message; b.disabled = false; return; }
     state.wallet -= casino.bet; syncCoinUI();
+    $('#lever')?.classList.add('pulled'); setTimeout(() => $('#lever')?.classList.remove('pulled'), 350);
     const timers = [0, 1, 2].map(i => setInterval(() => {
       const r = $('#reel' + i); if (r) { r.textContent = SLOT_SYMS[Math.floor(Math.random() * 6)]; r.classList.add('spinning'); }
       SFX.play('tick');
