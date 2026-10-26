@@ -5,6 +5,37 @@
 -- Kies bij de waarschuwing "Run without RLS": het script zet RLS zelf aan. Veilig om opnieuw uit te voeren.
 
 -- =====================================================================
+-- VOORPROEF: zolang 'v13_live' uit staat, zien en gebruiken enkel admins de nieuwe onderdelen.
+-- Voor iedereen aanzetten:  update public.feature_flags set enabled = true where key = 'v13_live';
+-- =====================================================================
+create table if not exists public.feature_flags (
+  key text primary key,
+  enabled boolean not null default false
+);
+alter table public.feature_flags enable row level security;
+insert into public.feature_flags (key, enabled) values ('v13_live', false) on conflict (key) do nothing;
+
+create or replace function public._v13_live() returns boolean
+language sql stable security definer set search_path = public as $$
+  select coalesce((select enabled from public.feature_flags where key = 'v13_live'), false);
+$$;
+
+-- Mag deze gebruiker de nieuwe onderdelen al gebruiken? (iedereen als het live staat, anders enkel admins)
+create or replace function public._v13_for(p_user uuid) returns boolean
+language plpgsql stable security definer set search_path = public as $$
+begin
+  if public._v13_live() then return true; end if;
+  if p_user is null or to_regclass('public.admins') is null then return false; end if;
+  return exists (select 1 from public.admins where user_id = p_user);
+end $$;
+
+create or replace function public.v13_status() returns jsonb
+language sql stable security definer set search_path = public as $$
+  select jsonb_build_object('live', public._v13_live(), 'enabled', public._v13_for(auth.uid()));
+$$;
+grant execute on function public.v13_status() to authenticated;
+
+-- =====================================================================
 -- 0. Wekelijks event (wisselt elke maandag, voor iedereen hetzelfde)
 -- =====================================================================
 create or replace function public._week_event(p_date date default null) returns text
@@ -67,25 +98,27 @@ $$;
 -- =====================================================================
 -- 2. Eén kant van het speelveld: levels, synergie, type, vaardigheid, statussen
 -- =====================================================================
+-- Zonder toegang tot v13 (voorproef) blijft alles zoals vroeger: geen types, vaardigheden of synergie.
+-- p_user null = computer: dan telt de speler die het gevecht start.
 create or replace function public._tb_side(p_cards int[], p_user uuid) returns jsonb
 language sql stable security definer set search_path = public as $$
-  with t as (
+  with fl as (select public._v13_for(coalesce(p_user, auth.uid())) as full_), t as (
     select u.ord, c.id, c.rarity, c.hp, c.attack, c.defense, c.special_power, c.person,
       coalesce((select l.level from public.card_levels l where l.user_id = p_user and l.card_id = c.id), 1) as lvl,
       count(*) over (partition by c.person) as same
     from unnest(p_cards) with ordinality u(id, ord) join public.cards c on c.id = u.id
   ), m as (
-    select t.*, (same >= 2 and rarity <> 'cat') as syn,
-      (1 + 0.1 * (lvl - 1)) * (case when same >= 2 and rarity <> 'cat' then 1.1 else 1 end) as f
-    from t
+    select t.*, (same >= 2 and rarity <> 'cat' and fl.full_) as syn,
+      (1 + 0.1 * (lvl - 1)) * (case when same >= 2 and rarity <> 'cat' and fl.full_ then 1.1 else 1 end) as f
+    from t, fl
   )
-  select jsonb_build_object(
+  select case when (select full_ from fl) then x.j else x.j - 'type' - 'ab' - 'syn' end from (select jsonb_build_object(
     'cards',  jsonb_agg(id order by ord),
     'hp',     jsonb_agg(round(coalesce(hp, 50) * f)::int order by ord),
     'max',    jsonb_agg(round(coalesce(hp, 50) * f)::int order by ord),
     'atk',    jsonb_agg(round(coalesce(attack, 10) * f)::int order by ord),
     'def',    jsonb_agg(round(coalesce(defense, 0) * f)::int order by ord),
-    'sp',     jsonb_agg(case when rarity = 'legendary' then coalesce(nullif(special_power, 0), round(coalesce(attack, 10) * 1.6)::int) else 0 end order by ord),
+    'sp',     jsonb_agg(case when rarity = 'legendary' then (case when (select full_ from fl) then coalesce(nullif(special_power, 0), round(coalesce(attack, 10) * 1.6)::int) else coalesce(special_power, 0) end) else 0 end order by ord),
     'lvl',    jsonb_agg(lvl order by ord),
     'type',   jsonb_agg(case when rarity = 'cat' then 'none' else public._person_type(person) end order by ord),
     'ab',     jsonb_agg(case when rarity in ('epic', 'legendary') then rarity end order by ord),
@@ -93,8 +126,8 @@ language sql stable security definer set search_path = public as $$
     'burn',   jsonb_agg(0 order by ord),
     'stun',   jsonb_agg(0 order by ord),
     'shield', jsonb_agg(0 order by ord),
-    'active', 0, 'energy', 1)
-  from m;
+    'active', 0, 'energy', 1) as j
+  from m) x;
 $$;
 revoke all on function public._tb_side(int[], uuid) from public, anon, authenticated;
 
@@ -361,7 +394,8 @@ begin
       end if;
       if exists (select 1 from jsonb_array_elements(ev) e where e->>'t' = 'forfeit') and r < 3 then v_ca := 0; v_cb := 0; end if;
     end if;
-    v_ca := v_ca * mult; v_cb := v_cb * mult;
+    if public._v13_for(b.player_a) then v_ca := v_ca * mult; end if;
+    if b.player_b is not null and public._v13_for(b.player_b) then v_cb := v_cb * mult; end if;
     if v_ca > 0 then perform public._tb_pay(b.player_a, v_ca); end if;
     if v_cb > 0 and b.player_b is not null then perform public._tb_pay(b.player_b, v_cb); end if;
     st := jsonb_set(st, '{events}', ev);
@@ -1571,8 +1605,8 @@ end $$;
 -- Opdrachten: nieuwe opdracht "Los een puzzel op"
 create or replace function public._quests()
 returns table (quest_key text, grp text, title text, target int, reward int)
-language sql immutable as $$
-  values
+language sql stable security definer set search_path = public as $$
+  select * from (values
     ('wordle_solve4',     'wordle', 'Los een Wordle op in 4 pogingen of minder',             1, 20),
     ('wordle_both',       'wordle', 'Speel beide Wordles van vandaag',                       2, 25),
     ('battle_win_normal', 'battle', 'Win een battle tegen de computer op Normaal of Moeilijk', 1, 20),
@@ -1584,6 +1618,16 @@ language sql immutable as $$
     ('open_pack',         'other',  'Koop een pakje in de Shop',                             1, 15),
     ('puzzle_one',        'other',  'Los een puzzel op',                                     1, 15),
     ('puzzle_all',        'other',  'Los alle 3 de puzzels van vandaag op',                  3, 30)
+  ) q(quest_key, grp, title, target, reward)
+  where q.quest_key not like 'puzzle%' or public._v13_live();
+$$;
+
+create or replace function public._quests_for(p_date date)
+returns table (quest_key text, grp text, title text, target int, reward int)
+language sql stable security definer set search_path = public as $$
+  select distinct on (q.grp) q.*
+  from public._quests() q
+  order by q.grp, md5(p_date::text || q.quest_key)
 $$;
 
 create or replace function public._quest_progress(p_user uuid, p_key text, p_date date) returns int
@@ -1631,7 +1675,7 @@ begin
     v_rarity := 'cat';
   else
     a := least(p_attempts, 6);
-    if public._week_event() = 'lucky_draw' then a := greatest(1, a - 1); end if;
+    if public._week_event() = 'lucky_draw' and public._v13_for(p_user) then a := greatest(1, a - 1); end if;
     leg := (array[80, 30, 10, 3, 1, 0.5])[a];
     ep  := (array[20, 50, 35, 22, 11, 4.5])[a];
     v_rarity := case when r < leg then 'legendary' when r < leg + ep then 'epic' else 'common' end;

@@ -254,6 +254,9 @@ a{color:var(--amber-soft)}
 .frame-prev.frame-neon{border-color:#2FE0D0;box-shadow:0 0 8px #E040FB;background:#1b1f26}
 .frame-prev.frame-holo{border-image:conic-gradient(#ff6b6b,#ffd93d,#6bff95,#4dd0ff,#b06bff,#ff6b6b) 1;background:#1b1f26}
 .index-list .badge{margin:0 auto 0 6px}
+/* Voorproef v13: onderdelen enkel tonen voor wie toegang heeft */
+body:not(.v13) .v13-only{display:none !important}
+body.v13 .v13-hide{display:none !important}
 /* ===== v13: types, statussen en battle-effecten ===== */
 .t-koffie{--tc:#B07A45}.t-deadline{--tc:#E0584B}.t-meeting{--tc:#3E7FD6}
 .type-badge{position:absolute;left:50%;bottom:-10px;transform:translateX(-50%);z-index:3;width:clamp(22px,16cqw,34px);aspect-ratio:1;border-radius:50%;display:grid;place-items:center;
@@ -1019,7 +1022,7 @@ async function route() {
 
 async function loadData() {
   const uid = state.session.user.id;
-  const [cards, mine, prof, wallet, requests, admin, battlesIn, welcome, cosm, levels, badges, types, weekEvent] = await Promise.all([
+  const [cards, mine, prof, wallet, requests, admin, battlesIn, welcome, cosm, levels, badges, types, weekEvent, v13] = await Promise.all([
     sb.from('cards').select('*').order('id'),
     sb.from('user_cards').select('card_id').eq('user_id', uid),
     sb.from('profiles').select('display_name, avatar_url, friend_code').eq('id', uid).maybeSingle(),
@@ -1035,6 +1038,7 @@ async function loadData() {
     // Uitbreiding v13 (types per collega en het event van de week)
     sb.rpc('card_types'),
     sb.rpc('week_event'),
+    sb.rpc('v13_status'),
   ]);
   for (const r of [cards, mine, prof, wallet]) if (r.error) throw new Error(r.error.message);
   // Niet fataal: enkel voor het bolletje op de Vrienden-tab
@@ -1057,9 +1061,11 @@ async function loadData() {
   state.levels = new Map((levels.data || []).map(r => [r.card_id, r.level]));
   state.badges = new Set((badges.data || []).map(r => r.person));
   state.equipped = { frame: cosm.data?.equipped_frame || null, ring: cosm.data?.equipped_ring || null, title: cosm.data?.equipped_title || null };
-  state.v13 = !types.error;
-  state.types = types.data || {};
-  state.event = weekEvent.data || null;
+  // Voorproef: de nieuwe onderdelen (v13) enkel voor wie de server toegang geeft (admins, tot het live staat)
+  state.v13 = !types.error && !v13.error && !!v13.data?.enabled;
+  state.types = state.v13 ? (types.data || {}) : {};
+  state.event = state.v13 ? (weekEvent.data || null) : null;
+  document.body.classList.toggle('v13', state.v13);
 }
 
 // ---------- Types, vaardigheden en geluid (v13) ----------
@@ -1077,7 +1083,7 @@ const ABILITIES = {
 function abilityOf(c) {
   if (!c) return null;
   const ty = typeOf(c);
-  if (c.rarity === 'legendary') return { name: c.special_name || 'Special', cost: 4, info: `zware klap${state.v13 && ty ? ' ' + ABILITIES[ty].leg : ''} · 4 ⚡` };
+  if (c.rarity === 'legendary') return { name: c.special_name || 'Special', cost: 4, info: state.v13 && ty ? `zware klap ${ABILITIES[ty].leg} · 4 ⚡` : 'door verdediging · 4 ⚡' };
   if (c.rarity === 'epic' && state.v13 && ty) return { name: ABILITIES[ty].name, cost: 3, info: `${ABILITIES[ty].epic} · 3 ⚡` };
   return null;
 }
@@ -1424,10 +1430,10 @@ const TABS = [
   { id: 'today', label: 'Today', icon: '🎴' },
   { id: 'book', label: 'My Book', icon: '📖' },
   { id: 'battle', label: 'Battle', icon: '⚔️', badge: 'battle' },
-  { id: 'puzzles', label: 'Puzzles', icon: '🧩' },
-  { id: 'casino', label: 'Casino', icon: '🎰' },
-  { id: 'stickers', label: 'Stickers', icon: '🏷️' },
-  { id: 'profile', label: 'Profile', icon: '👤' },
+  { id: 'puzzles', label: 'Puzzles', icon: '🧩', v13: true },
+  { id: 'casino', label: 'Casino', icon: '🎰', v13: true },
+  { id: 'stickers', label: 'Stickers', icon: '🏷️', v13: true },
+  { id: 'profile', label: 'Profile', icon: '👤', v13: true },
   { id: 'friends', label: 'Friends', icon: '👥', badge: 'friend' },
   { id: 'trade', label: 'Trade', icon: '🔁' },
   { id: 'shop', label: 'Shop', icon: '🛒' },
@@ -1438,8 +1444,9 @@ const TABS = [
 function renderMain() {
   const initial = esc((state.name || '?').trim().charAt(0).toUpperCase());
   const avStyle = state.avatarUrl ? ` style="background-image:url('${esc(state.avatarUrl)}')"` : '';
-  if (!TABS.some(t => t.id === state.tab)) state.tab = 'today';
-  const cur = TABS.find(t => t.id === state.tab) || TABS[0];
+  const tabs = TABS.filter(t => !t.v13 || state.v13);
+  if (!tabs.some(t => t.id === state.tab)) state.tab = 'today';
+  const cur = tabs.find(t => t.id === state.tab) || tabs[0];
   app.innerHTML = `
   <div class="wrap wide" id="wrap">
     <header class="top">
@@ -1453,7 +1460,7 @@ function renderMain() {
             <span class="tab-badge" data-menu-badge></span><span class="chev">▾</span>
           </button>
           <div class="menu-list" id="menuList" role="menu" hidden>
-            ${TABS.map(t => `<button type="button" role="menuitem" data-tab="${t.id}"${t.id === cur.id ? ' aria-current="page"' : ''}>
+            ${tabs.map(t => `<button type="button" role="menuitem" data-tab="${t.id}"${t.id === cur.id ? ' aria-current="page"' : ''}>
               <span class="menu-ico">${t.icon}</span>${t.label}${t.badge ? `<span class="tab-badge" data-${t.badge}-badge></span>` : ''}</button>`).join('')}
           </div>
         </nav>
@@ -1525,7 +1532,7 @@ const INFO = {
     <p>Elke collega heeft een eigen pagina met 9 kaarten: 6 commons, 2 epics en 1 legendary. Troostkatten krijgen hun eigen pagina.</p>
     <ul><li>Klik op een kaart om ze groot te bekijken, tik nog eens om ze om te draaien.</li>
     <li>Achteraan vind je de pagina <strong>Dubbels</strong> met alle kaarten die je meer dan één keer hebt.</li>
-    <li>Het rondje onderaan een kaart toont het <strong>type</strong> voor Battle: ☕ Koffie, ⏰ Deadline of 📊 Meeting.</li>
+    <li class="v13-only">Het rondje onderaan een kaart toont het <strong>type</strong> voor Battle: ☕ Koffie, ⏰ Deadline of 📊 Meeting.</li>
     <li>🏅 <strong>Pagina compleet?</strong> Dan krijg je 100 🪙 en een medaille. Het volledige boek (zonder troostkatten) levert 250 🪙 en de titel <em>Meesterverzamelaar</em> op.</li>
     <li>⬆️ <strong>Opwaarderen</strong>: open een kaart en gebruik 2 dubbels om ze een ★ hoger te zetten (max ★★★). Elke ★ geeft +10% HP, ATK en DEF in Battle. Op ★★★ glinstert de kaart.</li></ul>`],
   stats: ['Statistieken', `<p>Een overzicht van al je Wordles (2 per dag): hoe vaak je speelde, je huidige streak (opeenvolgende dagen), hoe vaak je de Wordle oploste en in hoeveel pogingen.</p>`],
@@ -1534,14 +1541,15 @@ const INFO = {
     <ul><li>⚔️ <strong>Aanval</strong>: normale schade, +1 ⚡ energie.</li>
     <li>💥 <strong>Krachtaanval</strong>: 1,7× schade, kost 2 ⚡.</li>
     <li>🛡️ <strong>Verdedigen</strong>: je krijgt deze ronde maar de helft van de schade, +2 ⚡.</li>
-    <li>★ <strong>Vaardigheid</strong> (epics en legendaries): zie hieronder. De klap van een legendary gaat door verdediging heen.</li>
+    <li class="v13-hide">★ <strong>Special</strong> (legendaries): vaste zware schade die door verdediging gaat, kost 4 ⚡.</li>
+    <li class="v13-only">★ <strong>Vaardigheid</strong> (epics en legendaries): zie hieronder. De klap van een legendary gaat door verdediging heen.</li>
     <li>🔄 <strong>Wisselen</strong>: ruil je kaart met een kaart van je bank. Gebeurt vóór de aanvallen, +1 ⚡.</li></ul>
     <p>Elke ronde gebeuren eerst de wissels, daarna valt de kaart met de hoogste ATK eerst aan — die mag dus elke ronde als eerste slaan. Valt een kaart uit, dan komt de volgende uit je team erin. Wie eerst 3 kaarten verliest, verliest.</p>
-    <p><strong>Types</strong>: elke collega heeft een type. ☕ Koffie wint van ⏰ Deadline, ⏰ Deadline wint van 📊 Meeting en 📊 Meeting wint van ☕ Koffie. Sterk = 1,5× schade, zwak = 0,75×.</p>
+    <div class="v13-only"><p><strong>Types</strong>: elke collega heeft een type. ☕ Koffie wint van ⏰ Deadline, ⏰ Deadline wint van 📊 Meeting en 📊 Meeting wint van ☕ Koffie. Sterk = 1,5× schade, zwak = 0,75×.</p>
     <ul><li><strong>Vaardigheden</strong>: epics (3 ⚡) en legendaries (4 ⚡) hebben een vaardigheid volgens hun type: ☕ 🛡️ schild en genezen, ⏰ 🔥 brand (schade elke ronde), 📊 💫 verdoofd (kan volgende ronde niet aanvallen).</li>
     <li><strong>🤝 Synergie</strong>: 2 kaarten van dezelfde collega in je team krijgen allebei +10%.</li>
     <li><strong>Voltreffer</strong>: 10% kans op 1,5× schade.</li></ul>
-    <p><strong>Rangen</strong>: tegen vrienden win of verlies je punten. 🥉 Brons → 🥈 Zilver (1100) → 🥇 Goud (1200) → 💠 Platina (1350) → 💎 Diamant (1500). Elke maand start een nieuw seizoen op 1000, met een beloning volgens je eindrang.</p>
+    <p><strong>Rangen</strong>: tegen vrienden win of verlies je punten. 🥉 Brons → 🥈 Zilver (1100) → 🥇 Goud (1200) → 💠 Platina (1350) → 💎 Diamant (1500). Elke maand start een nieuw seizoen op 1000, met een beloning volgens je eindrang.</p></div>
     <p><strong>Polycoins</strong>: computer makkelijk/normaal/moeilijk = 5/10/20 (max 5 per dag). Tegen een vriend: winnaar 25, verliezer 5 (max 3 per dag). Opgeven levert niets op.</p>`],
   friends: ['Vrienden', `
     <p>Deel je code met collega's, of voer hun code in om een vriendschapsverzoek te sturen.</p>
@@ -1553,7 +1561,7 @@ const INFO = {
     <li>De populairste ideeën staan bovenaan. Seppe duidt aan wat 📅 gepland, ✅ klaar of ❌ niet gepland is.</li>
     <li>Je kan je eigen ideeën verwijderen.</li></ul>`],
   shop: ['Shop', `
-    <p>Besteed je polycoins. Die verdien je met battles, opdrachten, volle pagina's en dubbele trekkingen.</p>
+    <p>Besteed je polycoins. Die verdien je met battles, opdrachten, volle pagina's en dubbele trekkingen<span class="v13-only">, puzzels en het casino</span>.</p>
     <ul><li><strong>Pakjes</strong>: Basic Pack (1 kaart, 60 🪙) of Epic Pack (3 kaarten, de 3e gegarandeerd epic of legendary, 200 🪙).</li>
     <li><strong>Dubbels verkopen</strong>: common 15 · epic 40 · legendary 100 · troostkat 5 🪙 per extra exemplaar. Je houdt altijd 1 exemplaar.</li>
     <li><strong>Opwaarderen</strong>: 2 dubbels maken een kaart een ★ sterker in Battle (max ★★★).</li>
@@ -2066,9 +2074,9 @@ function newsLine(a) {
     case 'page_complete': return ['🏅', `${who} vervolledigde de pagina van <strong>${esc(a.data?.person || '?')}</strong>.`];
     case 'book_complete': return ['🏆', `${who} verzamelde het volledige boek!`];
     case 'max_level': return ['⭐', `${who} waardeerde ${cardTxt} op tot ${stars(3)}.`];
-    case 'achievement': return [a.data?.icon || '🏅', `${who} behaalde de prestatie <strong>${esc(a.data?.title || '')}</strong>.`];
-    case 'jackpot': return ['💎', `${who} draaide de JACKPOT op de fruitautomaat: +${a.data?.win || 0} 🪙!`];
-    case 'sticker_theme': return ['📒', `${who} vervolledigde het stickerthema <strong>${esc(STICKER_THEMES[a.data?.theme] || a.data?.theme || '')}</strong>.`];
+    case 'achievement': if (!state.v13) return null; return [a.data?.icon || '🏅', `${who} behaalde de prestatie <strong>${esc(a.data?.title || '')}</strong>.`];
+    case 'jackpot': if (!state.v13) return null; return ['💎', `${who} draaide de JACKPOT op de fruitautomaat: +${a.data?.win || 0} 🪙!`];
+    case 'sticker_theme': if (!state.v13) return null; return ['📒', `${who} vervolledigde het stickerthema <strong>${esc(STICKER_THEMES[a.data?.theme] || a.data?.theme || '')}</strong>.`];
     default: return null;
   }
 }
@@ -3177,8 +3185,8 @@ async function renderBattle(view) {
       .or(`player_a.eq.${uid},player_b.eq.${uid}`).order('updated_at', { ascending: false }).limit(40),
     sb.rpc('tb_leaderboard'),
     sb.rpc('tb_rewards_today'),
-    sb.rpc('season_state'),
-    sb.rpc('claim_season_rewards'),
+    state.v13 ? sb.rpc('season_state') : { data: null },
+    state.v13 ? sb.rpc('claim_season_rewards') : { data: [] },
   ]);
   if (state.tab !== 'battle') return;
   for (const c of seasonClaims.data || []) {
@@ -3218,7 +3226,7 @@ async function renderBattle(view) {
         ${ss ? `<span class="pill" title="Seizoen ${esc(ss.season)}, eindigt op ${esc(ss.ends)}">${rankChip(ss.rank, ss.points)} · seizoen ${esc(ss.season)}</span>` : ''}
         <span class="pill">🪙 Vandaag beloond: computer ${rw.pve}/${rw.pve_max} · vrienden ${rw.pvp}/${rw.pvp_max}</span>
         ${state.event?.key === 'double_battle' ? '<span class="pill pill-turn">⚔️ Dubbele coins deze week!</span>' : ''}
-        ${soundBtn()}
+        ${state.v13 ? soundBtn() : ''}
       </div>
     </div>
 
@@ -3299,7 +3307,7 @@ async function renderBattle(view) {
       num.hidden = idx < 0; num.textContent = idx + 1;
     });
     if ($('#teamCount')) $('#teamCount').textContent = `Team: ${battleState.team.length}/${TEAM_SIZE}`;
-    if ($('#teamInfo')) {
+    if ($('#teamInfo') && state.v13) {
       const cs = battleState.team.map(cardById).filter(Boolean);
       const per = {};
       for (const c of cs) if (c.rarity !== 'cat') per[c.person] = (per[c.person] || 0) + 1;
@@ -3448,7 +3456,7 @@ async function openBattle(view, id, prev = null) {
       <button class="link" id="btBack" type="button">← Battle</button>
       <h2>${title}</h2>
       <span class="pill" id="btRound">Ronde ${b.round + (b.status === 'active' ? 1 : 0)}</span>
-      ${soundBtn()}
+      ${state.v13 ? soundBtn() : ''}
       ${b.status === 'active' ? '<button class="link danger forfeit" id="btForfeit" type="button">Opgeven</button>' : ''}
     </div>
     <div class="bt-layout">
