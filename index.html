@@ -179,6 +179,26 @@ a{color:var(--amber-soft)}
 @keyframes spin{to{transform:rotate(360deg)}}
 @keyframes pulse-ring{0%{box-shadow:0 0 0 0 rgba(232,195,76,.6)}100%{box-shadow:0 0 0 12px rgba(232,195,76,0)}}
 @media (max-width:640px){.iconbtn{width:38px;height:38px;font-size:15px}}
+/* Knop Updates bovenaan */
+.updates-btn{position:relative;display:flex;align-items:center;gap:6px;height:44px;padding:0 14px;border-radius:999px;border:2px solid var(--line);
+  background:rgba(21,24,29,.8);color:var(--ink);font:800 14.5px var(--body);cursor:pointer;flex-shrink:0;transition:border-color .15s,transform .15s}
+.updates-btn:hover{border-color:var(--yellow);transform:translateY(-1px)}
+.updates-dot{position:absolute;top:-2px;right:-2px;width:12px;height:12px;border-radius:50%;background:#E0584B;border:2px solid var(--bg);animation:pulse-ring 1.8s ease-out infinite}
+.updates-dot[hidden]{display:none}
+@media (max-width:640px){.updates-btn{width:38px;height:38px;padding:0;justify-content:center;font-size:16px}.updates-label{display:none}}
+@media (max-width:440px){
+  .top{flex-wrap:wrap;row-gap:8px}
+  .topright{margin-left:auto;gap:6px}
+  .iconbtn,.avbtn,.updates-btn{width:36px;height:36px}
+  .coinpill{padding:6px 9px}
+}
+.updates-box{max-width:620px}
+.update-item{padding:12px 14px;margin:10px 0;border:1px solid var(--line);border-radius:14px;background:rgba(21,24,29,.5)}
+.update-item.fresh{border-color:var(--yellow);background:rgba(201,180,88,.1)}
+.update-head{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;align-items:baseline}
+.update-head span{color:var(--muted);font-size:13.5px}
+.update-head em{font-style:normal;color:var(--yellow-soft);font-weight:800}
+.update-item ul{margin:8px 0 0;padding-left:20px;display:grid;gap:4px}
 
 /* Meldingen rechtsboven (beloningen, opwaarderingen) */
 .toasts{position:fixed;top:14px;left:0;right:0;z-index:1001;display:grid;justify-items:center;gap:8px;pointer-events:none;padding:0 12px}
@@ -1516,6 +1536,7 @@ function renderMain() {
               <span class="menu-ico">${t.icon}</span>${t.label}${t.badge ? `<span class="tab-badge" data-${t.badge}-badge></span>` : ''}</button>`).join('')}
           </div>
         </nav>
+        <button class="updates-btn" id="updatesBtn" type="button" title="Wat is er nieuw?" aria-label="Updates: wat is er nieuw?"><span aria-hidden="true">📣</span><span class="updates-label">Updates</span><span class="updates-dot" id="updatesDot" hidden></span></button>
         <button class="iconbtn${updateAvailable ? ' has-update' : ''}" id="refreshBtn" type="button" title="Site vernieuwen" aria-label="Site vernieuwen"><span>🔄</span></button>
         <button class="avbtn${ringCls(state.equipped.ring)}" id="openAccount" aria-label="Account instellingen"${avStyle}>${state.avatarUrl ? '' : initial}</button>
       </div>
@@ -1529,6 +1550,8 @@ function renderMain() {
   <dialog id="infoModal" aria-label="Uitleg"></dialog>`;
   $('#openAccount').onclick = () => openAccountModal();
   $('#refreshBtn').onclick = () => hardReload($('#refreshBtn'));
+  $('#updatesBtn').onclick = () => openUpdates();
+  syncUpdatesDot();
   const menuBtn = $('#menuBtn'), list = $('#menuList');
   const setMenu = open => { list.hidden = !open; menuBtn.setAttribute('aria-expanded', open); };
   menuBtn.onclick = e => { e.stopPropagation(); setMenu(list.hidden); };
@@ -4504,6 +4527,62 @@ async function openFriendProfile(f) {
     <button type="button" class="link" id="fpClose">Sluiten</button>
   </div>`;
   $('#fpClose').onclick = () => dlg.close();
+}
+
+// ---------- Updates: wat is er nieuw? (knop bovenaan) ----------
+// Nieuwste eerst. v13: true = enkel zichtbaar voor wie de voorproef heeft (tot het live staat).
+const UPDATES = [
+  { id: '2026-10-26', date: '26 oktober 2026', title: 'De grote update', v13: true, items: [
+    '⚔️ <strong>Nieuwe Battle</strong>: elke ronde kies je 🧠 Brein, 😎 Swag of 😂 Humor. Brein wint van Swag, Swag van Humor en Humor van Brein. Wie de ronde wint, valt aan.',
+    '🏆 <strong>Rangen</strong> van 🥉 Brons tot 💎 Diamant tegen vrienden, met een nieuw seizoen en een beloning elke maand.',
+    '🧩 <strong>Puzzels</strong>: elke dag Verbanden, Memory en een Mini-sudoku, met klassement.',
+    '🎰 <strong>Casino</strong>: rad van fortuin (elke dag gratis), fruitautomaat, blackjack en krasbiljetten.',
+    '🏷️ <strong>Stickeralbum</strong> met 48 geanimeerde stickers in 6 thema\'s.',
+    '👤 <strong>Profiel</strong> met favoriete kaarten, een bureau om in te richten, een huisdier dat groeit en 20 prestaties.',
+    '🗓️ Elke week een <strong>event</strong>, bijvoorbeeld dubbele coins of een geluksweek.',
+  ] },
+  { id: '2026-10-12', date: '12 oktober 2026', title: 'Opdrachten, nieuws en opwaarderen', items: [
+    '🎯 Elke dag 3 <strong>opdrachten</strong> voor extra polycoins.',
+    '📰 <strong>Nieuws</strong> van je vrienden en een 🏁 Wordle-klassement van vandaag.',
+    '📋 Je Wordle-resultaat <strong>kopiëren</strong> om te delen.',
+    '🏅 Beloningen voor een volle pagina en een volledig boek.',
+    '⬆️ Kaarten <strong>opwaarderen</strong> met dubbels (tot ★★★).',
+    '✨ Kaartranden, profielringen en titels in de Shop.',
+    '🔄 Een vernieuwknop bovenaan.',
+  ] },
+  { id: '2026-09-24', date: '24 september 2026', title: 'Eigen Wordle, battles en shop', items: [
+    '🟩 Een eigen <strong>Wordle</strong> met 2 rondes per dag (08:00 en 13:00).',
+    '⚔️ <strong>Battles</strong> ronde per ronde tegen de computer of vrienden, met polycoins.',
+    '🛒 De <strong>Shop</strong>: pakjes kopen, dubbels verkopen en Wordle-hulp.',
+    '💡 De <strong>ideeënbus</strong>: dien ideeën in en stem op die van anderen.',
+    '👋 Nieuwe collega\'s Steffi en Ale.',
+  ] },
+  { id: '2026-09-23', date: '23 september 2026', title: 'Nieuwe look en vrienden', items: [
+    '🎨 Nieuwe look met menu, speelse achtergrond en uitleg per pagina.',
+    '📦 Pakjes openen met animatie en een welkomstpakket voor nieuwe spelers.',
+    '👥 Vriendschapsverzoeken, statistieken van vrienden en kaarten ruilen.',
+    '🔍 Kaarten groot bekijken en omdraaien.',
+  ] },
+];
+const visibleUpdates = () => UPDATES.filter(u => !u.v13 || state.v13);
+const updatesSeen = () => { try { return localStorage.getItem('ptc-updates-seen') || ''; } catch (_) { return ''; } };
+function syncUpdatesDot() {
+  const dot = $('#updatesDot');
+  if (dot) dot.hidden = (visibleUpdates()[0]?.id || '') <= updatesSeen();
+}
+function openUpdates() {
+  const list = visibleUpdates();
+  const seen = updatesSeen();
+  const dlg = $('#infoModal');
+  dlg.innerHTML = `<div class="infobox updates-box"><h2>📣 Updates</h2>
+    ${list.map(u => `<section class="update-item${u.id > seen ? ' fresh' : ''}">
+      <div class="update-head"><strong>${esc(u.title)}</strong><span>${esc(u.date)}${u.id > seen ? ' · <em>nieuw</em>' : ''}</span></div>
+      <ul>${u.items.map(i => `<li>${i}</li>`).join('')}</ul></section>`).join('')}
+    <button type="button" class="link" id="infoClose">Sluiten</button></div>`;
+  $('#infoClose').onclick = () => dlg.close();
+  dlg.showModal();
+  try { localStorage.setItem('ptc-updates-seen', list[0]?.id || ''); } catch (_) {}
+  syncUpdatesDot();
 }
 
 // ---------- Melding bij een nieuwe versie van de site ----------
