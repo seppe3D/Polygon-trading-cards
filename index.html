@@ -432,9 +432,27 @@ body.v13 .v13-hide{display:none !important}
 .bet-row{display:flex;align-items:center;gap:6px;flex-wrap:wrap;justify-content:center;font-weight:800;color:#ffe9a8}
 .chip{position:relative;min-width:46px;height:46px;padding:0 6px;border-radius:50%;border:4px dashed rgba(255,255,255,.75);background:#2f6b3a;color:#fff;font:900 13px var(--body);cursor:pointer;
   box-shadow:0 0 0 3px #1d4a2a,0 4px 8px rgba(0,0,0,.5);transition:transform .12s}
-.chip[data-bet="25"]{background:#3E7FD6;box-shadow:0 0 0 3px #244f8f,0 4px 8px rgba(0,0,0,.5)}
-.chip[data-bet="50"]{background:#d1185f;box-shadow:0 0 0 3px #7d0e39,0 4px 8px rgba(0,0,0,.5)}
-.chip[data-bet="100"]{background:#1b1b1b;box-shadow:0 0 0 3px #c99a1e,0 4px 8px rgba(0,0,0,.5)}
+.chip[data-bet="25"],.chip[data-chip="25"],.mini-chip[data-v="25"]{background:#3E7FD6;box-shadow:0 0 0 3px #244f8f,0 4px 8px rgba(0,0,0,.5)}
+.chip[data-bet="50"],.chip[data-chip="50"],.mini-chip[data-v="50"]{background:#d1185f;box-shadow:0 0 0 3px #7d0e39,0 4px 8px rgba(0,0,0,.5)}
+.chip[data-bet="100"],.chip[data-chip="100"],.mini-chip[data-v="100"]{background:#1b1b1b;box-shadow:0 0 0 3px #c99a1e,0 4px 8px rgba(0,0,0,.5)}
+.chip:disabled{opacity:.35;cursor:not-allowed;transform:none}
+.bj-chips{display:flex;gap:8px;justify-content:center;flex-wrap:wrap}
+.bj-bet-area{display:flex;align-items:center;justify-content:center;gap:18px;flex-wrap:wrap;width:100%}
+.bj-controls{display:grid;gap:8px;justify-items:center}
+.bet-circle{position:relative;width:92px;height:92px;flex-shrink:0;border-radius:50%;border:3px dashed rgba(255,236,170,.6);display:grid;place-items:center;background:rgba(0,0,0,.12)}
+.bet-stack{position:absolute;inset:0}
+.mini-chip{position:absolute;left:50%;top:50%;width:46px;height:46px;margin:-27px 0 0 -23px;border-radius:50%;background:#2f6b3a;border:4px dashed rgba(255,255,255,.75);
+  transform:translateY(calc(var(--k) * -4px));animation:chip-drop .25s ease both}
+@keyframes chip-drop{from{opacity:0;transform:translateY(calc(var(--k) * -4px - 30px)) scale(1.2)}}
+.bet-amount{position:absolute;bottom:-12px;left:50%;transform:translateX(-50%);padding:2px 10px;border-radius:999px;background:#143d1d;border:2px solid #c99a1e;color:#ffe9a8;font:900 13px var(--body);white-space:nowrap}
+.bj-label b{color:#fff;margin-left:4px}
+.bj-result{min-height:30px;font:900 22px var(--display);text-shadow:0 2px 6px rgba(0,0,0,.5)}
+.bj-result span{display:inline-block;animation:stk-pop .45s cubic-bezier(.2,1.6,.4,1) both}
+.bj-result .ok{color:#b9f5b0}.bj-result .err{color:#ffb3a8}
+.bj-result strong{color:#ffe58a}
+.pcard.new{animation:deal .4s cubic-bezier(.2,.9,.3,1.15) both;animation-delay:var(--d)}
+.pcard.reveal{animation:flip-card .5s ease both;animation-delay:var(--d)}
+@keyframes flip-card{0%{transform:rotateY(90deg);background:repeating-linear-gradient(45deg,#b8326a 0 6px,#7d1446 6px 12px)}50%{transform:rotateY(90deg)}100%{transform:none}}
 .chip:hover{transform:translateY(-3px)}
 .chip.on{transform:translateY(-5px) scale(1.08);box-shadow:0 0 0 3px #ffe58a,0 0 16px #ffd75e}
 .paytable{font-size:13px;color:#e9cfd9}
@@ -450,9 +468,7 @@ body.v13 .v13-hide{display:none !important}
 .pcard b{font-size:17px;line-height:1}.pcard i{font-style:normal;font-size:28px;align-self:center;justify-self:center}
 .pcard.red{color:#c8322a}
 .pcard.back{background:repeating-linear-gradient(45deg,#b8326a 0 6px,#7d1446 6px 12px);border:3px solid #fff}
-.bj-cards.deal .pcard{animation:deal .35s ease both;animation-delay:calc(var(--i) * 90ms)}
 @keyframes deal{from{opacity:0;transform:translate(40px,-30px) rotate(12deg)}}
-.bj-bet{width:84px;padding:8px 9px;border-radius:12px;border:2px solid #c99a1e;background:#143d1d;color:#ffe9a8;font:800 15px var(--body);text-align:center}
 .bj-panel .msg.ok{color:#b9f5b0}.bj-panel .msg.err{color:#ffb3a8}
 .scratch-card{position:relative;display:grid;grid-template-columns:repeat(3,1fr);gap:8px;padding:30px 14px 14px;border-radius:14px;width:min(290px,80vw);
   background:linear-gradient(135deg,#ffe48a,#e0a92a 55%,#c98a12);box-shadow:0 10px 24px -8px rgba(0,0,0,.7);
@@ -3968,45 +3984,121 @@ async function renderCasino(view) {
     b.disabled = false;
   };
 
-  // Blackjack
-  const drawBj = (g, animate = false) => {
+  // Blackjack zoals aan een echte tafel: fiches op het inzetvak, kaarten één voor één,
+  // de dealer draait zijn verborgen kaart pas om als jij klaar bent en trekt dan kaart per kaart
+  const BJ_CHIPS = [10, 25, 50, 100];
+  const BJ_RES = { won: ['🎉 Gewonnen!', 'ok'], lost: ['😬 Verloren', 'err'], push: ['🤝 Gelijkspel: inzet terug', ''], blackjack: ['🃏 BLACKJACK!', 'ok'] };
+  casino.bjStack = casino.bjStack || [];
+  const STEP = 280;
+  const handHtml = (cards, oldLen, delays, revealIdx = -1) => cards.map((c, i) => {
+    const anim = i === revealIdx ? ' reveal' : i >= oldLen ? ' new' : '';
+    return playingCard(c, i).replace('class="pcard', `class="pcard${anim}`).replace('style="', `style="--d:${anim ? delays.shift() : 0}ms;`);
+  }).join('');
+  const stackHtml = chips => chips.map((v, k) => `<span class="mini-chip" data-v="${v}" style="--k:${k}"></span>`).join('');
+
+  const drawBj = (g, prev = null, instant = false) => {
     const box = $('#bjTable'); if (!box) return;
     const playing = g.status === 'playing';
-    const RES = { won: '🎉 Gewonnen!', lost: '😬 Verloren', push: '🤝 Gelijkspel: inzet terug', blackjack: '🃏 BLACKJACK! 3:2 uitbetaald' };
-    box.innerHTML = g.status === 'none' ? `<p class="hint">Kom zo dicht mogelijk bij 21 zonder erover te gaan. De dealer moet doorgaan tot 17. Blackjack betaalt 3:2.</p>` : `
-      <div class="bj-row"><span class="bj-label">Dealer · ${g.dtotal}${playing ? '+' : ''}</span><div class="bj-cards${animate ? ' deal' : ''}">${g.dealer.map(playingCard).join('')}</div></div>
-      <div class="bj-row"><span class="bj-label">Jij · ${g.ptotal}</span><div class="bj-cards${animate ? ' deal' : ''}">${g.player.map(playingCard).join('')}</div></div>
-      ${playing ? '' : `<p class="msg ${['won', 'blackjack'].includes(g.status) ? 'ok' : g.status === 'lost' ? 'err' : ''}">${RES[g.status]}${g.payout ? ` +${g.payout} 🪙` : ''}</p>`}`;
-    box.insertAdjacentHTML('beforeend', playing
-      ? `<div class="battle-bar bj-actions"><button class="btn small" data-bj="hit" type="button">Kaart</button>
+    const fresh = !prev || prev.status !== 'playing';
+    let oldP = fresh ? 0 : prev.player.length, oldD = fresh ? 0 : prev.dealer.length, revealIdx = -1, t = 0;
+    const pD = [], dD = [];
+    if (instant || g.status === 'none') { oldP = (g.player || []).length; oldD = (g.dealer || []).length; }
+    else if (fresh) {
+      // Delen in de echte volgorde: jij, dealer, jij, dealer (verborgen)
+      for (let i = 0; i < 2; i++) { pD.push(t); t += STEP; dD.push(t); t += STEP; }
+      for (let i = 2; i < g.dealer.length; i++) { dD.push(t); t += STEP * 2; }
+    } else {
+      for (let i = oldP; i < g.player.length; i++) { pD.push(t); t += STEP; }
+      if (!playing && prev.dealer.includes(-1)) { revealIdx = 1; t += 250; dD.push(t); t += STEP * 2; }
+      for (let i = oldD; i < g.dealer.length; i++) { dD.push(t); t += STEP * 2; }
+    }
+    const pTimes = [...pD], dTimes = [...dD];
+    const total = t + (t ? 350 : 0);
+
+    const betNow = casino.bjStack.reduce((x, y) => x + y, 0);
+    box.innerHTML = `
+      ${g.status === 'none' ? '<p class="hint">Kom zo dicht mogelijk bij 21 zonder erover te gaan.</p>' : `
+        <div class="bj-row"><span class="bj-label">Dealer <b id="bjDT">${instant ? (playing ? g.dtotal + '+' : g.dtotal) : ''}</b></span>
+          <div class="bj-cards">${handHtml(g.dealer, oldD, dD, revealIdx)}</div></div>
+        <div class="bj-row"><span class="bj-label">Jij <b id="bjPT">${instant ? g.ptotal : ''}</b></span>
+          <div class="bj-cards">${handHtml(g.player, oldP, pD)}</div></div>
+        <div class="bj-result" id="bjResult"></div>`}
+      <div class="bj-bet-area">
+        <div class="bet-circle" title="Inzet"><div class="bet-stack">${playing ? stackHtml(casino.bjPlaced || []) : stackHtml(casino.bjStack)}</div>
+          <span class="bet-amount">${playing ? g.bet : betNow || 'INZET'}</span></div>
+        <div class="bj-controls" id="bjControls"></div>
+      </div>
+      <p class="msg" id="bjMsg" role="status"></p>`;
+
+    // Geluid per kaart en totalen pas tonen als de kaarten liggen
+    [...pTimes, ...dTimes].forEach(d => setTimeout(() => SFX.play('flip'), d));
+    setTimeout(() => {
+      if (!$('#bjTable')) return;
+      if (g.status === 'none') return drawControls();
+      const pt = $('#bjPT'), dt = $('#bjDT');
+      if (pt) pt.textContent = g.ptotal;
+      if (dt) dt.textContent = playing ? `${g.dtotal}+` : g.dtotal;
+      if (!playing) {
+        const [txt, cls] = BJ_RES[g.status] || ['', ''];
+        $('#bjResult').innerHTML = `<span class="${cls}">${txt}${g.payout ? ` <strong>+${g.payout} 🪙</strong>` : ''}</span>`;
+      }
+      if (!playing && !instant) {
+        setWallet(g.wallet);
+        SFX.play(['won', 'blackjack'].includes(g.status) ? (g.status === 'blackjack' ? 'jackpot' : 'win') : g.status === 'lost' ? 'lose' : 'coin');
+      }
+      drawControls();
+    }, instant ? 0 : total);
+
+    const drawControls = () => {
+      const ctl = $('#bjControls'); if (!ctl) return;
+      if (playing) {
+        ctl.innerHTML = `<div class="battle-bar bj-actions">
+          <button class="btn small" data-bj="hit" type="button">Kaart</button>
           <button class="btn small" data-bj="stand" type="button">Passen</button>
-          ${g.can_double ? `<button class="btn small" data-bj="double" type="button">Verdubbelen (${g.bet})</button>` : ''}</div>`
-      : `<div class="bet-row">Inzet: <input type="number" id="bjBet" min="10" max="200" step="5" value="${casino.bjBet}" class="bj-bet">
-          <button class="btn small" id="bjDeal" type="button">Delen</button></div>`);
-    box.insertAdjacentHTML('beforeend', '<p class="msg" id="bjMsg" role="status"></p>');
-    box.querySelectorAll('[data-bj]').forEach(b => b.onclick = async () => {
-      box.querySelectorAll('button').forEach(x => { x.disabled = true; });
-      const { data, error } = await sb.rpc('bj_action', { p_action: b.dataset.bj });
-      if (error) { $('#bjMsg').className = 'msg err'; $('#bjMsg').textContent = error.message; return; }
-      SFX.play('flip');
-      if (b.dataset.bj === 'double') { state.wallet -= g.bet; }
-      setWallet(data.wallet);
-      if (data.status !== 'playing') SFX.play(['won', 'blackjack'].includes(data.status) ? 'win' : data.status === 'lost' ? 'lose' : 'coin');
-      drawBj(data, true);
-    });
-    const deal = $('#bjDeal');
-    if (deal) deal.onclick = async () => {
-      const bet = Math.max(10, Math.min(200, Math.round(Number($('#bjBet').value) || 10)));
-      casino.bjBet = bet; deal.disabled = true;
-      const { data, error } = await sb.rpc('bj_start', { p_bet: bet });
-      if (error) { $('#bjMsg').className = 'msg err'; $('#bjMsg').textContent = error.message; deal.disabled = false; return; }
-      SFX.play('flip');
-      setWallet(data.wallet);
-      if (data.status !== 'playing') SFX.play(data.status === 'blackjack' ? 'jackpot' : data.status === 'lost' ? 'lose' : 'coin');
-      drawBj(data, true);
+          ${g.can_double ? `<button class="btn small" data-bj="double" type="button" ${state.wallet < g.bet ? 'disabled' : ''}>Verdubbelen</button>` : ''}</div>`;
+        ctl.querySelectorAll('[data-bj]').forEach(b => b.onclick = async () => {
+          ctl.querySelectorAll('button').forEach(x => { x.disabled = true; });
+          const { data, error } = await sb.rpc('bj_action', { p_action: b.dataset.bj });
+          if (error) { $('#bjMsg').className = 'msg err'; $('#bjMsg').textContent = error.message; drawControls(); return; }
+          if (b.dataset.bj === 'double') { casino.bjPlaced = [...(casino.bjPlaced || []), ...(casino.bjPlaced || [])]; state.wallet -= g.bet; syncCoinUI(); }
+          drawBj(data, g);
+        });
+        return;
+      }
+      const sum = casino.bjStack.reduce((x, y) => x + y, 0);
+      ctl.innerHTML = `<div class="bj-chips">${BJ_CHIPS.map(v => `<button type="button" class="chip" data-chip="${v}" ${sum + v > 200 || sum + v > state.wallet ? 'disabled' : ''}>${v}</button>`).join('')}</div>
+        <div class="battle-bar bj-actions">
+          <button class="link" id="bjClear" type="button" ${sum ? '' : 'disabled'}>Wis</button>
+          ${casino.bjLast ? `<button class="link" id="bjRebet" type="button" ${sum ? 'hidden' : ''}>Zelfde inzet (${casino.bjLast.reduce((x, y) => x + y, 0)})</button>` : ''}
+          <button class="btn small" id="bjDeal" type="button" ${sum >= 10 ? '' : 'disabled'}>Delen</button></div>
+        <small class="hint" style="margin:0">Leg fiches op het vak (max 200). Blackjack betaalt 3:2.</small>`;
+      // Enkel bijwerken (niet opnieuw tekenen), zodat snel klikken op fiches altijd telt
+      const refreshBet = () => {
+        const s2 = casino.bjStack.reduce((x, y) => x + y, 0);
+        const circle = box.querySelector('.bet-circle');
+        circle.querySelector('.bet-stack').innerHTML = stackHtml(casino.bjStack);
+        circle.querySelector('.bet-amount').textContent = s2 || 'INZET';
+        ctl.querySelectorAll('[data-chip]').forEach(c => { c.disabled = s2 + Number(c.dataset.chip) > 200 || s2 + Number(c.dataset.chip) > state.wallet; });
+        $('#bjClear').disabled = !s2;
+        $('#bjDeal').disabled = s2 < 10;
+        if ($('#bjRebet')) $('#bjRebet').hidden = s2 > 0;
+      };
+      ctl.querySelectorAll('[data-chip]').forEach(c => c.onclick = () => { casino.bjStack.push(Number(c.dataset.chip)); SFX.play('tick'); refreshBet(); });
+      if ($('#bjClear')) $('#bjClear').onclick = () => { casino.bjStack = []; refreshBet(); };
+      if ($('#bjRebet')) $('#bjRebet').onclick = () => { casino.bjStack = [...casino.bjLast]; refreshBet(); };
+      $('#bjDeal').onclick = async () => {
+        const bet = casino.bjStack.reduce((x, y) => x + y, 0);
+        $('#bjDeal').disabled = true;
+        const { data, error } = await sb.rpc('bj_start', { p_bet: bet });
+        if (error) { $('#bjMsg').className = 'msg err'; $('#bjMsg').textContent = error.message; drawControls(); return; }
+        casino.bjLast = [...casino.bjStack]; casino.bjPlaced = [...casino.bjStack]; casino.bjStack = [];
+        state.wallet -= bet; syncCoinUI();
+        drawBj(data, null);
+      };
     };
   };
-  drawBj(bj.error ? { status: 'none' } : bj.data);
+  if (!bj.error && bj.data?.status === 'playing') casino.bjPlaced = casino.bjPlaced || [bj.data.bet];
+  drawBj(bj.error ? { status: 'none' } : bj.data, null, true);
 
   // Krasbiljet
   const scratchAll = $('#scratchAll');
