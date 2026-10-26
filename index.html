@@ -254,6 +254,209 @@ a{color:var(--amber-soft)}
 .frame-prev.frame-neon{border-color:#2FE0D0;box-shadow:0 0 8px #E040FB;background:#1b1f26}
 .frame-prev.frame-holo{border-image:conic-gradient(#ff6b6b,#ffd93d,#6bff95,#4dd0ff,#b06bff,#ff6b6b) 1;background:#1b1f26}
 .index-list .badge{margin:0 auto 0 6px}
+/* ===== v13: types, statussen en battle-effecten ===== */
+.t-koffie{--tc:#B07A45}.t-deadline{--tc:#E0584B}.t-meeting{--tc:#3E7FD6}
+.type-badge{position:absolute;left:50%;bottom:-10px;transform:translateX(-50%);z-index:3;width:clamp(22px,16cqw,34px);aspect-ratio:1;border-radius:50%;display:grid;place-items:center;
+  background:var(--tc);border:2px solid #fff;font-size:clamp(11px,8cqw,17px);box-shadow:0 2px 8px rgba(0,0,0,.45)}
+.type-chip{display:inline-flex;align-items:center;gap:4px;padding:2px 9px;border-radius:999px;background:color-mix(in srgb,var(--tc) 30%,transparent);border:1px solid var(--tc);font:700 12.5px var(--body);color:var(--ink);vertical-align:middle}
+.rank-chip{display:inline-flex;align-items:center;gap:4px;font:800 13px var(--body);white-space:nowrap}
+.rank-chip.r-zilver{color:#d7dde4}.rank-chip.r-goud{color:#F5D97A}.rank-chip.r-platina{color:#7fe0e0}.rank-chip.r-diamant{color:#b9a2ff}.rank-chip.r-brons{color:#e2a676}
+.team-info{margin:6px 0 0;color:var(--ink-soft);font-size:14.5px;min-height:1.4em}
+.status-row{display:flex;flex-wrap:wrap;gap:4px;justify-content:center;min-height:22px}
+.st{display:inline-flex;align-items:center;gap:3px;padding:1px 7px;border-radius:999px;font:700 12px var(--body);background:rgba(21,24,29,.85);border:1px solid var(--line)}
+.st.burn{border-color:#E0584B;color:#ffb3a8;animation:flicker 1s ease-in-out infinite}
+.st.stun{border-color:#C9B458;color:var(--yellow-soft)}
+.st.shield{border-color:#7fb3e8;color:#cfe4ff}
+.st.syn{border-color:var(--green);color:var(--green-soft)}
+.bench-hp .st{padding:0 4px;font-size:11px}
+@keyframes flicker{50%{opacity:.6}}
+.eff{font-weight:700;font-size:13.5px;margin-left:6px;color:var(--ink-soft)}
+.eff.up{color:var(--green-soft)}.eff.down{color:#F0897E}
+.dmg-pop.heal{color:#8be38b}.dmg-pop.shield{color:#9fd0ff;font-size:30px}.dmg-pop.burn{color:#ffa45c}.dmg-pop.stun{color:var(--yellow-soft);font-size:34px}
+.bt-arena{position:relative}
+.bt-banner{position:absolute;left:50%;top:38%;z-index:8;transform:translate(-50%,-50%);pointer-events:none;white-space:nowrap;
+  font:900 clamp(22px,5vw,38px) var(--display);letter-spacing:.02em;text-shadow:0 3px 0 rgba(0,0,0,.5),0 0 18px rgba(0,0,0,.6);animation:banner 1.1s ease-out forwards}
+.bt-banner.crit{color:#ffd54a}.bt-banner.up{color:#9be89b;font-size:clamp(18px,4vw,28px)}.bt-banner.down{color:#ff9e93;font-size:clamp(18px,4vw,28px)}
+@keyframes banner{0%{opacity:0;transform:translate(-50%,-50%) scale(.4) rotate(-6deg)}20%{opacity:1;transform:translate(-50%,-50%) scale(1.15) rotate(2deg)}70%{opacity:1;transform:translate(-50%,-50%) scale(1)}100%{opacity:0;transform:translate(-50%,-70%) scale(.95)}}
+.quake{animation:quake .45s ease}
+@keyframes quake{20%{transform:translate(-6px,3px)}40%{transform:translate(5px,-4px)}60%{transform:translate(-4px,2px)}80%{transform:translate(3px,-1px)}}
+.fighter-card.lunge-r{animation:lunge-r .45s ease}
+.fighter-card.lunge-l{animation:lunge-l .45s ease}
+@keyframes lunge-r{40%{transform:translateX(28px) rotate(4deg) scale(1.04)}}
+@keyframes lunge-l{40%{transform:translateX(-28px) rotate(-4deg) scale(1.04)}}
+.fighter.ko .fighter-card .card{animation:ko-fall .6s ease forwards}
+@keyframes ko-fall{to{transform:translateY(10px) rotate(-8deg);filter:grayscale(1) brightness(.5)}}
+.sound-btn{width:38px;height:38px;font-size:16px}
+.event-banner{display:grid;gap:2px;padding:10px 14px;border-radius:14px;background:linear-gradient(120deg,rgba(201,180,88,.25),rgba(124,79,224,.22));border:1px solid var(--yellow)}
+.event-banner span{font-size:14px;color:var(--ink-soft)}
+.battle-pick.wrap{flex-wrap:wrap;overflow:visible;max-height:55vh;overflow-y:auto}
+
+/* ===== Stickers: uitgesneden, met witte rand en eigen animatie ===== */
+.sticker{--s:58px;display:inline-grid;place-items:center;width:var(--s);height:var(--s);position:relative}
+.sticker.big{--s:92px}
+.sticker-face{font-size:calc(var(--s) * .72);line-height:1;display:inline-block;
+  filter:drop-shadow(2px 0 0 #fff) drop-shadow(-2px 0 0 #fff) drop-shadow(0 2px 0 #fff) drop-shadow(0 -2px 0 #fff) drop-shadow(0 4px 6px rgba(0,0,0,.45))}
+.sticker.locked .sticker-face{font:800 calc(var(--s) * .45) var(--display);color:var(--muted);filter:none;width:calc(var(--s) * .8);height:calc(var(--s) * .8);
+  display:grid;place-items:center;border:2px dashed var(--line);border-radius:50%}
+.sticker.s-rare::after,.sticker.s-epic::after{content:"";position:absolute;inset:6%;border-radius:50%;z-index:-1;filter:blur(8px);opacity:.75}
+.sticker.s-rare::after{background:radial-gradient(circle,#7fd4ff,transparent 70%)}
+.sticker.s-epic::after{background:conic-gradient(#ff6b6b,#ffd93d,#6bff95,#4dd0ff,#b06bff,#ff6b6b);animation:st-spin 3s linear infinite}
+.sticker.s-epic .sticker-face{animation-duration:1.6s}
+.a-wobble .sticker-face{animation:st-wobble 2.4s ease-in-out infinite}
+.a-bounce .sticker-face{animation:st-bounce 1.6s ease-in-out infinite}
+.a-spin .sticker-face{animation:st-spin 4s linear infinite}
+.a-float .sticker-face{animation:st-float 3s ease-in-out infinite}
+.a-jelly .sticker-face{animation:st-jelly 2s ease-in-out infinite}
+.a-shake .sticker-face{animation:st-shake 2.2s ease-in-out infinite}
+.a-swing .sticker-face{animation:st-swing 2.6s ease-in-out infinite;transform-origin:50% 0}
+@keyframes st-wobble{0%,100%{transform:rotate(-6deg)}50%{transform:rotate(6deg)}}
+@keyframes st-bounce{0%,100%{transform:translateY(0) scale(1,1)}40%{transform:translateY(-14%) scale(.95,1.05)}55%{transform:translateY(0) scale(1.08,.92)}}
+@keyframes st-spin{to{transform:rotate(360deg)}}
+@keyframes st-float{0%,100%{transform:translateY(4%) rotate(-3deg)}50%{transform:translateY(-8%) rotate(3deg)}}
+@keyframes st-jelly{0%,100%{transform:scale(1,1)}25%{transform:scale(1.12,.88)}50%{transform:scale(.92,1.08)}75%{transform:scale(1.04,.96)}}
+@keyframes st-shake{0%,70%,100%{transform:translateX(0)}75%{transform:translateX(-6%) rotate(-5deg)}85%{transform:translateX(6%) rotate(5deg)}}
+@keyframes st-swing{0%,100%{transform:rotate(-10deg)}50%{transform:rotate(10deg)}}
+@media (prefers-reduced-motion:reduce){.sticker-face,.sticker::after{animation:none !important}}
+.album{display:grid;gap:16px;grid-template-columns:repeat(auto-fill,minmax(min(100%,420px),1fr))}
+.album-page{background:linear-gradient(160deg,#FBF7EE,#f1e9d7);color:#241C0F;border-radius:18px;padding:14px 16px;box-shadow:0 10px 26px -12px rgba(0,0,0,.6)}
+.album-page.complete{outline:3px solid var(--yellow)}
+.album-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+.album-head h3{margin:0;color:#241C0F}
+.album-page .pill{background:#e6dcc4;color:#4a3d22;border-color:#d5c6a3}
+.sticker-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.sticker-slot{position:relative;display:grid;justify-items:center;gap:2px;padding:6px 2px;border-radius:12px;background:rgba(255,255,255,.55)}
+.sticker-slot.empty{background:rgba(0,0,0,.05)}
+.sticker-slot small{font:700 11.5px var(--body);text-align:center;color:#5a4a2c;line-height:1.15}
+.sticker-slot .dupe{right:-4px;top:-6px}
+.sticker-reveal{display:flex;flex-wrap:wrap;gap:18px;justify-content:center;min-height:130px}
+.stk-pop{display:grid;justify-items:center;gap:4px;animation:stk-pop .45s cubic-bezier(.2,1.6,.4,1) both}
+.stk-pop small{color:var(--muted)}
+.new-tag{color:var(--yellow-soft);font-weight:800}
+@keyframes stk-pop{from{opacity:0;transform:scale(.2) rotate(-25deg)}to{opacity:1;transform:none}}
+
+/* ===== Casino ===== */
+.casino-grid{display:grid;gap:18px;grid-template-columns:repeat(auto-fill,minmax(min(100%,330px),1fr))}
+.game-panel{background:rgba(35,41,50,.9);border:1px solid var(--line);border-radius:18px;padding:16px 18px;display:grid;gap:10px;justify-items:center;align-content:start;text-align:center}
+.game-panel h3{margin:0}
+.game-panel .hint{margin:0;font-size:14px}
+.wheel-wrap{position:relative;width:min(240px,70vw);aspect-ratio:1}
+.wheel{container-type:inline-size;position:absolute;inset:0;border-radius:50%;border:6px solid #F4EFE4;box-shadow:0 0 0 4px #9c8631,0 12px 30px -8px rgba(0,0,0,.7);transition:transform 4.2s cubic-bezier(.12,.75,.15,1)}
+.wheel-label{position:absolute;left:50%;top:50%;font:800 6.5cqw var(--body);color:#fff;text-shadow:0 1px 2px rgba(0,0,0,.6);white-space:nowrap;
+  transform:translate(-50%,-50%) rotate(var(--a)) translateY(-33cqw)}
+.wheel-hub{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:16cqw;aspect-ratio:1;border-radius:50%;background:#F4EFE4;color:#9c8631;display:grid;place-items:center;font-size:8cqw;box-shadow:0 2px 6px rgba(0,0,0,.5)}
+.wheel-pointer{position:absolute;left:50%;top:-14px;transform:translateX(-50%);z-index:2;color:#E8C34C;font-size:30px;text-shadow:0 2px 4px rgba(0,0,0,.6)}
+.reels{display:flex;gap:8px;padding:10px;border-radius:16px;background:linear-gradient(#2a1f12,#3d2c16);border:3px solid #D9A61C;box-shadow:inset 0 4px 12px rgba(0,0,0,.6)}
+.reels.win{animation:reel-win .5s ease 3}
+@keyframes reel-win{50%{box-shadow:0 0 26px #E8C34C,inset 0 4px 12px rgba(0,0,0,.6)}}
+.reel{width:68px;height:78px;display:grid;place-items:center;font-size:44px;background:linear-gradient(#fff,#e9e4d6 50%,#fff);border-radius:10px;box-shadow:inset 0 3px 8px rgba(0,0,0,.35)}
+.reel.spinning{filter:blur(1.5px)}
+.reel.stop{animation:reel-stop .3s ease}
+@keyframes reel-stop{30%{transform:translateY(8px)}}
+.bet-row{display:flex;align-items:center;gap:6px;flex-wrap:wrap;justify-content:center;font-weight:700;color:var(--ink-soft)}
+.chip{min-width:44px;padding:7px 10px;border-radius:999px;border:2px solid var(--line);background:rgba(21,24,29,.8);color:var(--ink);font:800 14px var(--body);cursor:pointer}
+.chip.on{border-color:var(--yellow);background:rgba(201,180,88,.25);color:var(--yellow-soft)}
+.paytable{font-size:13.5px;color:var(--ink-soft)}
+.paytable summary{cursor:pointer}
+.paytable p{margin:6px 0 0}
+.bj-panel{background:radial-gradient(circle at 50% 30%,#2f6b3a,#1d4a2a 70%);border-color:#4C8A47}
+#bjTable{display:grid;gap:10px;justify-items:center;width:100%}
+.bj-row{display:grid;gap:4px;justify-items:center}
+.bj-label{font:700 14px var(--body);color:#d8ecd2}
+.bj-cards{display:flex;gap:6px;min-height:78px}
+.pcard{width:52px;height:74px;border-radius:8px;background:#fff;color:#1b1b1b;display:grid;grid-template-rows:auto 1fr;padding:4px 6px;box-shadow:0 4px 10px rgba(0,0,0,.45);font-family:var(--display)}
+.pcard b{font-size:17px;line-height:1}.pcard i{font-style:normal;font-size:26px;align-self:center;justify-self:center}
+.pcard.red{color:#c8322a}
+.pcard.back{background:repeating-linear-gradient(45deg,#7C4FE0 0 6px,#5b36b0 6px 12px);border:3px solid #fff}
+.bj-cards.deal .pcard{animation:deal .35s ease both;animation-delay:calc(var(--i) * 90ms)}
+@keyframes deal{from{opacity:0;transform:translate(40px,-30px) rotate(12deg)}}
+.bj-bet{width:84px;padding:7px 9px;border-radius:10px;border:1px solid var(--line);background:var(--panel);color:var(--ink);font:700 15px var(--body)}
+.scratch-card{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;padding:12px;border-radius:14px;background:linear-gradient(135deg,#E8C34C,#C99A1E);width:min(280px,80vw)}
+.scratch-card.idle{display:grid;place-items:center;height:150px;font-size:60px;grid-template-columns:1fr}
+.scratch-cell{position:relative;height:66px;border-radius:10px;background:#fff8e6;display:grid;place-items:center;overflow:hidden;touch-action:none}
+.scratch-sym{display:grid;justify-items:center;font-size:24px;line-height:1}
+.scratch-sym b{font:800 12px var(--body);color:#6b5520}
+.scratch-cell canvas{position:absolute;inset:0;width:100%;height:100%;cursor:crosshair;transition:opacity .4s}
+.scratch-cell canvas.gone{opacity:0;pointer-events:none}
+.scratch-cell.match{animation:reel-win .5s ease 3;outline:3px solid #5DA352}
+
+/* ===== Puzzels ===== */
+.conn{max-width:620px}
+.conn-solved{display:grid;gap:8px;margin-bottom:8px}
+.conn-group{display:grid;gap:2px;padding:10px 14px;border-radius:12px;color:#15181D;text-align:center;animation:stk-pop .35s ease both}
+.conn-group strong{text-transform:uppercase;letter-spacing:.04em}
+.conn-group span{font-size:14px}
+.conn-group.l1{background:#F5D97A}.conn-group.l2{background:#9fd88f}.conn-group.l3{background:#9cc3f0}.conn-group.l4{background:#c7a8f2}
+.conn-group.missed{opacity:.7;outline:2px dashed rgba(0,0,0,.3);outline-offset:-4px}
+.conn-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.conn-word{min-height:62px;padding:6px 4px;border:0;border-radius:12px;background:#E9E4D6;color:#15181D;font:800 clamp(12px,3vw,15px) var(--body);cursor:pointer;transition:transform .1s,background .15s;word-break:break-word}
+.conn-word.long{font-size:clamp(10px,2.4vw,12.5px)}
+.conn-word:hover{transform:translateY(-2px)}
+.conn-word.on{background:#5a5f6b;color:#fff}
+.conn-word.shake{animation:shake .4s ease}
+.conn-foot{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin-top:12px}
+.conn-lives{display:flex;align-items:center;gap:5px;color:var(--ink-soft);font-weight:600}
+.life{width:13px;height:13px;border-radius:50%;background:var(--ink-soft)}
+.life.lost{background:var(--line)}
+.memory-wrap,.sudoku-wrap{display:grid;gap:12px;justify-items:start}
+.memory-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;width:min(420px,100%)}
+.mem-card{aspect-ratio:1;border:0;padding:0;background:none;cursor:pointer;perspective:600px}
+.mem-inner{position:relative;display:block;width:100%;height:100%;transition:transform .35s ease;transform-style:preserve-3d}
+.mem-card.up .mem-inner{transform:rotateY(180deg)}
+.mem-back,.mem-front{position:absolute;inset:0;border-radius:12px;backface-visibility:hidden;display:grid;place-items:center}
+.mem-back{background:repeating-linear-gradient(45deg,#2f6b3a 0 8px,#3a7f46 8px 16px);border:3px solid #d9c46a}
+.mem-front{background:#FBF7EE;transform:rotateY(180deg);font-size:clamp(28px,8vw,44px)}
+.mem-card.matched .mem-front{background:#d9f2d2;box-shadow:0 0 0 3px var(--green)}
+.mem-card:disabled{cursor:default}
+.sud-grid{display:grid;grid-template-columns:repeat(6,1fr);width:min(360px,100%);border:3px solid var(--ink-soft);border-radius:10px;overflow:hidden;background:var(--ink-soft);gap:1px}
+.sud-cell{aspect-ratio:1;border:0;background:#FBF7EE;color:#3E7FD6;font:800 clamp(20px,6vw,28px) var(--display);cursor:pointer;padding:0}
+.sud-cell.given{color:#15181D;background:#efe7d4;cursor:default}
+.sud-cell.sel{background:#fff1b8}
+.sud-cell.bad{color:#c8322a;background:#ffe0dc}
+.sud-cell.br{box-shadow:inset -2px 0 0 var(--ink-soft)}
+.sud-cell.bb{box-shadow:inset 0 -2px 0 var(--ink-soft)}
+.sud-cell.br.bb{box-shadow:inset -2px 0 0 var(--ink-soft),inset 0 -2px 0 var(--ink-soft)}
+.sud-pad{display:flex;gap:6px;flex-wrap:wrap}
+.sud-pad .chip{min-width:46px;font-size:18px}
+
+/* ===== Profiel, bureau en huisdier ===== */
+.prof-card{background:rgba(35,41,50,.9);border:1px solid var(--line);border-radius:18px;padding:16px 18px}
+.prof-head{display:flex;gap:14px;align-items:center}
+.prof-head h2{margin:0 0 6px}
+.prof-av{width:72px;height:72px;flex-shrink:0;border-radius:50%;border:3px solid var(--line);background:var(--bg2) center/cover;display:grid;place-items:center;font:800 28px var(--body);color:#fff}
+.badge-row{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px}
+.ach-badge{width:34px;height:34px;display:grid;place-items:center;border-radius:50%;background:linear-gradient(135deg,#F5D97A,#C99A1E);font-size:18px;box-shadow:0 2px 6px rgba(0,0,0,.4)}
+.showcase{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:8px;max-width:420px}
+.show-slot.empty{aspect-ratio:5/7;border:2px dashed var(--line);border-radius:14px;display:grid;place-items:center;color:var(--muted);font-size:13px;text-align:center;padding:6px}
+.ach-icon{font-size:26px}
+.ach-list{max-height:520px;overflow-y:auto;padding-right:4px}
+.bureau{position:relative;height:260px;border-radius:18px;overflow:hidden;margin-top:8px;border:1px solid var(--line);
+  background:linear-gradient(#6d8fb3 0 62%,#8a6a4a 62% 100%)}
+.b-wall{position:absolute;inset:0 0 38% 0;background:linear-gradient(#4b5d73,#3a4a5d)}
+.b-window{position:absolute;left:8%;top:12%;width:32%;height:62%;border:6px solid #e9e4d6;border-radius:8px;display:grid;place-items:center;font-size:54px;
+  background:linear-gradient(#9fd2ff,#d9efff);overflow:hidden;box-shadow:inset 0 0 0 3px #c6bfae}
+.b-window::after{content:"";position:absolute;left:50%;top:0;bottom:0;border-left:4px solid #e9e4d6}
+.b-poster{position:absolute;right:12%;top:14%;font-size:52px;filter:drop-shadow(0 4px 4px rgba(0,0,0,.4))}
+.b-desk{position:absolute;left:6%;right:6%;bottom:26%;height:16px;background:linear-gradient(#c79a62,#9c7443);border-radius:6px;box-shadow:0 6px 0 #6e4f2c}
+.b-desk > span{position:absolute;bottom:14px;font-size:38px;line-height:1;filter:drop-shadow(0 3px 2px rgba(0,0,0,.35))}
+.b-lamp{left:2%}.b-plant{left:18%}.b-pc{left:40%;font-size:48px !important}.b-drink{left:64%}.b-pet{right:4%}
+.b-floor{position:absolute;right:10%;bottom:4%;font-size:56px;filter:drop-shadow(0 4px 3px rgba(0,0,0,.4))}
+.b-prev{border-radius:10px;font-size:20px;display:grid;place-items:center}
+.bureau-editor{margin-top:12px;max-height:420px;overflow-y:auto;padding-right:4px}
+.pet{display:inline-block;font-size:30px;line-height:1;animation:st-bounce 2s ease-in-out infinite}
+.pet.big{font-size:72px}
+.pet.st-ei{animation:st-wobble 1.2s ease-in-out infinite}
+.pet.st-baby{transform-origin:bottom;font-size:22px}.pet.big.st-baby{font-size:52px}
+.pet.st-jong{font-size:26px}.pet.big.st-jong{font-size:62px}
+.pet.st-volwassen{font-size:32px}.pet.big.st-volwassen{font-size:80px}
+.pet.v-goud{filter:sepia(1) saturate(4) hue-rotate(-12deg) drop-shadow(0 0 8px #E8C34C)}
+.pet.v-regenboog{animation:st-bounce 2s ease-in-out infinite,rainbow 3s linear infinite}
+@keyframes rainbow{to{filter:hue-rotate(360deg) drop-shadow(0 0 8px #b06bff)}}
+.pet-panel{background:rgba(35,41,50,.9);border:1px solid var(--line);border-radius:18px;padding:14px 16px}
+.pet-show{display:flex;gap:16px;align-items:center}
+.pet-show > div{flex:1}
+.pet-name{font-size:18px}
+.prof-modal{max-width:640px}
+.prof-modal h3{margin:14px 0 6px}
 
 /* Ideeënbus */
 .ideas-grid{grid-template-columns:minmax(0,.8fr) minmax(0,1.2fr)}
@@ -725,7 +928,8 @@ const PARTICLE_COLORS = {
 };
 
 const state = { session: null, recovery: IS_RECOVERY_LINK, cards: [], owned: new Map(), play: null, name: '', avatarUrl: null, friendCode: '', wallet: 0, incomingRequests: 0, incomingBattles: 0, welcomeAvailable: false, isAdmin: false, tab: 'today', page: 0,
-  levels: new Map(), badges: new Set(), equipped: { frame: null, ring: null, title: null }, v12: false };
+  levels: new Map(), badges: new Set(), equipped: { frame: null, ring: null, title: null }, v12: false,
+  types: {}, v13: false, event: null };
 
 // Werkt alle plekken bij die het polycoins-saldo tonen (topbalk + account-tab)
 function syncCoinUI() {
@@ -815,7 +1019,7 @@ async function route() {
 
 async function loadData() {
   const uid = state.session.user.id;
-  const [cards, mine, prof, wallet, requests, admin, battlesIn, welcome, cosm, levels, badges] = await Promise.all([
+  const [cards, mine, prof, wallet, requests, admin, battlesIn, welcome, cosm, levels, badges, types, weekEvent] = await Promise.all([
     sb.from('cards').select('*').order('id'),
     sb.from('user_cards').select('card_id').eq('user_id', uid),
     sb.from('profiles').select('display_name, avatar_url, friend_code').eq('id', uid).maybeSingle(),
@@ -827,7 +1031,10 @@ async function loadData() {
     // Uitbreiding v12 (niet fataal als het script nog niet uitgevoerd is)
     sb.from('profiles').select('equipped_frame, equipped_ring, equipped_title').eq('id', uid).maybeSingle(),
     sb.from('card_levels').select('card_id, level').eq('user_id', uid),
-    sb.from('collection_rewards').select('person').eq('user_id', uid)
+    sb.from('collection_rewards').select('person').eq('user_id', uid),
+    // Uitbreiding v13 (types per collega en het event van de week)
+    sb.rpc('card_types'),
+    sb.rpc('week_event'),
   ]);
   for (const r of [cards, mine, prof, wallet]) if (r.error) throw new Error(r.error.message);
   // Niet fataal: enkel voor het bolletje op de Vrienden-tab
@@ -850,7 +1057,84 @@ async function loadData() {
   state.levels = new Map((levels.data || []).map(r => [r.card_id, r.level]));
   state.badges = new Set((badges.data || []).map(r => r.person));
   state.equipped = { frame: cosm.data?.equipped_frame || null, ring: cosm.data?.equipped_ring || null, title: cosm.data?.equipped_title || null };
+  state.v13 = !types.error;
+  state.types = types.data || {};
+  state.event = weekEvent.data || null;
 }
+
+// ---------- Types, vaardigheden en geluid (v13) ----------
+const TYPES = { koffie: { icon: '☕', name: 'Koffie' }, deadline: { icon: '⏰', name: 'Deadline' }, meeting: { icon: '📊', name: 'Meeting' } };
+const BEATS = { koffie: 'deadline', deadline: 'meeting', meeting: 'koffie' };
+const typeOf = c => (c && c.rarity !== 'cat' && TYPES[state.types[c.person]] ? state.types[c.person] : null);
+const effOf = (a, d) => (!a || !d ? 1 : BEATS[a] === d ? 1.5 : BEATS[d] === a ? 0.75 : 1);
+const typeChip = ty => (ty ? `<span class="type-chip t-${ty}" title="Type: ${TYPES[ty].name}">${TYPES[ty].icon} ${TYPES[ty].name}</span>` : '');
+const ABILITIES = {
+  koffie: { name: 'Koffieboost', epic: '🛡️ schild + genezen', leg: '+ 🛡️ schild' },
+  deadline: { name: 'Deadline-druk', epic: 'aanval + 🔥 brand', leg: '+ 🔥 brand' },
+  meeting: { name: 'Eindeloze meeting', epic: 'lichte aanval + 💫 verdoofd', leg: '+ 💫 verdoofd' },
+};
+// Vaardigheid van een kaart (epics en legendaries); zonder v13 enkel de oude special van legendaries
+function abilityOf(c) {
+  if (!c) return null;
+  const ty = typeOf(c);
+  if (c.rarity === 'legendary') return { name: c.special_name || 'Special', cost: 4, info: `zware klap${state.v13 && ty ? ' ' + ABILITIES[ty].leg : ''} · 4 ⚡` };
+  if (c.rarity === 'epic' && state.v13 && ty) return { name: ABILITIES[ty].name, cost: 3, info: `${ABILITIES[ty].epic} · 3 ⚡` };
+  return null;
+}
+const RANKS = {
+  brons: { icon: '🥉', name: 'Brons' }, zilver: { icon: '🥈', name: 'Zilver' }, goud: { icon: '🥇', name: 'Goud' },
+  platina: { icon: '💠', name: 'Platina' }, diamant: { icon: '💎', name: 'Diamant' },
+};
+const rankChip = (rank, points) => (RANKS[rank] ? `<span class="rank-chip r-${rank}">${RANKS[rank].icon} ${RANKS[rank].name}${points != null ? ` · ${points}` : ''}</span>` : '');
+
+// Geluidseffecten (zelf gesynthetiseerd, standaard uit)
+const SFX = (() => {
+  let ctx = null;
+  const on = () => { try { return localStorage.getItem('ptc-sound') === '1'; } catch (_) { return false; } };
+  const tone = (f, dur, { type = 'sine', vol = .12, at = 0, to = null } = {}) => {
+    const t = ctx.currentTime + at, o = ctx.createOscillator(), g = ctx.createGain();
+    o.type = type; o.frequency.setValueAtTime(f, t);
+    if (to) o.frequency.exponentialRampToValueAtTime(to, t + dur);
+    g.gain.setValueAtTime(vol, t); g.gain.exponentialRampToValueAtTime(.0001, t + dur);
+    o.connect(g).connect(ctx.destination); o.start(t); o.stop(t + dur + .02);
+  };
+  const noise = (dur, vol = .15, at = 0) => {
+    const t = ctx.currentTime + at, len = Math.floor(ctx.sampleRate * dur), buf = ctx.createBuffer(1, len, ctx.sampleRate), d = buf.getChannelData(0);
+    for (let i = 0; i < len; i++) d[i] = (Math.random() * 2 - 1) * (1 - i / len);
+    const src = ctx.createBufferSource(), g = ctx.createGain(); src.buffer = buf; g.gain.value = vol;
+    src.connect(g).connect(ctx.destination); src.start(t);
+  };
+  const SOUNDS = {
+    hit: () => { noise(.12, .18); tone(160, .15, { type: 'square', vol: .06, to: 70 }); },
+    crit: () => { noise(.2, .25); tone(320, .25, { type: 'sawtooth', vol: .08, to: 60 }); tone(880, .12, { vol: .06, at: .05 }); },
+    ko: () => { tone(400, .5, { type: 'triangle', vol: .12, to: 60 }); },
+    heal: () => { [523, 659, 784].forEach((f, i) => tone(f, .18, { vol: .07, at: i * .07 })); },
+    shield: () => { tone(300, .3, { type: 'triangle', vol: .08, to: 600 }); },
+    burn: () => { noise(.3, .08); tone(200, .3, { type: 'sawtooth', vol: .04, to: 400 }); },
+    stun: () => { tone(900, .08, { vol: .06 }); tone(700, .08, { vol: .06, at: .09 }); tone(900, .08, { vol: .06, at: .18 }); },
+    win: () => { [523, 659, 784, 1047].forEach((f, i) => tone(f, .25, { type: 'triangle', vol: .1, at: i * .12 })); },
+    lose: () => { [392, 330, 262].forEach((f, i) => tone(f, .3, { type: 'triangle', vol: .09, at: i * .16 })); },
+    coin: () => { tone(988, .08, { type: 'square', vol: .05 }); tone(1319, .25, { type: 'square', vol: .05, at: .08 }); },
+    tick: () => { tone(1200, .03, { type: 'square', vol: .03 }); },
+    flip: () => { noise(.05, .06); },
+    jackpot: () => { [523, 659, 784, 1047, 1319, 1568].forEach((f, i) => tone(f, .2, { type: 'square', vol: .05, at: i * .08 })); },
+  };
+  return {
+    on,
+    play(name) {
+      if (!on() || !SOUNDS[name]) return;
+      try { ctx = ctx || new (window.AudioContext || window.webkitAudioContext)(); if (ctx.state === 'suspended') ctx.resume(); SOUNDS[name](); } catch (_) {}
+    },
+    toggle() { try { localStorage.setItem('ptc-sound', on() ? '0' : '1'); } catch (_) {} },
+  };
+})();
+const soundBtn = () => `<button class="iconbtn sound-btn" type="button" data-sound title="Geluid aan/uit" aria-label="Geluid aan/uit">${SFX.on() ? '🔊' : '🔇'}</button>`;
+document.addEventListener('click', e => {
+  if (!e.target.closest('[data-sound]')) return;
+  SFX.toggle();
+  document.querySelectorAll('[data-sound]').forEach(b => { b.textContent = SFX.on() ? '🔊' : '🔇'; });
+  SFX.play('coin');
+});
 
 // ---------- Cosmetica, levels en meldingen ----------
 const TITLE_NAMES = { title_coffee: 'Koffiebaas', title_wizard: 'Wordle Wizard', title_boss: 'Battle Boss', title_collector: 'Meesterverzamelaar' };
@@ -888,6 +1172,13 @@ async function checkCollection() {
     syncCoinUI();
     if (state.tab === 'book') renderView();
   } finally { collectionBusy = false; }
+  if (state.v13) {
+    const { data: themes } = await sb.rpc('claim_sticker_rewards');
+    for (const c of themes || []) {
+      state.wallet += c.reward; syncCoinUI();
+      toast(`📒 Stickerthema <strong>${esc(STICKER_THEMES[c.theme] || c.theme)}</strong> compleet! +${c.reward} 🪙`, 7000);
+    }
+  }
 }
 
 // Telt per card_id hoeveel exemplaren een gebruiker bezit, op basis van ruwe user_cards-rijen
@@ -1100,9 +1391,11 @@ function renderCard(c, { locked = false, count = 1, level = 1, frame = null } = 
   const art = c.image_url
     ? `<img src="${esc(c.image_url)}" alt="${esc(c.name)}" loading="lazy">`
     : (c.rarity === 'cat' ? '<span class="ptile cat">🐱</span>' : `<span class="ptile">${initial}</span>`);
+  const epicAb = c.rarity === 'epic' ? abilityOf(c) : null;
   const special = c.special_name
     ? `<div class="special">★ ${esc(c.special_name)}${c.special_power ? ` (${esc(c.special_power)})` : ''}<small>${esc(c.special_desc)}</small></div>`
-    : '';
+    : epicAb ? `<div class="special">★ ${esc(epicAb.name)}<small>${esc(epicAb.info)}</small></div>` : '';
+  const ty = typeOf(c);
   const flavor = c.flavor_text ? `<div class="flavor">"${esc(c.flavor_text)}"</div>` : '';
   const nameLen = c.name.length;
   const nameCls = nameLen > 22 ? 'cname xxl' : nameLen > 14 ? 'cname xl' : 'cname';
@@ -1113,6 +1406,7 @@ function renderCard(c, { locked = false, count = 1, level = 1, frame = null } = 
   return `<div class="cw${frameCls}">
     ${count > 1 ? `<span class="dupe">×${count}</span>` : ''}
     ${lv > 1 ? `<span class="lvl-badge" title="Level ${lv}">${stars(lv)}</span>` : ''}
+    ${ty ? `<span class="type-badge t-${ty}" title="Type: ${TYPES[ty].name}">${TYPES[ty].icon}</span>` : ''}
     <div class="card r-${c.rarity}">
       <div class="art">${art}</div>
       ${lv >= 3 ? '<span class="glitter" aria-hidden="true"></span>' : ''}
@@ -1129,11 +1423,15 @@ function renderCard(c, { locked = false, count = 1, level = 1, frame = null } = 
 const TABS = [
   { id: 'today', label: 'Today', icon: '🎴' },
   { id: 'book', label: 'My Book', icon: '📖' },
-  { id: 'stats', label: 'Stats', icon: '📊' },
   { id: 'battle', label: 'Battle', icon: '⚔️', badge: 'battle' },
+  { id: 'puzzles', label: 'Puzzles', icon: '🧩' },
+  { id: 'casino', label: 'Casino', icon: '🎰' },
+  { id: 'stickers', label: 'Stickers', icon: '🏷️' },
+  { id: 'profile', label: 'Profile', icon: '👤' },
   { id: 'friends', label: 'Friends', icon: '👥', badge: 'friend' },
   { id: 'trade', label: 'Trade', icon: '🔁' },
   { id: 'shop', label: 'Shop', icon: '🛒' },
+  { id: 'stats', label: 'Stats', icon: '📊' },
   { id: 'ideas', label: 'Ideas', icon: '💡' },
 ];
 
@@ -1227,6 +1525,7 @@ const INFO = {
     <p>Elke collega heeft een eigen pagina met 9 kaarten: 6 commons, 2 epics en 1 legendary. Troostkatten krijgen hun eigen pagina.</p>
     <ul><li>Klik op een kaart om ze groot te bekijken, tik nog eens om ze om te draaien.</li>
     <li>Achteraan vind je de pagina <strong>Dubbels</strong> met alle kaarten die je meer dan één keer hebt.</li>
+    <li>Het rondje onderaan een kaart toont het <strong>type</strong> voor Battle: ☕ Koffie, ⏰ Deadline of 📊 Meeting.</li>
     <li>🏅 <strong>Pagina compleet?</strong> Dan krijg je 100 🪙 en een medaille. Het volledige boek (zonder troostkatten) levert 250 🪙 en de titel <em>Meesterverzamelaar</em> op.</li>
     <li>⬆️ <strong>Opwaarderen</strong>: open een kaart en gebruik 2 dubbels om ze een ★ hoger te zetten (max ★★★). Elke ★ geeft +10% HP, ATK en DEF in Battle. Op ★★★ glinstert de kaart.</li></ul>`],
   stats: ['Statistieken', `<p>Een overzicht van al je Wordles (2 per dag): hoe vaak je speelde, je huidige streak (opeenvolgende dagen), hoe vaak je de Wordle oploste en in hoeveel pogingen.</p>`],
@@ -1235,9 +1534,14 @@ const INFO = {
     <ul><li>⚔️ <strong>Aanval</strong>: normale schade, +1 ⚡ energie.</li>
     <li>💥 <strong>Krachtaanval</strong>: 1,7× schade, kost 2 ⚡.</li>
     <li>🛡️ <strong>Verdedigen</strong>: je krijgt deze ronde maar de helft van de schade, +2 ⚡.</li>
-    <li>★ <strong>Special</strong> (legendaries): vaste zware schade die door verdediging gaat, kost 4 ⚡.</li>
+    <li>★ <strong>Vaardigheid</strong> (epics en legendaries): zie hieronder. De klap van een legendary gaat door verdediging heen.</li>
     <li>🔄 <strong>Wisselen</strong>: ruil je kaart met een kaart van je bank. Gebeurt vóór de aanvallen, +1 ⚡.</li></ul>
     <p>Elke ronde gebeuren eerst de wissels, daarna valt de kaart met de hoogste ATK eerst aan — die mag dus elke ronde als eerste slaan. Valt een kaart uit, dan komt de volgende uit je team erin. Wie eerst 3 kaarten verliest, verliest.</p>
+    <p><strong>Types</strong>: elke collega heeft een type. ☕ Koffie wint van ⏰ Deadline, ⏰ Deadline wint van 📊 Meeting en 📊 Meeting wint van ☕ Koffie. Sterk = 1,5× schade, zwak = 0,75×.</p>
+    <ul><li><strong>Vaardigheden</strong>: epics (3 ⚡) en legendaries (4 ⚡) hebben een vaardigheid volgens hun type: ☕ 🛡️ schild en genezen, ⏰ 🔥 brand (schade elke ronde), 📊 💫 verdoofd (kan volgende ronde niet aanvallen).</li>
+    <li><strong>🤝 Synergie</strong>: 2 kaarten van dezelfde collega in je team krijgen allebei +10%.</li>
+    <li><strong>Voltreffer</strong>: 10% kans op 1,5× schade.</li></ul>
+    <p><strong>Rangen</strong>: tegen vrienden win of verlies je punten. 🥉 Brons → 🥈 Zilver (1100) → 🥇 Goud (1200) → 💠 Platina (1350) → 💎 Diamant (1500). Elke maand start een nieuw seizoen op 1000, met een beloning volgens je eindrang.</p>
     <p><strong>Polycoins</strong>: computer makkelijk/normaal/moeilijk = 5/10/20 (max 5 per dag). Tegen een vriend: winnaar 25, verliezer 5 (max 3 per dag). Opgeven levert niets op.</p>`],
   friends: ['Vrienden', `
     <p>Deel je code met collega's, of voer hun code in om een vriendschapsverzoek te sturen.</p>
@@ -1255,6 +1559,29 @@ const INFO = {
     <li><strong>Opwaarderen</strong>: 2 dubbels maken een kaart een ★ sterker in Battle (max ★★★).</li>
     <li><strong>Wordle-hulp</strong> (op Today, tijdens een ronde): een letter onthullen voor 40 🪙 (max 2 per ronde) of een 7e poging voor 60 🪙.</li>
     <li><strong>Cosmetica</strong>: kaartranden, profielringen en titels. Puur voor de show, je kan ze altijd aan- of uitzetten.</li></ul>`],
+  puzzles: ['Puzzels', `
+    <p>Elke dag 3 nieuwe puzzels, voor iedereen dezelfde. Elke opgeloste puzzel geeft polycoins en een sticker.</p>
+    <ul><li>🔗 <strong>Verbanden</strong>: vind 4 groepjes van 4 woorden die iets gemeen hebben. Max 4 fouten. Geen fouten = 40 🪙.</li>
+    <li>🧠 <strong>Memory</strong>: vind de 8 paren in zo weinig mogelijk beurten (10 beurten of minder = 40 🪙).</li>
+    <li>🔢 <strong>Sudoku</strong>: elke rij, kolom en elk blokje van 2×3 bevat 1 tot 6. Onder 3 minuten = 45 🪙.</li>
+    <li>🏁 <strong>Klassement</strong>: wie van je vrienden deed het vandaag het best?</li></ul>`],
+  casino: ['Casino', `
+    <p>Speel met je polycoins (nooit met echt geld). Gemiddeld wint het casino een klein beetje.</p>
+    <ul><li>🎡 <strong>Rad van fortuin</strong>: elke dag gratis draaien voor polycoins, een sticker of een pakje.</li>
+    <li>🎰 <strong>Fruitautomaat</strong>: 3 dezelfde = je inzet maal 5 tot 100 (💎💎💎). 2 dezelfde = inzet terug.</li>
+    <li>🃏 <strong>Blackjack</strong>: kom zo dicht mogelijk bij 21. De dealer moet doorgaan tot 17. Blackjack betaalt 3:2, verdubbelen mag met je eerste 2 kaarten.</li>
+    <li>🎟️ <strong>Krasbiljet</strong>: 25 🪙, kras 6 vakjes open. 3 dezelfde = prijs tot 250 🪙 of een zeldzame sticker.</li></ul>`],
+  stickers: ['Stickeralbum', `
+    <p>Verzamel 48 geanimeerde stickers in 6 thema's. Stickers die je nog niet hebt, blijven geheim.</p>
+    <ul><li>Je krijgt stickers bij elke opgeloste puzzel, prestatie, op het rad van fortuin, met een krasbiljet of met een stickerpakje (3 stickers voor 40 🪙).</li>
+    <li>Gewoon, ✨ zeldzaam en 🌈 episch. Zeldzamere stickers glinsteren.</li>
+    <li>Een thema vol? Dan krijg je 75 🪙 en een themaposter voor je bureau.</li></ul>`],
+  profile: ['Profiel', `
+    <p>Jouw plekje, dat je vrienden ook kunnen bekijken via de vriendenlijst.</p>
+    <ul><li>⭐ <strong>Favoriete kaarten</strong>: kies 3 kaarten om te tonen. Vrienden zien enkel de kaarten die ze zelf ook hebben.</li>
+    <li>🪑 <strong>Bureau</strong>: richt je kantoorhoekje in met spullen uit de winkel of uit beloningen.</li>
+    <li>🐾 <strong>Huisdier</strong>: begint als ei en groeit als je elke dag speelt. Zeldzame dieren en ✨ gouden of 🌈 regenboogvarianten zijn mogelijk.</li>
+    <li>🏅 <strong>Prestaties</strong>: haal mijlpalen voor polycoins, een zeldzame sticker en een badge.</li></ul>`],
   trade: ['Traden', `
     <p>Stel een ruil voor aan een vriend. Je kan enkel <strong>dubbels</strong> aanbieden — je houdt altijd minstens 1 exemplaar van elke kaart over.</p>
     <ul><li>Je vriend kan accepteren, een tegenbod doen of annuleren.</li>
@@ -1368,7 +1695,7 @@ function initBackground() {
   }, { passive: true });
   // Klik of tik op een lege plek: een regen van tegels
   addEventListener('pointerdown', e => {
-    if (reduce || e.target.closest('button,a,input,textarea,select,label,dialog,.card,.cw,.book,.menu,.stage,.hub,table,.friend-row,.trade-card,.battle-box,.battle-row,.stat-card,.pick,.mycode')) return;
+    if (reduce || e.target.closest('button,a,input,textarea,select,label,dialog,.card,.cw,.book,.menu,.stage,.hub,.game-panel,.conn,.memory-wrap,.sudoku-wrap,.album,.bureau,.prof-card,table,.friend-row,.trade-card,.battle-box,.battle-row,.stat-card,.pick,.mycode')) return;
     for (let i = 0; i < 16 && bits.length < 120; i++) {
       const a = rnd(0, Math.PI * 2), v = rnd(160, 420);
       bits.push({ x: e.clientX, y: e.clientY, vx: Math.cos(a) * v, vy: Math.sin(a) * v - 220, rot: rnd(0, 6.28), vr: rnd(-8, 8),
@@ -1506,6 +1833,10 @@ function renderView() {
   else if (state.tab === 'trade') renderTrade(view);
   else if (state.tab === 'shop') renderShop(view);
   else if (state.tab === 'ideas') renderIdeas(view);
+  else if (state.tab === 'puzzles') renderPuzzles(view);
+  else if (state.tab === 'casino') renderCasino(view);
+  else if (state.tab === 'stickers') renderStickers(view);
+  else if (state.tab === 'profile') renderProfile(view);
 }
 
 // ---------- Tab: Today — eigen Wordle, 2 rondes per dag ----------
@@ -1648,7 +1979,8 @@ const HUB_TABS = [
 ];
 function hubHtml(card) {
   if (!wordle.hub || (wordle.hub === 'card' && !card)) wordle.hub = card ? 'card' : 'quests';
-  return `<div class="seg hub-tabs" role="tablist">${HUB_TABS.filter(t => t.id !== 'card' || card).map(t =>
+  const ev = state.event ? `<div class="event-banner" title="Tot ${esc(state.event.ends)}"><strong>${esc(state.event.title)}</strong><span>${esc(state.event.desc)}</span></div>` : '';
+  return `${ev}<div class="seg hub-tabs" role="tablist">${HUB_TABS.filter(t => t.id !== 'card' || card).map(t =>
     `<button type="button" role="tab" data-hub="${t.id}" class="${t.id === wordle.hub ? 'on' : ''}" aria-selected="${t.id === wordle.hub}">${t.label}</button>`).join('')}</div>
     <div class="hub-body" id="hubBody" role="tabpanel"></div>`;
 }
@@ -1734,6 +2066,9 @@ function newsLine(a) {
     case 'page_complete': return ['🏅', `${who} vervolledigde de pagina van <strong>${esc(a.data?.person || '?')}</strong>.`];
     case 'book_complete': return ['🏆', `${who} verzamelde het volledige boek!`];
     case 'max_level': return ['⭐', `${who} waardeerde ${cardTxt} op tot ${stars(3)}.`];
+    case 'achievement': return [a.data?.icon || '🏅', `${who} behaalde de prestatie <strong>${esc(a.data?.title || '')}</strong>.`];
+    case 'jackpot': return ['💎', `${who} draaide de JACKPOT op de fruitautomaat: +${a.data?.win || 0} 🪙!`];
+    case 'sticker_theme': return ['📒', `${who} vervolledigde het stickerthema <strong>${esc(STICKER_THEMES[a.data?.theme] || a.data?.theme || '')}</strong>.`];
     default: return null;
   }
 }
@@ -2230,6 +2565,7 @@ async function renderFriends(view) {
               <span class="friend-name">${esc(f.display_name)}${titleChip(f.equipped_title)}</span>
               <span class="friend-more" aria-hidden="true">Statistieken ›</span>
             </button>
+            ${state.v13 ? `<button class="link" data-profile="${f.id}" type="button">Profiel</button>` : ''}
             <button class="link danger" data-remove="${f.id}" type="button">Verwijderen</button>
           </li>`).join('')}</ul>`
       : `<p class="hint">Je hebt nog geen vrienden.</p>`}
@@ -2273,6 +2609,9 @@ async function renderFriends(view) {
 
   view.querySelectorAll('[data-open]').forEach(btn => {
     btn.onclick = () => openFriendStats(profiles[btn.dataset.open]);
+  });
+  view.querySelectorAll('[data-profile]').forEach(btn => {
+    btn.onclick = () => openFriendProfile(profiles[btn.dataset.profile]);
   });
 
   view.querySelectorAll('[data-remove]').forEach(btn => {
@@ -2554,6 +2893,9 @@ function renderShop(view) {
               <button class="btn small" data-buy-pack="${k}" type="button" ${state.wallet < p.price ? 'disabled' : ''}>Kopen · ${p.price} 🪙</button></div>
           </div>`).join('')}</div>
 
+        ${state.v13 ? `<h3 style="margin-top:20px">Stickers & bureau</h3>
+        <div class="battle-bar"><button class="btn small" data-goto="stickers" type="button">🏷️ Stickerpakje (40 🪙)</button>
+          <button class="btn small" data-goto="profile" type="button">🪑 Bureau inrichten</button></div>` : ''}
         <h3 style="margin-top:20px">Cosmetica</h3>
         <div id="cosmetics"><p class="hint">Laden…</p></div>
 
@@ -2613,6 +2955,7 @@ function renderShop(view) {
   });
 
   drawCosmetics($('#cosmetics'), msg);
+  view.querySelectorAll('[data-goto]').forEach(b => b.onclick = () => { state.tab = b.dataset.goto; renderMain(); });
 
   view.querySelectorAll('[data-sell]').forEach(b => b.onclick = async () => {
     const c = cardById(b.dataset.sell), n = Number(b.dataset.count);
@@ -2828,14 +3171,21 @@ async function renderBattle(view) {
     .sort((a, b) => (RARITY_ORDER[a.rarity] - RARITY_ORDER[b.rarity]) || (b.attack - a.attack));
   battleState.team = battleState.team.filter(id => state.owned.has(id));
 
-  const [friendRows, rows, board, rewards] = await Promise.all([
+  const [friendRows, rows, board, rewards, season, seasonClaims] = await Promise.all([
     sb.from('friendships').select('friend_id').eq('user_id', uid),
     sb.from('tbattles').select('id, mode, difficulty, player_a, player_b, status, winner, round, coins_a, coins_b, forfeit, updated_at, moved:state->moved')
       .or(`player_a.eq.${uid},player_b.eq.${uid}`).order('updated_at', { ascending: false }).limit(40),
     sb.rpc('tb_leaderboard'),
     sb.rpc('tb_rewards_today'),
+    sb.rpc('season_state'),
+    sb.rpc('claim_season_rewards'),
   ]);
   if (state.tab !== 'battle') return;
+  for (const c of seasonClaims.data || []) {
+    state.wallet += c.coins; syncCoinUI();
+    toast(`🏆 Seizoen ${esc(c.season)} afgelopen: je eindigde in ${RANKS[c.rank]?.icon || ''} <strong>${RANKS[c.rank]?.name || c.rank}</strong>. +${c.coins} 🪙${c.sticker ? ` en sticker ${c.sticker.emoji}` : ''}`, 8000);
+  }
+  const ss = season.data;
   if (rows.error) {
     view.innerHTML = `<section class="col">${pageHead('Battle', 'battle')}<p class="msg err">Battle kon niet geladen worden: ${esc(rows.error.message)}</p></section>`;
     return;
@@ -2864,7 +3214,12 @@ async function renderBattle(view) {
   view.innerHTML = `<section class="col" style="max-width:none">
     <div class="battle-top">
       ${pageHead('Battle', 'battle')}
-      <span class="pill">🪙 Vandaag beloond: computer ${rw.pve}/${rw.pve_max} · vrienden ${rw.pvp}/${rw.pvp_max}</span>
+      <div class="battle-bar">
+        ${ss ? `<span class="pill" title="Seizoen ${esc(ss.season)}, eindigt op ${esc(ss.ends)}">${rankChip(ss.rank, ss.points)} · seizoen ${esc(ss.season)}</span>` : ''}
+        <span class="pill">🪙 Vandaag beloond: computer ${rw.pve}/${rw.pve_max} · vrienden ${rw.pvp}/${rw.pvp_max}</span>
+        ${state.event?.key === 'double_battle' ? '<span class="pill pill-turn">⚔️ Dubbele coins deze week!</span>' : ''}
+        ${soundBtn()}
+      </div>
     </div>
 
     ${myTurn.length || incoming.length ? `<div class="battle-box highlight">
@@ -2887,6 +3242,7 @@ async function renderBattle(view) {
           <span id="teamCount" class="pill"></span>
           <button class="link" id="clearTeam" type="button">Team wissen</button>
         </div>
+        <p class="team-info" id="teamInfo"></p>
         <div class="battle-pick">${owned.map(c => `
           <button class="pick" type="button" data-pick="${c.id}" aria-pressed="false">
             <span class="pick-num" hidden></span>${renderCard(c, mineOpts(c))}
@@ -2925,9 +3281,9 @@ async function renderBattle(view) {
       </div>
       <div><h3>Ranglijst (vrienden)</h3>
         ${board.error ? `<p class="msg err">${esc(board.error.message)}</p>` : `<table class="leaderboard">
-          <thead><tr><th>#</th><th>Naam</th><th>W</th><th>V</th></tr></thead>
+          <thead><tr><th>#</th><th>Naam</th>${state.v13 ? '<th>Rang</th>' : ''}<th>W</th><th>V</th></tr></thead>
           <tbody>${(board.data || []).map((r, i) => `<tr${r.user_id === uid ? ' class="me"' : ''}>
-            <td>${i + 1}</td><td>${esc(r.display_name)}</td><td>${r.wins}</td><td>${r.losses}</td></tr>`).join('')}</tbody>
+            <td>${i + 1}</td><td>${esc(r.display_name)}</td>${state.v13 ? `<td>${rankChip(r.rank, r.points)}</td>` : ''}<td>${r.wins}</td><td>${r.losses}</td></tr>`).join('')}</tbody>
         </table>`}
       </div>
     </div>
@@ -2943,6 +3299,16 @@ async function renderBattle(view) {
       num.hidden = idx < 0; num.textContent = idx + 1;
     });
     if ($('#teamCount')) $('#teamCount').textContent = `Team: ${battleState.team.length}/${TEAM_SIZE}`;
+    if ($('#teamInfo')) {
+      const cs = battleState.team.map(cardById).filter(Boolean);
+      const per = {};
+      for (const c of cs) if (c.rarity !== 'cat') per[c.person] = (per[c.person] || 0) + 1;
+      const syn = Object.entries(per).filter(([, n]) => n >= 2).map(([p]) => p);
+      $('#teamInfo').innerHTML = cs.length
+        ? `${cs.map(c => { const ty = typeOf(c); return ty ? TYPES[ty].icon : '🐱'; }).join(' ')}
+           ${syn.length ? ` · <strong>🤝 Synergie:</strong> ${syn.map(esc).join(', ')} (+10% voor die kaarten)` : state.v13 ? ' · Tip: 2 kaarten van dezelfde collega geven 🤝 +10%' : ''}`
+        : (state.v13 ? 'Kies 3 kaarten. ☕ Koffie wint van ⏰ Deadline, ⏰ wint van 📊 Meeting, 📊 wint van ☕.' : '');
+    }
     view.querySelectorAll('[data-pve], #challengeBattle, [data-accept-battle]').forEach(b => { b.disabled = !teamReady(); });
   };
   view.querySelectorAll('[data-pick]').forEach(b => {
@@ -3001,37 +3367,56 @@ function eventText(e, b, names) {
   const who = s => `<span class="who">${esc(s === me ? 'Jij' : names.opp)}</span>`;
   const st = b.state;
   const card = (s, i) => cardById(st[s].cards[i]);
+  const nm = (s, i) => esc(card(s, i)?.name || '?');
   if (e.t === 'atk') {
     const c = card(e.s, e.ai ?? st[e.s].active);
-    const name = esc(c?.name || '?');
-    const how = e.k === 'special' ? `★ <strong>${esc(c?.special_name || 'Special')}</strong>` : e.k === 'power' ? '💥 krachtaanval' : 'valt aan';
-    return `${who(e.s)} ${name} ${how}: ${e.d} schade${e.crit ? ' — voltreffer!' : ''}${e.guarded ? ' (verdedigd)' : ''}`;
+    const how = e.k === 'special' ? `★ <strong>${esc(abilityOf(c)?.name || 'Special')}</strong>` : e.k === 'power' ? '💥 krachtaanval' : 'valt aan';
+    const eff = e.eff === 1 ? ' <span class="eff up">super effectief!</span>' : e.eff === -1 ? ' <span class="eff down">niet zo effectief</span>' : '';
+    return `${who(e.s)} ${esc(c?.name || '?')} ${how}: ${e.d} schade${eff}${e.crit ? ' — voltreffer!' : ''}${e.guarded ? ' (verdedigd)' : ''}${e.abs ? ` (🛡️ ving ${e.abs} op)` : ''}`;
   }
+  if (e.t === 'ability') return `${who(e.s)} ${nm(e.s, e.i)} ☕ <strong>Koffieboost</strong>: +${e.heal} HP en 🛡️ schild van ${e.shield}`;
+  if (e.t === 'shield') return `${who(e.s)} ${nm(e.s, e.i)} krijgt een 🛡️ schild van ${e.v}`;
+  if (e.t === 'burn') return `${who(e.s)} ${nm(e.s, e.i)} staat in 🔥 brand (3 rondes)`;
+  if (e.t === 'burnt') return `${who(e.s)} ${nm(e.s, e.i)} 🔥 brandt: ${e.d} schade`;
+  if (e.t === 'stun') return `${who(e.s)} ${nm(e.s, e.i)} is 💫 verdoofd en slaat de volgende ronde over`;
+  if (e.t === 'stunned') return `${who(e.s)} ${nm(e.s, e.i)} is 💫 verdoofd en kan niet aanvallen`;
   if (e.t === 'guard') return `${who(e.s)} 🛡️ verdedigt`;
-  if (e.t === 'switch') return `${who(e.s)} 🔄 wisselt naar ${esc(card(e.s, e.i)?.name || '?')}`;
-  if (e.t === 'ko') return `${who(e.s)} <strong>${esc(card(e.s, e.i)?.name || '?')}</strong> is uitgeschakeld!`;
-  if (e.t === 'enter') return `${who(e.s)} ${esc(card(e.s, e.i)?.name || '?')} komt de arena in`;
+  if (e.t === 'switch') return `${who(e.s)} 🔄 wisselt naar ${nm(e.s, e.i)}`;
+  if (e.t === 'ko') return `${who(e.s)} <strong>${nm(e.s, e.i)}</strong> is uitgeschakeld!`;
+  if (e.t === 'enter') return `${who(e.s)} ${nm(e.s, e.i)} komt de arena in`;
   if (e.t === 'forfeit') return `${who(e.s)} geeft op`;
   if (e.t === 'end') return `<strong>${e.w === me ? 'Jij wint!' : `${esc(names.opp)} wint.`}</strong>`;
   return '';
 }
 
-// Toont een kant (links = jij) op basis van een weergave-toestand {active, hp[], energy}
+// Statussen van één kaart (brand, verdoofd, schild, synergie)
+function statusHtml(disp, side, i, round, small = false) {
+  const out = [];
+  if ((disp.burn[i] || 0) > 0) out.push(`<span class="st burn" title="Brand: verliest elke ronde HP">🔥${small ? '' : ' ' + disp.burn[i]}</span>`);
+  if ((disp.stun[i] || 0) > round) out.push(`<span class="st stun" title="Verdoofd: kan volgende ronde niet aanvallen">💫${small ? '' : ' verdoofd'}</span>`);
+  if ((disp.shield[i] || 0) > 0) out.push(`<span class="st shield" title="Schild: vangt schade op">🛡️ ${disp.shield[i]}</span>`);
+  if (!small && (side.syn || [])[i]) out.push('<span class="st syn" title="Synergie: +10%">🤝</span>');
+  return out.join('');
+}
+
+// Toont een kant (links = jij) op basis van een weergave-toestand {active, hp[], energy, burn[], stun[], shield[]}
 function sideHtml(b, s, disp, mine) {
   const side = b.state[s];
   const c = cardById(side.cards[disp.active]);
   const hp = disp.hp[disp.active], max = side.max[disp.active];
   const pct = Math.max(0, hp / max * 100);
-  return `<div class="bt-name">${mine ? 'Jij' : esc(disp.name)}</div>
+  const ty = (side.type || [])[disp.active];
+  return `<div class="bt-name">${mine ? 'Jij' : esc(disp.name)} ${TYPES[ty] ? `<span class="type-chip t-${ty}">${TYPES[ty].icon}</span>` : ''}</div>
     <div class="fighter-card" data-active="${disp.active}">${c ? renderCard(c, { level: (side.lvl || [])[disp.active] || 1 }) : ''}</div>
     <div class="hpbar"><div class="hpfill${pct <= 25 ? ' low' : pct <= 50 ? ' mid' : ''}" style="width:${pct}%"></div></div>
     <div class="hptext">HP ${hp} / ${max}</div>
+    <div class="status-row">${statusHtml(disp, side, disp.active, b.round)}</div>
     <div class="energy" title="Energie">${Array.from({ length: 5 }, (_, i) => `<span class="pip${i < disp.energy ? ' on' : ''}">⚡</span>`).join('')}</div>
     <div class="bench">${side.cards.map((id, i) => {
       if (i === disp.active) return '';
-      const bc = cardById(id), bh = disp.hp[i];
+      const bc = cardById(id), bh = disp.hp[i], bty = (side.type || [])[i];
       return `<button type="button" class="bench-card${bh <= 0 ? ' out' : ''}" data-bench="${i}" ${mine && bh > 0 ? '' : 'disabled'}>
-        <span>${esc(bc?.name || '?')}</span><span class="bench-hp">${bh > 0 ? `${bh} HP` : 'uitgeschakeld'}</span></button>`;
+        <span>${TYPES[bty] ? TYPES[bty].icon + ' ' : ''}${esc(bc?.name || '?')}</span><span class="bench-hp">${statusHtml(disp, side, i, b.round, true)} ${bh > 0 ? `${bh} HP` : 'uitgeschakeld'}</span></button>`;
     }).join('')}</div>`;
 }
 
@@ -3051,10 +3436,10 @@ async function openBattle(view, id, prev = null) {
 
   // Weergave-toestand: bij een nieuwe ronde starten we van de vorige en spelen we de gebeurtenissen af
   const fromState = (prev && prev.round < b.round) ? prev.state : b.state;
-  const disp = {
-    A: { active: fromState.A.active, hp: [...fromState.A.hp], energy: fromState.A.energy, name: me === 'A' ? 'Jij' : oppName },
-    B: { active: fromState.B.active, hp: [...fromState.B.hp], energy: fromState.B.energy, name: me === 'B' ? 'Jij' : oppName },
-  };
+  const arr = (side, k) => [...(side[k] || side.hp.map(() => 0))];
+  const mkDisp = (side, name) => ({ active: side.active, hp: [...side.hp], energy: side.energy, name,
+    burn: arr(side, 'burn'), stun: arr(side, 'stun'), shield: arr(side, 'shield') });
+  const disp = { A: mkDisp(fromState.A, me === 'A' ? 'Jij' : oppName), B: mkDisp(fromState.B, me === 'B' ? 'Jij' : oppName) };
   const events = b.state.events || [];
   const newEvents = (prev && prev.round < b.round) ? events.filter(e => e.r > prev.round) : [];
 
@@ -3063,6 +3448,7 @@ async function openBattle(view, id, prev = null) {
       <button class="link" id="btBack" type="button">← Battle</button>
       <h2>${title}</h2>
       <span class="pill" id="btRound">Ronde ${b.round + (b.status === 'active' ? 1 : 0)}</span>
+      ${soundBtn()}
       ${b.status === 'active' ? '<button class="link danger forfeit" id="btForfeit" type="button">Opgeven</button>' : ''}
     </div>
     <div class="bt-layout">
@@ -3111,28 +3497,62 @@ async function openBattle(view, id, prev = null) {
 
   // Nieuwe ronde afspelen
   const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const sideEl = s => $(s === me ? '#side-me' : '#side-op');
+  const pop = (s, text, cls = '') => {
+    if (reduce) return;
+    const el = document.createElement('span');
+    el.className = 'dmg-pop ' + cls; el.textContent = text;
+    sideEl(s)?.querySelector('.fighter-card')?.appendChild(el);
+  };
+  const banner = (text, cls) => {
+    if (reduce) return;
+    const el = document.createElement('div');
+    el.className = 'bt-banner ' + cls; el.textContent = text;
+    $('.bt-arena')?.appendChild(el);
+    setTimeout(() => el.remove(), 1100);
+  };
   for (const e of newEvents) {
+    const d = e.s ? otherSide(e.s) : null;
     if (e.t === 'switch' || e.t === 'enter') disp[e.s].active = e.i;
     if (e.t === 'atk') {
-      const d = otherSide(e.s);
-      disp[d].hp[e.di ?? disp[d].active] = e.hp;
+      const di = e.di ?? disp[d].active;
+      disp[d].hp[di] = e.hp;
+      if (e.abs) disp[d].shield[di] = Math.max(0, (disp[d].shield[di] || 0) - e.abs);
     }
+    if (e.t === 'ability') { disp[e.s].hp[e.i] = e.hp; disp[e.s].shield[e.i] = e.shield; }
+    if (e.t === 'shield') disp[e.s].shield[e.i] = e.v;
+    if (e.t === 'burn') disp[e.s].burn[e.i] = 3;
+    if (e.t === 'burnt') { disp[e.s].hp[e.i] = e.hp; disp[e.s].burn[e.i] = Math.max(0, (disp[e.s].burn[e.i] || 0) - 1); }
+    if (e.t === 'stun') disp[e.s].stun[e.i] = e.r + 1;
     addLog(e);
     drawSides();
-    if (e.t === 'atk' && !reduce) {
-      const target = $(e.s === me ? '#side-op' : '#side-me');
-      const pop = document.createElement('span');
-      pop.className = 'dmg-pop' + (e.k !== 'attack' || e.crit ? ' big' : '');
-      pop.textContent = `-${e.d}`;
-      target.querySelector('.fighter-card').appendChild(pop);
-      target.classList.remove('hit'); void target.offsetWidth; target.classList.add('hit');
+    if (!reduce) {
+      if (e.t === 'atk') {
+        // Aanvaller springt naar voren, doelwit schudt
+        const att = sideEl(e.s)?.querySelector('.fighter-card');
+        att?.classList.add(e.s === me ? 'lunge-r' : 'lunge-l');
+        const target = sideEl(d);
+        pop(d, `-${e.d}`, e.k !== 'attack' || e.crit ? 'big' : '');
+        if (e.abs) setTimeout(() => pop(d, `🛡️ ${e.abs}`, 'shield'), 150);
+        target.classList.remove('hit'); void target.offsetWidth; target.classList.add('hit');
+        if (e.crit) { banner('VOLTREFFER!', 'crit'); $('.bt-arena')?.classList.remove('quake'); void $('.bt-arena')?.offsetWidth; $('.bt-arena')?.classList.add('quake'); }
+        else if (e.eff === 1) banner('Super effectief!', 'up');
+        else if (e.eff === -1) banner('Niet zo effectief…', 'down');
+        SFX.play(e.crit ? 'crit' : 'hit');
+      }
+      if (e.t === 'ability') { pop(e.s, `+${e.heal}`, 'heal'); setTimeout(() => pop(e.s, '🛡️', 'shield'), 200); SFX.play('heal'); }
+      if (e.t === 'shield') { pop(e.s, '🛡️', 'shield'); SFX.play('shield'); }
+      if (e.t === 'burn') { pop(e.s, '🔥', 'burn'); SFX.play('burn'); }
+      if (e.t === 'burnt') { pop(e.s, `🔥-${e.d}`, 'burn'); SFX.play('burn'); }
+      if (e.t === 'stun' || e.t === 'stunned') { pop(e.s, '💫', 'stun'); SFX.play('stun'); }
+      if (e.t === 'ko') { sideEl(e.s)?.classList.add('ko'); SFX.play('ko'); }
+      if (e.t === 'end') SFX.play(e.w === me ? 'win' : 'lose');
+      await sleep(e.t === 'atk' ? 850 : e.t === 'end' ? 300 : 550);
     }
-    if (e.t === 'ko' && !reduce) $(e.s === me ? '#side-me' : '#side-op').classList.add('ko');
-    if (!reduce) await sleep(e.t === 'atk' ? 750 : 500);
     if (!$('#battleLog')) return; // intussen weggeklikt
   }
   // Eindtoestand (energie e.d.) tonen
-  for (const s of ['A', 'B']) Object.assign(disp[s], { active: b.state[s].active, hp: [...b.state[s].hp], energy: b.state[s].energy });
+  for (const s of ['A', 'B']) Object.assign(disp[s], mkDisp(b.state[s], disp[s].name));
   drawSides();
 
   const actions = $('#btActions'), msg = $('#btMsg');
@@ -3143,6 +3563,7 @@ async function openBattle(view, id, prev = null) {
       const { data: w } = await sb.from('user_wallet').select('polycoins').eq('user_id', state.session.user.id).maybeSingle();
       if (w) { state.wallet = w.polycoins; syncCoinUI(); }
     }
+    if (won && newEvents.length && !reduce) $('#battleResult').insertAdjacentHTML('beforebegin', confettiHtml());
     $('#battleResult').innerHTML = `<div class="battle-result ${won ? 'won' : 'lost'}">
       <h3>${won ? 'Gewonnen!' : 'Verloren…'}</h3>
       <p>${b.forfeit ? (won ? `${esc(oppName)} gaf op.` : 'Je gaf op.') : won ? `Je team heeft ${esc(oppName)} verslagen.` : `${esc(oppName)} was deze keer sterker.`}
@@ -3181,17 +3602,29 @@ async function openBattle(view, id, prev = null) {
   }
 
   const side = b.state[me], a = side.active;
+  const myCard = cardById(side.cards[a]);
+  const hasAb = side.ab ? !!side.ab[a] : side.sp[a] > 0;
+  const ab = hasAb ? (abilityOf(myCard) || { name: 'Special', cost: 4, info: '4 ⚡' }) : null;
+  if (ab && side.ab) ab.cost = side.ab[a] === 'epic' ? 3 : 4;
+  const stunned = (side.stun || [])[a] === b.round + 1;
   const can = {
-    attack: true, guard: true,
-    power: side.energy >= 2,
-    special: side.sp[a] > 0 && side.energy >= 4,
+    attack: !stunned, guard: true,
+    power: !stunned && side.energy >= 2,
+    special: !stunned && !!ab && side.energy >= ab.cost,
     switch: side.hp.some((h, i) => i !== a && h > 0),
   };
-  actions.innerHTML = Object.entries(MOVES).map(([k, m]) => (k === 'special' && !(side.sp[a] > 0)) ? '' :
+  actions.innerHTML = Object.entries(MOVES).map(([k, m]) => (k === 'special' && !ab) ? '' :
     `<button type="button" class="move-btn" data-move="${k}" ${can[k] ? '' : 'disabled'}>
-      <span class="move-icon">${m.icon}</span><span>${k === 'special' ? esc(cardById(side.cards[a])?.special_name || m.label) : m.label}</span><small>${m.info}</small></button>`).join('')
-;
-  msg.className = 'msg'; msg.textContent = 'Kies je zet.';
+      <span class="move-icon">${m.icon}</span><span>${k === 'special' ? esc(ab.name) : m.label}</span><small>${k === 'special' ? esc(ab.info) : m.info}</small></button>`).join('');
+  // Typevoordeel tonen
+  const oty = (b.state[op].type || [])[b.state[op].active], mty = (side.type || [])[a];
+  const fx = effOf(mty, oty), rx = effOf(oty, mty);
+  const matchup = TYPES[mty] && TYPES[oty]
+    ? (fx > 1 ? `<span class="eff up">${TYPES[mty].icon} &gt; ${TYPES[oty].icon} Jij bent sterk: 1,5× schade</span>`
+      : rx > 1 ? `<span class="eff down">${TYPES[oty].icon} &gt; ${TYPES[mty].icon} Je tegenstander is sterk tegen jou</span>`
+      : `<span class="eff">${TYPES[mty].icon} = ${TYPES[oty].icon} Gelijk type-voordeel</span>`) : '';
+  msg.className = 'msg';
+  msg.innerHTML = stunned ? '💫 Je kaart is verdoofd: verdedig of wissel deze ronde.' : `Kies je zet. ${matchup}`;
 
   const send = async (move, target = null) => {
     actions.querySelectorAll('button').forEach(x => { x.disabled = true; });
@@ -3215,6 +3648,774 @@ async function openBattle(view, id, prev = null) {
       send(move);
     };
   });
+}
+
+// ---------- Stickers (v13) ----------
+const STICKER_THEMES = { kantoor: '🏢 Kantoor', eten: '🍕 Eten', dieren: '🐾 Dieren', ruimte: '🚀 Ruimte', feest: '🎉 Feest', sport: '⚽ Sport' };
+const STICKER_RARITY = { common: 'Gewoon', rare: 'Zeldzaam', epic: 'Episch' };
+const stickerHtml = (st, big = false) => (st && st.emoji
+  ? `<span class="sticker s-${st.rarity} a-${st.anim}${big ? ' big' : ''}" title="${esc(st.name)}"><span class="sticker-face">${st.emoji}</span></span>`
+  : `<span class="sticker locked${big ? ' big' : ''}"><span class="sticker-face">?</span></span>`);
+const notReady = '<p class="hint">Deze functie wordt binnenkort geactiveerd.</p>';
+
+// Nieuwe stickers één voor één tonen in een venster
+async function showStickers(list, title = 'Nieuwe stickers!') {
+  if (!list || !list.length) return;
+  const dlg = $('#packModal');
+  dlg.onclose = null;
+  dlg.innerHTML = `<div class="packbox"><h2>${title}</h2><div class="sticker-reveal" id="stkReveal"></div><div id="packDone"></div></div>`;
+  dlg.showModal();
+  for (const st of list) {
+    $('#stkReveal')?.insertAdjacentHTML('beforeend', `<div class="stk-pop">${stickerHtml(st, true)}
+      <strong>${esc(st.name)}</strong><small>${STICKER_RARITY[st.rarity] || ''}${st.new ? ' · <span class="new-tag">NIEUW!</span>' : ''}</small></div>`);
+    SFX.play(st.rarity === 'common' ? 'coin' : 'jackpot');
+    await sleep(450);
+  }
+  if (!$('#packDone')) return;
+  $('#packDone').innerHTML = '<button class="btn small" id="packClose" type="button">Verder</button>';
+  $('#packClose').onclick = () => dlg.close();
+  await new Promise(r => dlg.addEventListener('close', r, { once: true }));
+}
+
+async function renderStickers(view) {
+  view.innerHTML = '<section class="col" style="max-width:none"><p class="hint">Laden…</p></section>';
+  const [cat, claims, themes] = await Promise.all([
+    sb.rpc('sticker_catalog'), sb.rpc('claim_sticker_rewards'),
+    sb.from('sticker_theme_claims').select('theme').eq('user_id', state.session.user.id),
+  ]);
+  if (state.tab !== 'stickers') return;
+  if (cat.error) { view.innerHTML = `<section class="col">${pageHead('Stickeralbum', 'stickers')}${notReady}</section>`; return; }
+  for (const c of claims.data || []) {
+    state.wallet += c.reward; syncCoinUI();
+    toast(`📒 Thema <strong>${esc(STICKER_THEMES[c.theme] || c.theme)}</strong> compleet! +${c.reward} 🪙 en een poster voor je bureau.`, 7000);
+  }
+  const done = new Set([...(themes.data || []).map(t => t.theme), ...(claims.data || []).map(c => c.theme)]);
+  const all = cat.data || [];
+  const have = all.filter(s => s.count > 0).length;
+  view.innerHTML = `<section class="col" style="max-width:none">
+    <div class="battle-top">
+      ${pageHead('Stickeralbum', 'stickers')}
+      <div class="battle-bar">
+        <span class="pill">🏷️ ${have}/${all.length} stickers</span>
+        <button class="btn small" id="buyStickers" type="button" ${state.wallet < 40 ? 'disabled' : ''}>Stickerpakje (3) · 40 🪙</button>
+      </div>
+    </div>
+    <p class="msg tmsg" id="stkMsg" role="alert"></p>
+    <div class="album">${Object.entries(STICKER_THEMES).map(([key, label]) => {
+      const list = all.filter(s => s.theme === key);
+      const n = list.filter(s => s.count > 0).length;
+      return `<div class="album-page${done.has(key) ? ' complete' : ''}">
+        <div class="album-head"><h3>${label}</h3><span class="pill">${done.has(key) ? '✓ compleet' : `${n}/${list.length}`}</span></div>
+        <div class="sticker-grid">${list.map(s => `<div class="sticker-slot${s.count ? '' : ' empty'}">
+          ${stickerHtml(s)}
+          <small>${s.count ? esc(s.name) : '???'}</small>
+          ${s.count > 1 ? `<span class="dupe">×${s.count}</span>` : ''}
+        </div>`).join('')}</div>
+      </div>`;
+    }).join('')}</div>
+  </section>`;
+  $('#buyStickers').onclick = async () => {
+    const b = $('#buyStickers'); b.disabled = true;
+    const { data, error } = await sb.rpc('buy_sticker_pack');
+    if (error) { const m = $('#stkMsg'); m.className = 'msg tmsg err'; m.textContent = error.message; b.disabled = false; return; }
+    setWallet(data.wallet);
+    await showStickers(data.stickers, 'Je stickerpakje');
+    if (state.tab === 'stickers') renderStickers(view);
+  };
+}
+
+// ---------- Casino (v13): rad, fruitautomaat, blackjack, krasbiljet ----------
+const WHEEL = ['10 🪙', '🏷️', '20 🪙', '🎴', '30 🪙', '100 🪙', '50 🪙', '🎁'];
+const WHEEL_COLORS = ['#5DA352', '#7C4FE0', '#C9B458', '#2FA79E', '#E0584B', '#D9A61C', '#3E7FD6', '#B04FC9'];
+const SLOT_SYMS = ['🍒', '☕', '📎', '🎴', '⭐', '💎'];
+const SCRATCH_SYMS = { c25: '🪙<b>25</b>', c50: '💰<b>50</b>', c100: '💵<b>100</b>', c250: '💎<b>250</b>', stk: '🏷️<b>sticker</b>' };
+const casino = { wheelAngle: 0, bet: 25, bjBet: 20 };
+
+function playingCard(c, i = 0) {
+  if (c < 0) return `<span class="pcard back" style="--i:${i}"></span>`;
+  const r = ['A', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K'][c % 13], su = ['♠', '♥', '♦', '♣'][Math.floor(c / 13)];
+  return `<span class="pcard${su === '♥' || su === '♦' ? ' red' : ''}" style="--i:${i}"><b>${r}</b><i>${su}</i></span>`;
+}
+
+async function renderCasino(view) {
+  view.innerHTML = '<section class="col" style="max-width:none"><p class="hint">Laden…</p></section>';
+  const [wheel, bj] = await Promise.all([sb.rpc('casino_wheel_state'), sb.rpc('bj_state')]);
+  if (state.tab !== 'casino') return;
+  if (wheel.error) { view.innerHTML = `<section class="col">${pageHead('Casino', 'casino')}${notReady}</section>`; return; }
+  const seg = 360 / WHEEL.length;
+  view.innerHTML = `<section class="col" style="max-width:none">
+    <div class="battle-top">
+      ${pageHead('Casino', 'casino')}
+      <div class="battle-bar"><span class="coinpill shop-balance">🪙 <span data-coin>${state.wallet}</span></span>${soundBtn()}</div>
+    </div>
+    <div class="casino-grid">
+      <div class="game-panel">
+        <h3>🎡 Rad van fortuin</h3>
+        <p class="hint">Elke dag gratis draaien${state.event?.key === 'lucky_wheel' ? ' — <strong>deze week 2 keer!</strong>' : '.'}</p>
+        <div class="wheel-wrap">
+          <div class="wheel-pointer" aria-hidden="true">▼</div>
+          <div class="wheel" id="wheel" style="transform:rotate(${casino.wheelAngle}deg);background:conic-gradient(${WHEEL_COLORS.map((c, i) => `${c} ${i * seg}deg ${(i + 1) * seg}deg`).join(',')})">
+            ${WHEEL.map((l, i) => `<span class="wheel-label" style="--a:${i * seg + seg / 2}deg">${l}</span>`).join('')}
+            <span class="wheel-hub">★</span>
+          </div>
+        </div>
+        <button class="btn small" id="spinWheel" type="button" ${wheel.data.left ? '' : 'disabled'}>${wheel.data.left ? `Draai! (${wheel.data.left} gratis)` : 'Morgen opnieuw'}</button>
+        <p class="msg" id="wheelMsg" role="status"></p>
+      </div>
+
+      <div class="game-panel">
+        <h3>🎰 Fruitautomaat</h3>
+        <div class="reels" id="reels">${['🍒', '⭐', '💎'].map((x, i) => `<span class="reel" id="reel${i}">${x}</span>`).join('')}</div>
+        <div class="bet-row">Inzet: ${[10, 25, 50, 100].map(v => `<button type="button" class="chip${casino.bet === v ? ' on' : ''}" data-bet="${v}">${v}</button>`).join('')}</div>
+        <button class="btn small" id="spinSlots" type="button">Draai · ${casino.bet} 🪙</button>
+        <p class="msg" id="slotMsg" role="status"></p>
+        <details class="paytable"><summary>Uitbetaling</summary>
+          <p>3× 🍒 = 5× · ☕ = 8× · 📎 = 12× · 🎴 = 25× · ⭐ = 50× · 💎 = <strong>100×</strong><br>2 dezelfde = je inzet terug</p></details>
+      </div>
+
+      <div class="game-panel bj-panel">
+        <h3>🃏 Blackjack</h3>
+        <div id="bjTable"></div>
+      </div>
+
+      <div class="game-panel">
+        <h3>🎟️ Krasbiljet</h3>
+        <p class="hint">25 🪙 per biljet. Kras de 6 vakjes open: 3 dezelfde = gewonnen!</p>
+        <div id="scratchBox"><div class="scratch-card idle"><span>🎟️</span></div></div>
+        <div class="battle-bar" style="justify-content:center">
+          <button class="btn small" id="buyScratch" type="button">Koop een biljet · 25 🪙</button>
+          <button class="link" id="scratchAll" type="button" hidden>Alles openkrassen</button>
+        </div>
+        <p class="msg" id="scratchMsg" role="status"></p>
+      </div>
+    </div>
+    <p class="hint" style="margin-top:14px">Je speelt enkel met polycoins. Gemiddeld wint het casino een klein beetje, dus speel met mate 😉</p>
+  </section>`;
+
+  // Rad
+  $('#spinWheel').onclick = async () => {
+    const b = $('#spinWheel'); b.disabled = true;
+    const { data, error } = await sb.rpc('casino_spin');
+    if (error) { $('#wheelMsg').className = 'msg err'; $('#wheelMsg').textContent = error.message; return; }
+    const target = 360 - (data.seg * seg + seg / 2);
+    casino.wheelAngle += 360 * 5 + ((target - casino.wheelAngle % 360) + 360) % 360;
+    const w = $('#wheel');
+    w.style.transform = `rotate(${casino.wheelAngle}deg)`;
+    for (let i = 0; i < 18; i++) setTimeout(() => SFX.play('tick'), i * i * 12);
+    await sleep(4300);
+    setWallet(data.wallet);
+    const msg = $('#wheelMsg'); if (!msg) return;
+    msg.className = 'msg ok';
+    msg.textContent = data.coins ? `Je wint ${data.coins} polycoins!` : data.sticker ? 'Je wint een sticker!' : `Je wint een ${data.cards.length > 1 ? 'Epic' : 'Basic'} Pack!`;
+    SFX.play('coin');
+    b.textContent = data.left ? `Draai! (${data.left} gratis)` : 'Morgen opnieuw';
+    b.disabled = !data.left;
+    if (data.sticker) await showStickers([data.sticker], 'Rad van fortuin');
+    if (data.cards?.length) {
+      for (const c of data.cards) state.owned.set(c.id, (state.owned.get(c.id) || 0) + 1);
+      const dlg = $('#packModal');
+      dlg.onclose = () => { dlg.onclose = null; checkCollection(); };
+      dlg.innerHTML = `<div class="packbox"><h2>Rad van fortuin</h2><div class="stage" id="packStage"></div><div id="packDone"></div></div>`;
+      dlg.showModal();
+      await openPack($('#packStage'), data.cards);
+      $('#packDone').innerHTML = '<button class="btn small" id="packClose" type="button">Verder</button>';
+      $('#packClose').onclick = () => dlg.close();
+    }
+  };
+
+  // Fruitautomaat
+  view.querySelectorAll('[data-bet]').forEach(b => b.onclick = () => {
+    casino.bet = Number(b.dataset.bet);
+    view.querySelectorAll('[data-bet]').forEach(x => x.classList.toggle('on', x === b));
+    $('#spinSlots').textContent = `Draai · ${casino.bet} 🪙`;
+  });
+  $('#spinSlots').onclick = async () => {
+    const b = $('#spinSlots'); b.disabled = true;
+    const msg = $('#slotMsg'); msg.className = 'msg'; msg.textContent = '';
+    const { data, error } = await sb.rpc('casino_slots', { p_bet: casino.bet });
+    if (error) { msg.className = 'msg err'; msg.textContent = error.message; b.disabled = false; return; }
+    state.wallet -= casino.bet; syncCoinUI();
+    const timers = [0, 1, 2].map(i => setInterval(() => {
+      const r = $('#reel' + i); if (r) { r.textContent = SLOT_SYMS[Math.floor(Math.random() * 6)]; r.classList.add('spinning'); }
+      SFX.play('tick');
+    }, 70));
+    for (let i = 0; i < 3; i++) {
+      await sleep(i ? 380 : 700);
+      clearInterval(timers[i]);
+      const r = $('#reel' + i); if (!r) return timers.forEach(clearInterval);
+      r.textContent = data.reels[i]; r.classList.remove('spinning'); r.classList.add('stop');
+      setTimeout(() => r.classList.remove('stop'), 300);
+    }
+    setWallet(data.wallet);
+    const three = data.reels[0] === data.reels[1] && data.reels[1] === data.reels[2];
+    if (data.win > casino.bet) {
+      msg.className = 'msg ok'; msg.innerHTML = `${three && data.reels[0] === '💎' ? '💎 <strong>JACKPOT!</strong> ' : '🎉 '}Je wint <strong>${data.win}</strong> polycoins!`;
+      $('#reels').classList.add('win'); setTimeout(() => $('#reels')?.classList.remove('win'), 1500);
+      SFX.play(data.win >= casino.bet * 25 ? 'jackpot' : 'coin');
+    } else if (data.win) { msg.className = 'msg'; msg.textContent = 'Twee dezelfde: je krijgt je inzet terug.'; }
+    else { msg.className = 'msg'; msg.textContent = 'Helaas, niets gewonnen.'; }
+    b.disabled = false;
+  };
+
+  // Blackjack
+  const drawBj = (g, animate = false) => {
+    const box = $('#bjTable'); if (!box) return;
+    const playing = g.status === 'playing';
+    const RES = { won: '🎉 Gewonnen!', lost: '😬 Verloren', push: '🤝 Gelijkspel: inzet terug', blackjack: '🃏 BLACKJACK! 3:2 uitbetaald' };
+    box.innerHTML = g.status === 'none' ? `<p class="hint">Kom zo dicht mogelijk bij 21 zonder erover te gaan. De dealer moet doorgaan tot 17. Blackjack betaalt 3:2.</p>` : `
+      <div class="bj-row"><span class="bj-label">Dealer · ${g.dtotal}${playing ? '+' : ''}</span><div class="bj-cards${animate ? ' deal' : ''}">${g.dealer.map(playingCard).join('')}</div></div>
+      <div class="bj-row"><span class="bj-label">Jij · ${g.ptotal}</span><div class="bj-cards${animate ? ' deal' : ''}">${g.player.map(playingCard).join('')}</div></div>
+      ${playing ? '' : `<p class="msg ${['won', 'blackjack'].includes(g.status) ? 'ok' : g.status === 'lost' ? 'err' : ''}">${RES[g.status]}${g.payout ? ` +${g.payout} 🪙` : ''}</p>`}`;
+    box.insertAdjacentHTML('beforeend', playing
+      ? `<div class="battle-bar bj-actions"><button class="btn small" data-bj="hit" type="button">Kaart</button>
+          <button class="btn small" data-bj="stand" type="button">Passen</button>
+          ${g.can_double ? `<button class="btn small" data-bj="double" type="button">Verdubbelen (${g.bet})</button>` : ''}</div>`
+      : `<div class="bet-row">Inzet: <input type="number" id="bjBet" min="10" max="200" step="5" value="${casino.bjBet}" class="bj-bet">
+          <button class="btn small" id="bjDeal" type="button">Delen</button></div>`);
+    box.insertAdjacentHTML('beforeend', '<p class="msg" id="bjMsg" role="status"></p>');
+    box.querySelectorAll('[data-bj]').forEach(b => b.onclick = async () => {
+      box.querySelectorAll('button').forEach(x => { x.disabled = true; });
+      const { data, error } = await sb.rpc('bj_action', { p_action: b.dataset.bj });
+      if (error) { $('#bjMsg').className = 'msg err'; $('#bjMsg').textContent = error.message; return; }
+      SFX.play('flip');
+      if (b.dataset.bj === 'double') { state.wallet -= g.bet; }
+      setWallet(data.wallet);
+      if (data.status !== 'playing') SFX.play(['won', 'blackjack'].includes(data.status) ? 'win' : data.status === 'lost' ? 'lose' : 'coin');
+      drawBj(data, true);
+    });
+    const deal = $('#bjDeal');
+    if (deal) deal.onclick = async () => {
+      const bet = Math.max(10, Math.min(200, Math.round(Number($('#bjBet').value) || 10)));
+      casino.bjBet = bet; deal.disabled = true;
+      const { data, error } = await sb.rpc('bj_start', { p_bet: bet });
+      if (error) { $('#bjMsg').className = 'msg err'; $('#bjMsg').textContent = error.message; deal.disabled = false; return; }
+      SFX.play('flip');
+      setWallet(data.wallet);
+      if (data.status !== 'playing') SFX.play(data.status === 'blackjack' ? 'jackpot' : data.status === 'lost' ? 'lose' : 'coin');
+      drawBj(data, true);
+    };
+  };
+  drawBj(bj.error ? { status: 'none' } : bj.data);
+
+  // Krasbiljet
+  const scratchAll = $('#scratchAll');
+  $('#buyScratch').onclick = async () => {
+    const b = $('#buyScratch'); b.disabled = true;
+    const msg = $('#scratchMsg'); msg.className = 'msg'; msg.textContent = '';
+    const { data, error } = await sb.rpc('casino_scratch');
+    if (error) { msg.className = 'msg err'; msg.textContent = error.message; b.disabled = false; return; }
+    state.wallet -= 25; syncCoinUI();
+    const box = $('#scratchBox');
+    box.innerHTML = `<div class="scratch-card">${data.symbols.map((k, i) =>
+      `<div class="scratch-cell" data-k="${k}"><span class="scratch-sym">${SCRATCH_SYMS[k]}</span><canvas data-cell="${i}"></canvas></div>`).join('')}</div>`;
+    let revealed = false;
+    const finish = async () => {
+      if (revealed) return; revealed = true;
+      box.querySelectorAll('canvas').forEach(c => c.classList.add('gone'));
+      scratchAll.hidden = true;
+      if (data.win) box.querySelectorAll(`[data-k="${data.win}"]`).forEach(c => c.classList.add('match'));
+      setWallet(data.wallet);
+      msg.className = data.win ? 'msg ok' : 'msg';
+      msg.innerHTML = data.win ? (data.prize ? `🎉 Je wint <strong>${data.prize}</strong> polycoins!` : '🎉 Je wint een zeldzame sticker!') : 'Helaas, geen 3 dezelfde.';
+      SFX.play(data.win ? 'jackpot' : 'lose');
+      b.disabled = false; b.textContent = 'Nog een biljet · 25 🪙';
+      if (data.sticker) await showStickers([data.sticker], 'Krasbiljet');
+    };
+    const cleared = new Set();
+    box.querySelectorAll('canvas').forEach(cv => {
+      const r = cv.parentElement.getBoundingClientRect();
+      cv.width = r.width; cv.height = r.height;
+      const ctx = cv.getContext('2d');
+      const g = ctx.createLinearGradient(0, 0, cv.width, cv.height);
+      g.addColorStop(0, '#b9bec6'); g.addColorStop(.5, '#e6e9ee'); g.addColorStop(1, '#9aa1ab');
+      ctx.fillStyle = g; ctx.fillRect(0, 0, cv.width, cv.height);
+      ctx.fillStyle = 'rgba(0,0,0,.25)'; ctx.font = '700 13px sans-serif'; ctx.textAlign = 'center'; ctx.fillText('KRAS', cv.width / 2, cv.height / 2 + 4);
+      ctx.globalCompositeOperation = 'destination-out';
+      let down = false, strokes = 0;
+      const scratch = e => {
+        if (!down || revealed) return;
+        const rr = cv.getBoundingClientRect();
+        ctx.beginPath(); ctx.arc(e.clientX - rr.left, e.clientY - rr.top, 14, 0, Math.PI * 2); ctx.fill();
+        if (++strokes % 6 === 0) SFX.play('tick');
+        if (strokes > 18 && !cleared.has(cv)) { cleared.add(cv); cv.classList.add('gone'); if (cleared.size === 6) finish(); }
+      };
+      cv.addEventListener('pointerdown', e => { down = true; cv.setPointerCapture(e.pointerId); scratch(e); });
+      cv.addEventListener('pointermove', scratch);
+      cv.addEventListener('pointerup', () => { down = false; });
+    });
+    scratchAll.hidden = false;
+    scratchAll.onclick = finish;
+  };
+}
+
+// ---------- Puzzels (v13): Verbanden, Memory, Mini-sudoku ----------
+const PUZZLES = {
+  conn: { icon: '🔗', name: 'Verbanden' },
+  memory: { icon: '🧠', name: 'Memory' },
+  sudoku: { icon: '🔢', name: 'Sudoku' },
+  board: { icon: '🏁', name: 'Klassement' },
+};
+const puz = { tab: 'conn', sel: new Set(), order: null, mem: { busy: false, open: null }, sud: { cell: null, timer: null } };
+const fmtSecs = s => `${Math.floor(s / 60)}:${String(s % 60).padStart(2, '0')}`;
+
+// Prijs van een opgeloste puzzel tonen (coins + stickers)
+async function puzzlePrize(prize) {
+  if (!prize) return;
+  state.wallet += prize.coins; syncCoinUI();
+  toast(`🧩 Opgelost! +${prize.coins} 🪙`);
+  SFX.play('win');
+  await showStickers(prize.stickers, 'Puzzelbeloning');
+}
+
+async function renderPuzzles(view) {
+  clearInterval(puz.sud.timer);
+  view.innerHTML = '<section class="col" style="max-width:none"><p class="hint">Laden…</p></section>';
+  const { data: ov, error } = await sb.rpc('puzzle_overview');
+  if (state.tab !== 'puzzles') return;
+  if (error) { view.innerHTML = `<section class="col">${pageHead('Puzzels', 'puzzles')}${notReady}</section>`; return; }
+  const mark = k => (ov[k] === 'won' ? ' ✓' : ov[k] === 'lost' ? ' ✗' : '');
+  const ev = state.event?.key;
+  view.innerHTML = `<section class="col" style="max-width:none">
+    <div class="battle-top">
+      ${pageHead('Puzzels', 'puzzles')}
+      <div class="battle-bar">
+        ${ev === 'puzzle_bonus' ? '<span class="pill pill-turn">🧩 Dubbele coins deze week!</span>' : ev === 'sticker_bonus' ? '<span class="pill pill-turn">🏷️ Dubbele stickers deze week!</span>' : ''}
+        ${soundBtn()}
+      </div>
+    </div>
+    <div class="seg hub-tabs" role="tablist" style="margin-bottom:14px">${Object.entries(PUZZLES).map(([k, p]) =>
+      `<button type="button" role="tab" data-ptab="${k}" class="${puz.tab === k ? 'on' : ''}">${p.icon} ${p.name}${mark(k)}</button>`).join('')}</div>
+    <div id="puzBody"></div>
+  </section>`;
+  view.querySelectorAll('[data-ptab]').forEach(b => b.onclick = () => { puz.tab = b.dataset.ptab; renderPuzzles(view); });
+  const body = $('#puzBody');
+  if (puz.tab === 'conn') drawConn(body, view);
+  else if (puz.tab === 'memory') drawMemory(body, view);
+  else if (puz.tab === 'sudoku') drawSudoku(body, view);
+  else drawPuzzleBoard(body);
+}
+
+// --- Verbanden ---
+async function drawConn(body, view) {
+  body.innerHTML = '<p class="hint">Laden…</p>';
+  const { data, error } = await sb.rpc('conn_state');
+  if (error) { body.innerHTML = `<p class="msg err">${esc(error.message)}</p>`; return; }
+  const words = data.words;
+  if (!puz.order || puz.order.some(w => !words.includes(w)) || puz.order.length !== words.length) puz.order = [...words];
+  puz.sel = new Set([...puz.sel].filter(w => words.includes(w)));
+  const groupBar = g => `<div class="conn-group l${g.l}"><strong>${esc(g.t)}</strong><span>${g.w.map(esc).join(', ')}</span></div>`;
+  const left = 4 - data.mistakes;
+  body.innerHTML = `<div class="conn">
+    <p class="hint">Vind 4 groepjes van 4 woorden die iets gemeen hebben. Je mag 4 fouten maken. Geel is het makkelijkst, paars het moeilijkst.</p>
+    <div class="conn-solved">${data.solved.map(groupBar).join('')}${(data.revealed || []).map(g => groupBar(g).replace('conn-group', 'conn-group missed')).join('')}</div>
+    ${data.status === 'playing' ? `
+      <div class="conn-grid" id="connGrid">${puz.order.map(w => `<button type="button" class="conn-word${puz.sel.has(w) ? ' on' : ''}${w.length > 10 ? ' long' : ''}" data-w="${esc(w)}">${esc(w)}</button>`).join('')}</div>
+      <div class="conn-foot">
+        <span class="conn-lives">Fouten over: ${'<span class="life"></span>'.repeat(left)}${'<span class="life lost"></span>'.repeat(4 - left)}</span>
+        <div class="battle-bar">
+          <button class="link" id="connShuffle" type="button">🔀 Schudden</button>
+          <button class="link" id="connClear" type="button">Wis selectie</button>
+          <button class="btn small" id="connSubmit" type="button" ${puz.sel.size === 4 ? '' : 'disabled'}>Indienen</button>
+        </div>
+      </div>` : `<p class="msg ${data.status === 'won' ? 'ok' : 'err'}">${data.status === 'won'
+        ? `Opgelost met ${data.mistakes} ${data.mistakes === 1 ? 'fout' : 'fouten'}! Je kreeg ${data.reward} 🪙. Morgen een nieuwe.`
+        : `Helaas, 4 fouten. Hierboven zie je de oplossing. Je kreeg ${data.reward} 🪙 als troost.`}</p>`}
+    <p class="msg" id="connMsg" role="status"></p>
+  </div>`;
+  if (data.status !== 'playing') return;
+  const sync = () => {
+    body.querySelectorAll('.conn-word').forEach(b => b.classList.toggle('on', puz.sel.has(b.dataset.w)));
+    $('#connSubmit').disabled = puz.sel.size !== 4;
+  };
+  body.querySelectorAll('.conn-word').forEach(b => b.onclick = () => {
+    const w = b.dataset.w;
+    if (puz.sel.has(w)) puz.sel.delete(w); else if (puz.sel.size < 4) puz.sel.add(w);
+    SFX.play('tick'); sync();
+  });
+  $('#connShuffle').onclick = () => { puz.order.sort(() => Math.random() - .5); drawConnGrid(); };
+  const drawConnGrid = () => {
+    $('#connGrid').innerHTML = puz.order.map(w => `<button type="button" class="conn-word${puz.sel.has(w) ? ' on' : ''}${w.length > 10 ? ' long' : ''}" data-w="${esc(w)}">${esc(w)}</button>`).join('');
+    body.querySelectorAll('.conn-word').forEach(b => b.onclick = () => {
+      const w = b.dataset.w;
+      if (puz.sel.has(w)) puz.sel.delete(w); else if (puz.sel.size < 4) puz.sel.add(w);
+      SFX.play('tick'); sync();
+    });
+  };
+  $('#connClear').onclick = () => { puz.sel.clear(); sync(); };
+  $('#connSubmit').onclick = async () => {
+    $('#connSubmit').disabled = true;
+    const { data: r, error: e2 } = await sb.rpc('conn_guess', { p_words: [...puz.sel] });
+    const msg = $('#connMsg');
+    if (e2) { msg.className = 'msg err'; msg.textContent = e2.message; return; }
+    if (r.correct) {
+      SFX.play('coin');
+      puz.sel.clear();
+      await drawConn(body, view);
+      if (r.prize) { await puzzlePrize(r.prize); renderPuzzles(view); }
+      return;
+    }
+    SFX.play('lose');
+    body.querySelectorAll('.conn-word.on').forEach(b => { b.classList.remove('shake'); void b.offsetWidth; b.classList.add('shake'); });
+    await sleep(500);
+    if (r.state.status !== 'playing') { puz.sel.clear(); renderPuzzles(view); return; }
+    await drawConn(body, view);
+    const m2 = $('#connMsg'); m2.className = 'msg err'; m2.textContent = r.one_away ? 'Bijna! Eén woord zit fout.' : 'Dat is geen groepje.';
+  };
+}
+
+// --- Memory ---
+async function drawMemory(body, view) {
+  body.innerHTML = '<p class="hint">Laden…</p>';
+  const { data, error } = await sb.rpc('memory_state');
+  if (error) { body.innerHTML = `<p class="msg err">${esc(error.message)}</p>`; return; }
+  puz.mem = { busy: false, open: data.open ? data.open.pos : null };
+  body.innerHTML = `<div class="memory-wrap">
+    <p class="hint">Vind de 8 paren in zo weinig mogelijk beurten. ≤10 beurten: 40 🪙 · ≤14: 30 · ≤18: 20 · meer: 10.</p>
+    <div class="battle-bar"><span class="pill">Beurten: <strong id="memMoves">${data.moves}</strong></span></div>
+    <div class="memory-grid">${Array.from({ length: 16 }, (_, i) => {
+      const m = data.matched[i], o = data.open && data.open.pos === i ? data.open.icon : null;
+      return `<button type="button" class="mem-card${m ? ' up matched' : o ? ' up' : ''}" data-mem="${i}" ${m || data.status !== 'playing' ? 'disabled' : ''}>
+        <span class="mem-inner"><span class="mem-back"></span><span class="mem-front">${m || o || ''}</span></span></button>`;
+    }).join('')}</div>
+    <p class="msg${data.status === 'won' ? ' ok' : ''}" id="memMsg" role="status">${data.status === 'won' ? `Opgelost in ${data.moves} beurten! Je kreeg ${data.reward} 🪙.` : ''}</p>
+  </div>`;
+  if (data.status !== 'playing') return;
+  const show = (i, icon) => { const c = body.querySelector(`[data-mem="${i}"]`); c.querySelector('.mem-front').textContent = icon; c.classList.add('up'); };
+  const hide = i => { const c = body.querySelector(`[data-mem="${i}"]`); c?.classList.remove('up'); };
+  body.querySelectorAll('[data-mem]').forEach(b => b.onclick = async () => {
+    const i = Number(b.dataset.mem);
+    if (puz.mem.busy || b.classList.contains('up')) return;
+    puz.mem.busy = true;
+    const { data: r, error: e2 } = await sb.rpc('memory_flip', { p_pos: i });
+    if (e2) { $('#memMsg').className = 'msg err'; $('#memMsg').textContent = e2.message; puz.mem.busy = false; return; }
+    SFX.play('flip');
+    show(i, r.icon);
+    if (r.other === undefined) { puz.mem.open = i; puz.mem.busy = false; return; }
+    $('#memMoves').textContent = r.moves;
+    if (r.match) {
+      SFX.play('coin');
+      for (const k of [i, r.other]) { const c = body.querySelector(`[data-mem="${k}"]`); c.classList.add('matched'); c.disabled = true; }
+    } else {
+      await sleep(850);
+      hide(i); hide(r.other);
+    }
+    puz.mem.open = null; puz.mem.busy = false;
+    if (r.won) {
+      $('#memMsg').className = 'msg ok'; $('#memMsg').textContent = `Opgelost in ${r.moves} beurten!`;
+      await puzzlePrize(r.prize);
+      renderPuzzles(view);
+    }
+  });
+}
+
+// --- Mini-sudoku 6×6 ---
+async function drawSudoku(body, view) {
+  clearInterval(puz.sud.timer);
+  body.innerHTML = '<p class="hint">Laden…</p>';
+  const { data, error } = await sb.rpc('sudoku_state');
+  if (error) { body.innerHTML = `<p class="msg err">${esc(error.message)}</p>`; return; }
+  const key = 'ptc-sudoku-' + todayBrussels();
+  if (data.status === 'new') {
+    body.innerHTML = `<div class="sudoku-wrap">
+      <p class="hint">Vul het rooster zodat elke rij, elke kolom en elk blokje (2×3) de cijfers 1 tot 6 precies één keer bevat.
+      Opgelost: 30 🪙, onder 3 minuten: 45 🪙. De klok start zodra je begint.</p>
+      <button class="btn small" id="sudStart" type="button">Start de sudoku ⏱️</button></div>`;
+    $('#sudStart').onclick = async () => { await sb.rpc('sudoku_start'); drawSudoku(body, view); };
+    return;
+  }
+  const giv = data.givens;
+  let grid;
+  try { grid = JSON.parse(localStorage.getItem(key) || 'null'); } catch (_) { grid = null; }
+  if (data.status === 'won' && data.grid) grid = data.grid;
+  if (!Array.isArray(grid) || grid.length !== 36) grid = [...giv];
+  giv.forEach((v, i) => { if (v) grid[i] = v; });
+  const done = data.status === 'won';
+  const conflicts = () => {
+    const bad = new Set();
+    for (let i = 0; i < 36; i++) for (let j = i + 1; j < 36; j++) {
+      if (!grid[i] || grid[i] !== grid[j]) continue;
+      const ri = Math.floor(i / 6), ci = i % 6, rj = Math.floor(j / 6), cj = j % 6;
+      if (ri === rj || ci === cj || (Math.floor(ri / 2) === Math.floor(rj / 2) && Math.floor(ci / 3) === Math.floor(cj / 3))) { bad.add(i); bad.add(j); }
+    }
+    return bad;
+  };
+  const cellHtml = (i, bad) => `<button type="button" class="sud-cell${giv[i] ? ' given' : ''}${puz.sud.cell === i ? ' sel' : ''}${bad.has(i) ? ' bad' : ''}${i % 6 === 2 ? ' br' : ''}${Math.floor(i / 6) % 2 === 1 && i < 30 ? ' bb' : ''}" data-cell="${i}" ${giv[i] || done ? 'disabled' : ''}>${grid[i] || ''}</button>`;
+  const draw = () => {
+    const bad = conflicts();
+    $('#sudGrid').innerHTML = grid.map((_, i) => cellHtml(i, bad)).join('');
+    $('#sudGrid').querySelectorAll('[data-cell]').forEach(c => c.onclick = () => { puz.sud.cell = Number(c.dataset.cell); draw(); });
+    const full = grid.every(v => v);
+    if ($('#sudCheck')) $('#sudCheck').disabled = !full || bad.size > 0;
+  };
+  body.innerHTML = `<div class="sudoku-wrap">
+    <div class="battle-bar"><span class="pill">⏱️ <strong id="sudTime">${fmtSecs(data.elapsed || 0)}</strong></span></div>
+    <div class="sud-grid" id="sudGrid"></div>
+    ${done ? `<p class="msg ok">Opgelost in ${fmtSecs(data.elapsed)}! Je kreeg ${data.reward} 🪙.</p>` : `
+      <div class="sud-pad">${[1, 2, 3, 4, 5, 6].map(n => `<button type="button" class="chip" data-num="${n}">${n}</button>`).join('')}
+        <button type="button" class="chip" data-num="0" aria-label="Wissen">⌫</button></div>
+      <button class="btn small" id="sudCheck" type="button" disabled>Controleer</button>`}
+    <p class="msg" id="sudMsg" role="status"></p>
+  </div>`;
+  draw();
+  if (done) return;
+  const start = Date.now() - (data.elapsed || 0) * 1000;
+  puz.sud.timer = setInterval(() => {
+    const el = $('#sudTime'); if (!el) return clearInterval(puz.sud.timer);
+    el.textContent = fmtSecs(Math.floor((Date.now() - start) / 1000));
+  }, 1000);
+  const put = n => {
+    if (n === undefined) return draw();
+    if (puz.sud.cell == null || giv[puz.sud.cell]) return;
+    grid[puz.sud.cell] = n || 0;
+    try { localStorage.setItem(key, JSON.stringify(grid)); } catch (_) {}
+    SFX.play('tick'); draw();
+  };
+  body.querySelectorAll('[data-num]').forEach(b => b.onclick = () => put(Number(b.dataset.num)));
+  puz.sud.put = put;
+  $('#sudCheck').onclick = async () => {
+    $('#sudCheck').disabled = true;
+    const { data: r, error: e2 } = await sb.rpc('sudoku_submit', { p_grid: grid });
+    const msg = $('#sudMsg');
+    if (e2) { msg.className = 'msg err'; msg.textContent = e2.message; draw(); return; }
+    if (!r.correct) { msg.className = 'msg err'; msg.textContent = 'Nog niet juist. Kijk je rijen, kolommen en blokjes na.'; draw(); return; }
+    clearInterval(puz.sud.timer);
+    try { localStorage.removeItem(key); } catch (_) {}
+    await puzzlePrize(r.prize);
+    renderPuzzles(view);
+  };
+}
+
+// Toetsenbord voor de sudoku: cijfers 1-6, wissen en pijltjes (één keer geregistreerd)
+document.addEventListener('keydown', e => {
+  if (state.tab !== 'puzzles' || puz.tab !== 'sudoku' || !puz.sud.put || !$('#sudGrid') || !$('#sudCheck')) return;
+  if (document.querySelector('dialog[open]') || e.target.closest?.('input, textarea, select')) return;
+  if (/^[1-6]$/.test(e.key)) { e.preventDefault(); puz.sud.put(Number(e.key)); }
+  else if (['Backspace', 'Delete', '0'].includes(e.key)) { e.preventDefault(); puz.sud.put(0); }
+  else if (e.key.startsWith('Arrow') && puz.sud.cell != null) {
+    e.preventDefault();
+    const d = { ArrowLeft: -1, ArrowRight: 1, ArrowUp: -6, ArrowDown: 6 }[e.key];
+    const n = puz.sud.cell + d;
+    if (n >= 0 && n < 36) { puz.sud.cell = n; puz.sud.put(undefined); }
+  }
+});
+
+// --- Klassement ---
+async function drawPuzzleBoard(body) {
+  body.innerHTML = '<p class="hint">Laden…</p>';
+  const { data, error } = await sb.rpc('puzzle_board');
+  if (error) { body.innerHTML = `<p class="msg err">${esc(error.message)}</p>`; return; }
+  const me = state.session.user.id;
+  const score = r => r.kind === 'conn' ? (r.status === 'won' ? `${r.score} ${r.score === 1 ? 'fout' : 'fouten'}` : '✗ niet opgelost')
+    : r.kind === 'memory' ? `${r.score} beurten` : fmtSecs(r.score || 0);
+  body.innerHTML = `<div class="three-col">${['conn', 'memory', 'sudoku'].map(k => {
+    const rows = data.filter(r => r.kind === k);
+    return `<div><h3>${PUZZLES[k].icon} ${PUZZLES[k].name}</h3>${rows.length
+      ? `<ol class="board-list">${rows.map((r, i) => `<li class="board-row${r.user_id === me ? ' me' : ''}">
+          <span class="board-rank">${i + 1}</span><span class="board-name">${r.user_id === me ? 'Jij' : esc(r.name)}</span>
+          <span class="board-score${r.status === 'lost' ? ' lost' : ''}">${score(r)}</span></li>`).join('')}</ol>`
+      : '<p class="hint">Nog niemand klaar.</p>'}</div>`;
+  }).join('')}</div>`;
+}
+
+// ---------- Profiel (v13): rang, favoriete kaarten, bureau, huisdier, prestaties ----------
+const BUREAU_SLOTS = { wall: '🖼️ Muur', window: '🪟 Raam', lamp: '💡 Lamp', plant: '🪴 Plant', computer: '💻 Computer', drink: '☕ Drankje', floor: '🪑 Vloer' };
+const PET_STAGE = { ei: '🥚 Ei', baby: '🍼 Baby', jong: '🌱 Jong', volwassen: '⭐ Volwassen' };
+
+function petHtml(pet, big = false) {
+  if (!pet) return '';
+  const face = pet.stage === 'ei' ? '🥚' : pet.emoji;
+  return `<span class="pet st-${pet.stage}${pet.variant && pet.variant !== 'normaal' ? ' v-' + pet.variant : ''}${big ? ' big' : ''}" title="${esc(pet.name)}">${face}</span>`;
+}
+
+function bureauHtml(b, pet) {
+  const e = slot => (b[slot] && b[slot].emoji) || '';
+  return `<div class="bureau" aria-label="Bureau">
+    <div class="b-wall">
+      <div class="b-window">${e('window')}</div>
+      <div class="b-poster">${e('wall')}</div>
+    </div>
+    <div class="b-desk">
+      <span class="b-lamp">${e('lamp')}</span>
+      <span class="b-plant">${e('plant')}</span>
+      <span class="b-pc">${e('computer')}</span>
+      <span class="b-drink">${e('drink')}</span>
+      ${pet ? `<span class="b-pet">${petHtml(pet)}</span>` : ''}
+    </div>
+    <span class="b-floor">${e('floor')}</span>
+  </div>`;
+}
+
+// Kopje van een profiel (eigen of van een vriend)
+function profileHeadHtml(p) {
+  const av = p.avatar_url ? ` style="background-image:url('${esc(p.avatar_url)}')"` : '';
+  return `<div class="prof-head">
+    <span class="prof-av${ringCls(p.ring)}"${av}>${p.avatar_url ? '' : esc((p.name || '?').charAt(0).toUpperCase())}</span>
+    <div><h2>${esc(p.name)} ${titleChip(p.title)}</h2>
+      <div class="battle-bar">${rankChip(p.season?.rank, p.season?.points)}
+        <span class="pill">🎴 ${p.cards} kaarten</span><span class="pill">🏷️ ${p.stickers.have}/${p.stickers.total}</span>
+        <span class="pill">🏅 ${p.achievements.length} prestaties</span></div></div>
+  </div>
+  ${p.achievements.length ? `<div class="badge-row">${p.achievements.map(a => `<span class="ach-badge" title="${esc(a.title)}">${a.icon}</span>`).join('')}</div>` : ''}`;
+}
+
+// Favoriete kaarten: enkel tonen als de kijker de kaart zelf ook heeft (anders blijft ze geheim)
+function showcaseHtml(p, own) {
+  const slots = [0, 1, 2].map(i => {
+    const s = p.showcase[i];
+    if (!s) return `<div class="show-slot empty">${own ? 'Kies een kaart' : ''}</div>`;
+    const c = cardById(s.id);
+    if (!c) return '<div class="show-slot empty"></div>';
+    const visible = own || state.owned.get(c.id) || state.isAdmin;
+    return `<div class="show-slot">${visible ? renderCard(c, { level: s.level }) : renderCard(c, { locked: true })}</div>`;
+  });
+  return `<div class="showcase">${slots.join('')}</div>`;
+}
+
+async function renderProfile(view) {
+  view.innerHTML = '<section class="col" style="max-width:none"><p class="hint">Laden…</p></section>';
+  const [prof, ach, bureau] = await Promise.all([sb.rpc('profile_view', { p_user: null }), sb.rpc('achievements_state'), sb.rpc('bureau_state')]);
+  if (state.tab !== 'profile') return;
+  if (prof.error) { view.innerHTML = `<section class="col">${pageHead('Profiel', 'profile')}${notReady}</section>`; return; }
+  const p = prof.data, pet = p.pet;
+  const achs = (ach.data || []).sort((a, b) => (a.claimed - b.claimed) || ((b.progress >= b.target) - (a.progress >= a.target)));
+  const ready = achs.filter(a => !a.claimed && a.progress >= a.target).length;
+  view.innerHTML = `<section class="col" style="max-width:none">
+    <div class="battle-top">${pageHead('Profiel', 'profile')}</div>
+    <div class="two-col">
+      <div>
+        <div class="prof-card">${profileHeadHtml(p)}</div>
+        <div class="battle-bar" style="margin-top:16px"><h3 style="margin:0">⭐ Favoriete kaarten</h3><button class="link" id="editShowcase" type="button">Kiezen</button></div>
+        ${showcaseHtml(p, true)}
+        <h3 style="margin-top:18px">🐾 Huisdier</h3>
+        <div class="pet-panel" id="petPanel"></div>
+      </div>
+      <div>
+        <div class="battle-bar"><h3 style="margin:0">🪑 Bureau</h3><button class="link" id="editBureau" type="button">✏️ Inrichten</button></div>
+        ${bureauHtml(p.bureau, pet)}
+        <div id="bureauEditor" hidden></div>
+        <div class="battle-bar" style="margin-top:18px"><h3 style="margin:0">🏅 Prestaties</h3>${ready ? `<span class="pill pill-turn">${ready} klaar om op te halen</span>` : ''}</div>
+        <ul class="quest-list ach-list">${achs.map(a => {
+          const ok = a.progress >= a.target;
+          return `<li class="quest${a.claimed ? ' done' : ok ? ' ready' : ''}">
+            <span class="ach-icon">${a.icon}</span>
+            <div class="quest-main"><strong>${esc(a.title)}</strong><small>${esc(a.desc)}</small>
+              <div class="qbar"><span style="width:${Math.round(a.progress / a.target * 100)}%"></span></div>
+              <small>${a.progress}/${a.target}</small></div>
+            ${a.claimed ? '<span class="pill">✓</span>' : ok ? `<button class="btn small" data-ach="${esc(a.key)}" type="button">+${a.reward} 🪙</button>` : `<span class="quest-reward">${a.reward} 🪙</span>`}
+          </li>`;
+        }).join('')}</ul>
+      </div>
+    </div>
+  </section>`;
+
+  // Huisdier
+  const petPanel = $('#petPanel');
+  if (!pet) {
+    petPanel.innerHTML = `<p class="hint">Adopteer een gratis kantoorhuisdier. Het begint als een ei en groeit als je elke dag speelt. Welk dier eruit komt, is een verrassing!</p>
+      <div class="battle-bar"><input id="petName" class="tselect" maxlength="20" placeholder="Naam" style="width:auto;min-width:160px">
+      <button class="btn small" id="adoptPet" type="button">🥚 Adopteren</button></div>`;
+    $('#adoptPet').onclick = async () => {
+      const { error } = await sb.rpc('adopt_pet', { p_name: $('#petName').value || 'Naamloos' });
+      if (error) return alert(error.message);
+      SFX.play('heal'); renderProfile(view);
+    };
+  } else {
+    const pct = pet.next ? Math.round(pet.xp / pet.next * 100) : 100;
+    petPanel.innerHTML = `<div class="pet-show">${petHtml(pet, true)}
+      <div><strong class="pet-name">${esc(pet.name)}</strong> <button class="link" id="renamePet" type="button">✏️</button><br>
+        <span class="pill">${PET_STAGE[pet.stage]}</span>${pet.label ? ` <span class="pill">${esc(pet.label)}${pet.variant !== 'normaal' ? ` · ${pet.variant === 'goud' ? '✨ goud' : '🌈 regenboog'}` : ''}</span>` : ''}
+        <div class="qbar" style="margin-top:8px"><span style="width:${pct}%"></span></div>
+        <small class="hint">${pet.next ? `${pet.xp}/${pet.next} XP tot ${pet.stage === 'ei' ? 'het ei uitkomt' : 'de volgende fase'}` : `${pet.xp} XP · volgroeid!`}</small></div></div>
+      <p class="hint" style="margin-top:8px">Elke dag max 3 XP: 1 voor een Wordle, 1 voor een battle en 1 voor een opgeloste puzzel.</p>`;
+    $('#renamePet').onclick = async () => {
+      const n = prompt('Nieuwe naam voor je huisdier:', pet.name);
+      if (!n) return;
+      const { error } = await sb.rpc('rename_pet', { p_name: n });
+      if (error) return alert(error.message);
+      renderProfile(view);
+    };
+  }
+
+  // Prestaties ophalen
+  view.querySelectorAll('[data-ach]').forEach(b => b.onclick = async () => {
+    b.disabled = true;
+    const { data, error } = await sb.rpc('claim_achievement', { p_key: b.dataset.ach });
+    if (error) { alert(error.message); b.disabled = false; return; }
+    setWallet(data.wallet);
+    toast(`🏅 Prestatie behaald! +${data.reward} 🪙`);
+    await showStickers([data.sticker], 'Prestatiebeloning');
+    renderProfile(view);
+  });
+
+  // Favoriete kaarten kiezen
+  $('#editShowcase').onclick = () => {
+    const dlg = $('#friendModal');
+    const pick = new Set(p.showcase.map(s => s.id));
+    const owned = state.cards.filter(c => state.owned.get(c.id)).sort((a, b) => (RARITY_ORDER[a.rarity] - RARITY_ORDER[b.rarity]) || a.id - b.id);
+    dlg.innerHTML = `<div class="accbox statbox"><h2>Kies max. 3 favorieten</h2>
+      <div class="battle-pick wrap">${owned.map(c => `<button class="pick${pick.has(c.id) ? ' selected' : ''}" type="button" data-fav="${c.id}">${renderCard(c, mineOpts(c))}</button>`).join('')}</div>
+      <div class="battle-bar"><button class="btn small" id="saveFav" type="button">Opslaan</button><button class="link" id="favClose" type="button">Annuleren</button></div></div>`;
+    dlg.showModal();
+    dlg.querySelectorAll('[data-fav]').forEach(b => b.onclick = () => {
+      const id = Number(b.dataset.fav);
+      if (pick.has(id)) pick.delete(id); else if (pick.size < 3) pick.add(id);
+      b.classList.toggle('selected', pick.has(id));
+    });
+    $('#favClose').onclick = () => dlg.close();
+    $('#saveFav').onclick = async () => {
+      const { error } = await sb.rpc('set_showcase', { p_cards: [...pick] });
+      if (error) return alert(error.message);
+      dlg.close(); renderProfile(view);
+    };
+  };
+
+  // Bureau inrichten
+  $('#editBureau').onclick = () => {
+    const ed = $('#bureauEditor');
+    ed.hidden = !ed.hidden;
+    if (ed.hidden || bureau.error) { if (bureau.error) ed.innerHTML = notReady; return; }
+    const items = bureau.data.items;
+    const cur = slot => p.bureau[slot]?.key;
+    ed.innerHTML = `<div class="bureau-editor">${Object.entries(BUREAU_SLOTS).map(([slot, label]) => `<div class="cos-group"><h4>${label}</h4>
+      <div class="cos-list">${items.filter(i => i.slot === slot).map(i => {
+        const on = cur(slot) === i.key;
+        const action = on ? '<span class="pill">✓ in gebruik</span>'
+          : i.owned ? `<button class="btn small" data-equip-b="${esc(i.key)}" type="button">Gebruiken</button>`
+          : i.price == null ? '<small class="hint" style="margin:0">Vervolledig het stickerthema</small>'
+          : `<button class="btn small" data-buy-b="${esc(i.key)}" data-price="${i.price}" type="button" ${state.wallet < i.price ? 'disabled' : ''}>${i.price} 🪙</button>`;
+        return `<div class="cos-item${on ? ' on' : ''}"><span class="cos-prev b-prev">${i.emoji || '∅'}</span><span class="cos-name">${esc(i.name)}</span>${action}</div>`;
+      }).join('')}</div></div>`).join('')}</div>`;
+    ed.querySelectorAll('[data-buy-b]').forEach(b => b.onclick = async () => {
+      if (!confirm(`Kopen voor ${b.dataset.price} polycoins?`)) return;
+      b.disabled = true;
+      const { data, error } = await sb.rpc('buy_bureau_item', { p_key: b.dataset.buyB });
+      if (error) { alert(error.message); b.disabled = false; return; }
+      setWallet(data.wallet); SFX.play('coin'); renderProfile(view).then(() => $('#editBureau')?.click());
+    });
+    ed.querySelectorAll('[data-equip-b]').forEach(b => b.onclick = async () => {
+      const { error } = await sb.rpc('equip_bureau_item', { p_key: b.dataset.equipB });
+      if (error) return alert(error.message);
+      renderProfile(view).then(() => $('#editBureau')?.click());
+    });
+  };
+}
+
+// Profiel van een vriend in een venster
+async function openFriendProfile(f) {
+  const dlg = $('#friendModal');
+  dlg.innerHTML = `<div class="accbox statbox"><p class="hint">Profiel laden…</p></div>`;
+  dlg.showModal();
+  const { data: p, error } = await sb.rpc('profile_view', { p_user: f.id });
+  if (error) { dlg.innerHTML = `<div class="accbox statbox"><p class="msg err">${esc(error.message)}</p><button class="link" id="fpClose" type="button">Sluiten</button></div>`; $('#fpClose').onclick = () => dlg.close(); return; }
+  dlg.innerHTML = `<div class="accbox statbox prof-modal">
+    ${profileHeadHtml(p)}
+    <h3>⭐ Favoriete kaarten</h3>${showcaseHtml(p, false)}
+    <p class="hint" style="margin:4px 0 0;font-size:13px">Kaarten die jij nog niet hebt, blijven verborgen.</p>
+    <h3>🪑 Bureau</h3>${bureauHtml(p.bureau, p.pet)}
+    ${p.pet ? `<p class="hint" style="margin-top:8px">${petHtml(p.pet)} <strong>${esc(p.pet.name)}</strong> · ${PET_STAGE[p.pet.stage]}${p.pet.label ? ` ${esc(p.pet.label)}` : ''}</p>` : ''}
+    <button type="button" class="link" id="fpClose">Sluiten</button>
+  </div>`;
+  $('#fpClose').onclick = () => dlg.close();
 }
 
 // ---------- Melding bij een nieuwe versie van de site ----------
