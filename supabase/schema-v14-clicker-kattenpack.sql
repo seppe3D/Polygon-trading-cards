@@ -7,7 +7,7 @@
 -- max 6 uur opsparen en max 50 🪙 per dag. Alles wordt op de server berekend (geen valsspelen).
 
 -- =====================================================================
--- 1. Kattenpack: 3 troostkatten voor 20 polycoins
+-- 1. Troostdierenpack: 3 troostdieren voor 50 polycoins
 -- =====================================================================
 create or replace function public.shop_buy_pack(p_kind text) returns jsonb
 language plpgsql volatile security definer set search_path = public as $$
@@ -23,7 +23,7 @@ begin
     v_cards := v_cards || public._shop_give(me, public._shop_roll(3, 22));
     v_cards := v_cards || public._shop_give(me, public._shop_roll(15, 85));
   elsif p_kind = 'cat' then
-    v_wallet := public._shop_spend(me, 20, 'pack_cat');
+    v_wallet := public._shop_spend(me, 50, 'pack_cat');
     v_cards := v_cards || public._shop_give(me, 'cat');
     v_cards := v_cards || public._shop_give(me, 'cat');
     v_cards := v_cards || public._shop_give(me, 'cat');

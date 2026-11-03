@@ -1060,7 +1060,7 @@ const $ = (sel, el = document) => el.querySelector(sel);
 const sleep = ms => new Promise(r => setTimeout(r, ms));
 const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 
-const RARITY_LABEL = { common: 'Common', epic: 'Epic', legendary: 'Legendary', cat: 'Troostkat' };
+const RARITY_LABEL = { common: 'Common', epic: 'Epic', legendary: 'Legendary', cat: 'Troostdier' };
 const PARTICLE_COLORS = {
   common: ['#9aa7b3', '#c8d0d8'],
   epic: ['#8B5CF6', '#C4B0F2', '#F3EEFF'],
@@ -1638,7 +1638,7 @@ const INFO = {
     <ul><li>Raad het Engelse woord van 5 letters in maximaal 6 pogingen. Typ of gebruik het toetsenbord op het scherm.</li>
     <li>🟩 juiste letter op de juiste plek · 🟨 letter zit in het woord, maar elders · ⬛ letter zit er niet in.</li>
     <li>Na elke ronde open je een pakje. Hoe minder pogingen, hoe zeldzamer je kaart.</li>
-    <li>Heb je de kaart al? Dan krijg je ze als dubbel om te ruilen, plus wat polycoins. Niet opgelost? Dan krijg je een troostkat.</li>
+    <li>Heb je de kaart al? Dan krijg je ze als dubbel om te ruilen, plus wat polycoins. Niet opgelost? Dan krijg je een troostdier.</li>
     <li>Met <strong>📋 Kopieer resultaat</strong> deel je je gekleurde vakjes (zonder het woord) in een chat.</li></ul>
     <p>Rechts vind je ook:</p>
     <ul><li>🎯 <strong>Opdrachten</strong>: elke dag 3 kleine opdrachten voor extra polycoins. Haal je beloning op voor middernacht.</li>
@@ -1653,14 +1653,14 @@ const INFO = {
         <tr><td>4</td><td>75%</td><td>22%</td><td>3%</td></tr>
         <tr><td>5</td><td>88%</td><td>11%</td><td>1%</td></tr>
         <tr><td>6</td><td>95%</td><td>4,5%</td><td>0,5%</td></tr>
-        <tr><td>Niet opgelost</td><td colspan="3">Altijd een troostkat</td></tr>
+        <tr><td>Niet opgelost</td><td colspan="3">Altijd een troostdier</td></tr>
       </tbody>
     </table>`],
   book: ['Je verzamelboek', `
-    <p>Elke collega heeft een eigen pagina met 9 kaarten: 6 commons, 2 epics en 1 legendary. Troostkatten krijgen hun eigen pagina.</p>
+    <p>Elke collega heeft een eigen pagina met 9 kaarten: 6 commons, 2 epics en 1 legendary. Troostdieren krijgen hun eigen pagina.</p>
     <ul><li>Klik op een kaart om ze groot te bekijken, tik nog eens om ze om te draaien.</li>
     <li>Achteraan vind je de pagina <strong>Dubbels</strong> met alle kaarten die je meer dan één keer hebt.</li>
-    <li>🏅 <strong>Pagina compleet?</strong> Dan krijg je 100 🪙 en een medaille. Het volledige boek (zonder troostkatten) levert 250 🪙 en de titel <em>Meesterverzamelaar</em> op.</li>
+    <li>🏅 <strong>Pagina compleet?</strong> Dan krijg je 100 🪙 en een medaille. Het volledige boek (zonder troostdieren) levert 250 🪙 en de titel <em>Meesterverzamelaar</em> op.</li>
     <li>⬆️ <strong>Opwaarderen</strong>: open een kaart en gebruik 2 dubbels om ze een ★ hoger te zetten (max ★★★). Elke ★ geeft +10% HP, ATK en DEF in Battle. Op ★★★ glinstert de kaart.</li></ul>`],
   stats: ['Statistieken', `<p>Een overzicht van al je Wordles (2 per dag): hoe vaak je speelde, je huidige streak (opeenvolgende dagen), hoe vaak je de Wordle oploste en in hoeveel pogingen.</p>`],
   battle: ['Zo werkt Battle', `
@@ -1689,8 +1689,8 @@ const INFO = {
   shop: ['Shop', `
     <p>Besteed je polycoins. Die verdien je met battles, opdrachten, volle pagina's en dubbele trekkingen<span class="v13-only">, puzzels en het casino</span>.</p>
     <ul><li><strong>Pakjes</strong>: Basic Pack (1 kaart, 60 🪙) of Epic Pack (3 kaarten, de 3e gegarandeerd epic of legendary, 200 🪙).</li>
-    <li><strong>Dubbels verkopen</strong>: common 15 · epic 40 · legendary 100 · troostkat 5 🪙 per extra exemplaar. Je houdt altijd 1 exemplaar.</li>
-    <li class="v13-only"><strong>Kattenpack</strong>: 3 troostkatten voor 20 🪙.</li>
+    <li><strong>Dubbels verkopen</strong>: common 15 · epic 40 · legendary 100 · troostdier 5 🪙 per extra exemplaar. Je houdt altijd 1 exemplaar.</li>
+    <li class="v13-only"><strong>Troostdierenpack</strong>: 3 troostdieren voor 50 🪙.</li>
     <li><strong>Opwaarderen</strong>: 2 dubbels maken een kaart een ★ sterker in Battle (max ★★★).</li>
     <li><strong>Wordle-hulp</strong> (op Today, tijdens een ronde): een letter onthullen voor 40 🪙 (max 2 per ronde) of een 7e poging voor 60 🪙.</li>
     <li><strong>Cosmetica</strong>: kaartranden, profielringen en titels. Puur voor de show, je kan ze altijd aan- of uitzetten.</li></ul>`],
@@ -2011,7 +2011,7 @@ function roundStatus(s) {
 }
 function roundSummary(s) {
   if (s.status === 'won') return `Opgelost in ${s.attempts} ${plural(s.attempts)}! Je pakje is geopend.`;
-  if (s.status === 'lost') return `Niet opgelost. Het woord was <strong>${esc(s.answer || '?')}</strong>. Je kreeg een troostkat.`;
+  if (s.status === 'lost') return `Niet opgelost. Het woord was <strong>${esc(s.answer || '?')}</strong>. Je kreeg een troostdier.`;
   return '';
 }
 
@@ -2456,7 +2456,7 @@ async function revealCard(res) {
             ? `Opgelost in ${res.attempts} ${plural(res.attempts)}. Je had "${esc(res.card.name)}" al — nu heb je een dubbel om te ruilen, plus ${res.coinsEarned} polycoins.`
             : `Opgelost in ${res.attempts} ${plural(res.attempts)}. Je had "${esc(res.card.name)}" al — omgezet in ${res.coinsEarned} polycoins.`)
         : `Opgelost in ${res.attempts} ${plural(res.attempts)}. Je trok een ${RARITY_LABEL[res.rarity]}-kaart.`)
-    : `Niet opgelost${res.answer ? ` — het woord was ${esc(res.answer)}` : ''}. Je krijgt een troostkat.`;
+    : `Niet opgelost${res.answer ? ` — het woord was ${esc(res.answer)}` : ''}. Je krijgt een troostdier.`;
   stage.insertAdjacentHTML('beforeend', `${!reduce && res.rarity === 'legendary' ? confettiHtml() : ''}`);
   $('#packDone').innerHTML = `<p class="result">${text}</p><button class="btn small" id="packClose" type="button">Verder</button>`;
   $('#packClose').onclick = () => dlg.close();
@@ -2501,8 +2501,9 @@ function bookGroups() {
     g.cards.push(c);
   }
   for (const g of groups) g.cards.sort((a, b) => a.slot - b.slot);
-  // Troostkatten altijd na de collega's, ook als er later nieuwe collega's bijkomen
-  const cats = groups.findIndex(g => g.name === 'Katten');
+  // Troostdieren altijd na de collega's, ook als er later nieuwe collega's bijkomen
+  const isAnimals = g => g.cards.length && g.cards.every(c => c.rarity === 'cat');
+  const cats = groups.findIndex(isAnimals);
   if (cats >= 0) groups.push(...groups.splice(cats, 1));
   // Extra pagina achteraan met alle kaarten die je meer dan één keer hebt
   const dupeCards = state.cards
@@ -2523,7 +2524,7 @@ function renderBook(view) {
 
 function drawBook(view, groups, animate) {
   const g = groups[state.page];
-  const people = groups.filter(x => x.name !== 'Katten' && !x.dupes);
+  const people = groups.filter(x => !x.dupes && !x.cards.every(c => c.rarity === 'cat'));
   const total = people.reduce((n, x) => n + x.cards.length, 0);
   const have = people.reduce((n, x) => n + ownedIn(x), 0);
   const dupes = [...state.owned.values()].reduce((n, v) => n + (v - 1), 0);
@@ -2620,7 +2621,7 @@ function statsHtml(plays, extraCards = '') {
       <div class="stat-card"><span class="stat-num">${total}</span><span class="stat-label">Totaal gespeeld</span></div>
       <div class="stat-card"><span class="stat-num">${streak}</span><span class="stat-label">Huidige streak (dagen)</span></div>
       <div class="stat-card"><span class="stat-num">${solvedCount}</span><span class="stat-label">Opgelost</span></div>
-      <div class="stat-card"><span class="stat-num">${catCount}</span><span class="stat-label">Troostkatten</span></div>
+      <div class="stat-card"><span class="stat-num">${catCount}</span><span class="stat-label">Troostdieren</span></div>
       ${extraCards}
     </div></div><div>
     <h3 class="bars-title">Aantal pogingen bij oplossen</h3>
@@ -3007,7 +3008,7 @@ const SHOP = {
   packs: {
     basic: { name: 'Basic Pack', price: 60, count: 1, desc: '1 kaart · 75% common, 22% epic, 3% legendary' },
     epic: { name: 'Epic Pack', price: 200, count: 3, desc: '3 kaarten · de 3e is gegarandeerd epic of legendary' },
-    cat: { name: 'Kattenpack', price: 20, count: 3, desc: '3 troostkatten 🐱 · goedkoop en schattig', v13: true },
+    cat: { name: 'Troostdierenpack', price: 50, count: 3, desc: '3 troostdieren 🐾 · katten, honden, pinguïns…', v13: true },
   },
   sell: { common: 15, epic: 40, legendary: 100, cat: 5 },
   hint: 40, extra: 60,
@@ -4800,10 +4801,10 @@ async function renderClicker(view) {
 // ---------- Updates: wat is er nieuw? (knop bovenaan) ----------
 // Nieuwste eerst. v13: true = enkel zichtbaar voor wie de voorproef heeft (tot het live staat).
 const UPDATES = [
-  { id: '2026-11-03', date: '3 november 2026', title: 'Clicker en Kattenpack', v13: true, items: [
+  { id: '2026-11-03', date: '3 november 2026', title: 'Clicker en Troostdierenpack', v13: true, items: [
     '👆 <strong>Clicker</strong>: klik Poly\'s bij elkaar, koop stagiairs, koffiemachines en meer. Elke 10 minuten levert je kantoor een salaris in polycoins op (max 50 🪙 per dag).',
     '✨ Af en toe verschijnt een gouden polygoon met een bonus.',
-    '🐱 <strong>Kattenpack</strong> in de Shop: 3 troostkatten voor 20 🪙.',
+    '🐾 <strong>Troostdierenpack</strong> in de Shop: 3 troostdieren voor 50 🪙. De troostkatten heten voortaan troostdieren.',
     '🃏 Blackjack met fiches en kaarten die één voor één gedeeld worden.',
   ] },
   { id: '2026-10-26', date: '26 oktober 2026', title: 'De grote update', v13: true, items: [
