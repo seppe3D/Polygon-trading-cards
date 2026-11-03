@@ -484,6 +484,42 @@ body.v13 .v13-hide{display:none !important}
 .scratch-cell.match{animation:reel-win .5s ease 3;outline:3px solid #2f6b3a}
 .casino-note{margin-top:16px;color:var(--muted);font-size:14px}
 
+
+/* ===== Clicker ===== */
+.clicker-grid{display:grid;gap:22px;align-items:start}
+@media (min-width:900px){.clicker-grid{grid-template-columns:minmax(0,1.1fr) minmax(0,.9fr)}}
+.clk-main{display:grid;justify-items:center;gap:6px;text-align:center}
+.clk-poly{display:flex;align-items:baseline;gap:10px;font:900 clamp(34px,7vw,52px) var(--display);color:#fff;text-shadow:0 4px 16px rgba(0,0,0,.5)}
+.clk-poly span{font:800 18px var(--body);color:var(--yellow-soft)}
+.clk-rate{color:var(--ink-soft);font-weight:700}
+.clk-arena{position:relative;width:min(340px,86vw);aspect-ratio:1;display:grid;place-items:center;margin:4px 0}
+.clk-arena::before{content:"";position:absolute;inset:6%;border-radius:50%;background:conic-gradient(from 0deg,transparent,rgba(201,180,88,.25),transparent 30%,rgba(93,163,82,.25),transparent 60%,rgba(124,79,224,.25),transparent);animation:st-spin 14s linear infinite;filter:blur(6px)}
+.clk-big{position:relative;width:72%;aspect-ratio:1;border:0;background:none;padding:0;cursor:pointer;touch-action:manipulation;-webkit-tap-highlight-color:transparent;
+  filter:drop-shadow(0 14px 22px rgba(0,0,0,.55));transition:transform .08s ease}
+.clk-big:hover{transform:scale(1.03)}
+.clk-big.press{animation:clk-press .14s ease}
+@keyframes clk-press{50%{transform:scale(.93)}}
+.clk-hex{position:absolute;inset:0;display:grid;place-items:center;clip-path:polygon(50% 0,93% 25%,93% 75%,50% 100%,7% 75%,7% 25%);
+  background:radial-gradient(circle at 35% 28%,rgba(255,255,255,.55),transparent 38%),conic-gradient(from 210deg,#2f6b3a,#c9a93a,#1d4a2a,#e0cc72,#244f2e,#5DA352,#2f6b3a)}
+.clk-hex b{position:relative;z-index:1;font:900 clamp(26px,7vw,40px) var(--display);letter-spacing:.06em;color:#fff6d6;text-shadow:0 3px 0 rgba(0,0,0,.35)}
+.clk-pop{position:absolute;z-index:5;pointer-events:none;font:900 22px var(--display);color:#ffe58a;text-shadow:0 2px 6px rgba(0,0,0,.7);transform:translate(-50%,-50%);animation:clk-up .9s ease-out forwards}
+@keyframes clk-up{to{opacity:0;transform:translate(-50%,-160%) scale(1.2)}}
+.clk-golden{position:absolute;z-index:6;width:58px;height:58px;border:0;background:none;padding:0;cursor:pointer;animation:golden-in .4s ease both,st-float 2s ease-in-out .4s infinite}
+.clk-golden span{display:grid;place-items:center;width:100%;height:100%;font-size:52px;line-height:1;color:#ffd75e;text-shadow:0 0 16px #ffcf4a,0 0 30px #ff9d2e}
+@keyframes golden-in{from{opacity:0;transform:scale(.2) rotate(-90deg)}}
+.salary-card{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;width:min(460px,100%);padding:12px 16px;border-radius:16px;
+  background:linear-gradient(120deg,rgba(201,180,88,.2),rgba(93,163,82,.16));border:1px solid var(--yellow);text-align:left}
+.sal-text small{display:block;color:var(--ink-soft);font-size:13px;margin-top:2px}
+.clk-shop h3{margin-top:0}
+.clk-items{display:grid;gap:8px}
+.clk-item{display:flex;align-items:center;gap:12px;width:100%;padding:10px 14px;border-radius:16px;border:1px solid var(--line);background:rgba(35,41,50,.9);color:var(--ink);text-align:left;cursor:pointer;opacity:.55;transition:transform .12s,opacity .15s,border-color .15s}
+.clk-item.afford{opacity:1;border-color:var(--green)}
+.clk-item.afford:hover{transform:translateX(4px)}
+.clk-icon{font-size:30px;width:40px;text-align:center}
+.clk-info{flex:1;min-width:0;display:grid}
+.clk-info small,.clk-meta small{color:var(--muted);font-size:12.5px}
+.clk-meta{display:grid;justify-items:end;font:800 15px var(--body);color:var(--yellow-soft);white-space:nowrap}
+.pack.mini.cat .pack-body{filter:hue-rotate(160deg) saturate(.9)}
 /* ===== Puzzels ===== */
 .conn{max-width:620px}
 .conn-solved{display:grid;gap:8px;margin-bottom:8px}
@@ -1520,6 +1556,7 @@ const TABS = [
   { id: 'battle', label: 'Battle', icon: '⚔️', badge: 'battle' },
   { id: 'puzzles', label: 'Puzzles', icon: '🧩', v13: true },
   { id: 'casino', label: 'Casino', icon: '🎰', v13: true },
+  { id: 'clicker', label: 'Clicker', icon: '👆', v13: true },
   { id: 'stickers', label: 'Stickers', icon: '🏷️', v13: true },
   { id: 'profile', label: 'Profile', icon: '👤', v13: true },
   { id: 'friends', label: 'Friends', icon: '👥', badge: 'friend' },
@@ -1653,6 +1690,7 @@ const INFO = {
     <p>Besteed je polycoins. Die verdien je met battles, opdrachten, volle pagina's en dubbele trekkingen<span class="v13-only">, puzzels en het casino</span>.</p>
     <ul><li><strong>Pakjes</strong>: Basic Pack (1 kaart, 60 🪙) of Epic Pack (3 kaarten, de 3e gegarandeerd epic of legendary, 200 🪙).</li>
     <li><strong>Dubbels verkopen</strong>: common 15 · epic 40 · legendary 100 · troostkat 5 🪙 per extra exemplaar. Je houdt altijd 1 exemplaar.</li>
+    <li class="v13-only"><strong>Kattenpack</strong>: 3 troostkatten voor 20 🪙.</li>
     <li><strong>Opwaarderen</strong>: 2 dubbels maken een kaart een ★ sterker in Battle (max ★★★).</li>
     <li><strong>Wordle-hulp</strong> (op Today, tijdens een ronde): een letter onthullen voor 40 🪙 (max 2 per ronde) of een 7e poging voor 60 🪙.</li>
     <li><strong>Cosmetica</strong>: kaartranden, profielringen en titels. Puur voor de show, je kan ze altijd aan- of uitzetten.</li></ul>`],
@@ -1668,6 +1706,11 @@ const INFO = {
     <li>🎰 <strong>Fruitautomaat</strong>: 3 dezelfde = je inzet maal 5 tot 100 (💎💎💎). 2 dezelfde = inzet terug.</li>
     <li>🃏 <strong>Blackjack</strong>: kom zo dicht mogelijk bij 21. De dealer moet doorgaan tot 17. Blackjack betaalt 3:2, verdubbelen mag met je eerste 2 kaarten.</li>
     <li>🎟️ <strong>Krasbiljet</strong>: 25 🪙, kras 6 vakjes open. 3 dezelfde = prijs tot 250 🪙 of een zeldzame sticker.</li></ul>`],
+  clicker: ['Clicker', `
+    <p>Klik op de grote polygoon om <strong>Poly's</strong> te verdienen en koop er upgrades mee. Stagiairs, koffiemachines en printers maken automatisch Poly's, ook als je even weg bent (tot 8 uur).</p>
+    <ul><li>💼 <strong>Salaris</strong>: elke 10 minuten verdient je kantoor echte polycoins: 1 🪙 plus 1 per 10 gekochte upgrades. Je spaarpot houdt tot 6 uur bij, en je haalt max 50 🪙 per dag op.</li>
+    <li>✨ Af en toe verschijnt een <strong>gouden polygoon</strong>: klik erop voor een flinke bonus Poly's.</li>
+    <li>Poly's zijn enkel voor de Clicker; polycoins krijg je via het salaris.</li></ul>`],
   stickers: ['Stickeralbum', `
     <p>Verzamel 48 geanimeerde stickers in 6 thema's. Stickers die je nog niet hebt, blijven geheim.</p>
     <ul><li>Je krijgt stickers bij elke opgeloste puzzel, prestatie, op het rad van fortuin, met een krasbiljet of met een stickerpakje (3 stickers voor 40 🪙).</li>
@@ -1922,6 +1965,7 @@ function openAccountModal() {
 
 function renderView() {
   const view = $('#view');
+  if (state.tab !== 'clicker') stopClicker();
   if (state.tab === 'today') renderToday(view);
   else if (state.tab === 'book') renderBook(view);
   else if (state.tab === 'stats') renderStats(view);
@@ -1934,6 +1978,7 @@ function renderView() {
   else if (state.tab === 'casino') renderCasino(view);
   else if (state.tab === 'stickers') renderStickers(view);
   else if (state.tab === 'profile') renderProfile(view);
+  else if (state.tab === 'clicker') renderClicker(view);
 }
 
 // ---------- Tab: Today — eigen Wordle, 2 rondes per dag ----------
@@ -2962,6 +3007,7 @@ const SHOP = {
   packs: {
     basic: { name: 'Basic Pack', price: 60, count: 1, desc: '1 kaart · 75% common, 22% epic, 3% legendary' },
     epic: { name: 'Epic Pack', price: 200, count: 3, desc: '3 kaarten · de 3e is gegarandeerd epic of legendary' },
+    cat: { name: 'Kattenpack', price: 20, count: 3, desc: '3 troostkatten 🐱 · goedkoop en schattig', v13: true },
   },
   sell: { common: 15, epic: 40, legendary: 100, cat: 5 },
   hint: 40, extra: 60,
@@ -2983,9 +3029,9 @@ function renderShop(view) {
     <div class="two-col shop-grid">
       <div>
         <h3>Pakjes</h3>
-        <div class="shop-packs">${Object.entries(SHOP.packs).map(([k, p]) => `
+        <div class="shop-packs">${Object.entries(SHOP.packs).filter(([, p]) => !p.v13 || state.v13).map(([k, p]) => `
           <div class="shop-pack">
-            <div class="pack mini" aria-hidden="true"><div class="pack-body"><div class="pack-label"><span class="pack-logo">POLYGON</span><span class="pack-sub">TRADING CARDS</span><span class="pack-count">${p.count === 1 ? '1 kaart' : `${p.count} kaarten`}</span></div></div><div class="pack-top"></div></div>
+            <div class="pack mini${k === 'cat' ? ' cat' : ''}" aria-hidden="true"><div class="pack-body"><div class="pack-label"><span class="pack-logo">POLYGON</span><span class="pack-sub">TRADING CARDS</span><span class="pack-count">${p.count === 1 ? '1 kaart' : `${p.count} kaarten`}</span></div></div><div class="pack-top"></div></div>
             <div class="shop-pack-info"><strong>${p.name}</strong><small>${p.desc}</small>
               <button class="btn small" data-buy-pack="${k}" type="button" ${state.wallet < p.price ? 'disabled' : ''}>Kopen · ${p.price} 🪙</button></div>
           </div>`).join('')}</div>
@@ -4621,9 +4667,145 @@ async function openFriendProfile(f) {
   $('#fpClose').onclick = () => dlg.close();
 }
 
+// ---------- Clicker (v14): Poly's klikken, upgrades kopen, salaris in polycoins ----------
+const clk = { data: null, at: 0, pending: 0, loop: null, sync: null, golden: null, busy: false, salRefresh: false };
+const fmtNum = n => (n >= 1e9 ? (n / 1e9).toFixed(2).replace('.', ',') + ' mld' : n >= 1e6 ? (n / 1e6).toFixed(2).replace('.', ',') + ' mln' : Math.floor(n).toLocaleString('nl-BE'));
+const clkPoly = () => (clk.data ? clk.data.poly + clk.pending * clk.data.per_click + clk.data.per_sec * (performance.now() - clk.at) / 1000 : 0);
+function stopClicker(flush = true) {
+  clearInterval(clk.loop); clearInterval(clk.sync); clearTimeout(clk.golden);
+  clk.loop = clk.sync = clk.golden = null;
+  if (flush && clk.pending) { const n = clk.pending; clk.pending = 0; sb.rpc('clicker_sync', { p_clicks: n }); }
+}
+// Kliks meesturen met elke serveraanroep; mislukt die, dan blijven de kliks bewaard
+async function clkCall(fn, args = {}) {
+  const n = clk.pending; clk.pending = 0;
+  const { data, error } = await sb.rpc(fn, { p_clicks: n, ...args });
+  if (error) { clk.pending += n; return { error }; }
+  clk.data = data; clk.at = performance.now();
+  return { data };
+}
+addEventListener('pagehide', () => { if (clk.pending) stopClicker(true); });
+
+async function renderClicker(view) {
+  stopClicker();
+  view.innerHTML = '<section class="col" style="max-width:none"><p class="hint">Laden…</p></section>';
+  const { error } = await clkCall('clicker_sync');
+  if (state.tab !== 'clicker') return;
+  if (error) { view.innerHTML = `<section class="col">${pageHead('Clicker', 'clicker')}${notReady}</section>`; return; }
+  view.innerHTML = `<section class="col clicker" style="max-width:none">
+    <div class="battle-top">${pageHead('Clicker', 'clicker')}<div class="battle-bar">${soundBtn()}</div></div>
+    <div class="clicker-grid">
+      <div class="clk-main">
+        <div class="clk-poly"><strong id="clkPoly">0</strong><span>Poly's</span></div>
+        <div class="clk-rate"><span id="clkRate"></span> per seconde · <span id="clkPower"></span> per klik</div>
+        <div class="clk-arena" id="clkArena">
+          <button class="clk-big" id="clkBtn" type="button" aria-label="Klik voor Poly's"><span class="clk-hex"><b>POLY</b></span></button>
+        </div>
+        <div class="salary-card">
+          <div class="sal-text">💼 <strong>Salaris</strong>: <span id="salReady"></span> 🪙 klaar
+            <small id="salInfo"></small></div>
+          <button class="btn small" id="salCollect" type="button">Ophalen</button>
+        </div>
+      </div>
+      <div class="clk-shop">
+        <h3>Upgrades</h3>
+        <div class="clk-items" id="clkItems"></div>
+      </div>
+    </div>
+  </section>`;
+
+  const drawItems = () => {
+    $('#clkItems').innerHTML = clk.data.items.map(i => `<button type="button" class="clk-item" data-item="${esc(i.key)}" data-cost="${i.cost}">
+      <span class="clk-icon">${i.icon}</span>
+      <span class="clk-info"><strong>${esc(i.name)}</strong><small>${esc(i.desc)}</small></span>
+      <span class="clk-meta"><b>${fmtNum(i.cost)}</b><small>${i.level ? `bezit: ${i.level}` : 'nieuw'}</small></span></button>`).join('');
+    $('#clkItems').querySelectorAll('[data-item]').forEach(b => b.onclick = async () => {
+      if (clk.busy) return;
+      clk.busy = true;
+      const { error: e2 } = await clkCall('clicker_buy', { p_key: b.dataset.item });
+      clk.busy = false;
+      if (e2) { toast(esc(e2.message)); return; }
+      SFX.play('coin');
+      drawItems(); tick();
+    });
+  };
+  const tick = () => {
+    if (state.tab !== 'clicker' || !$('#clkBtn')) return stopClicker();
+    const d = clk.data, poly = clkPoly(), el = performance.now() - clk.at;
+    $('#clkPoly').textContent = fmtNum(poly);
+    $('#clkRate').textContent = fmtNum(d.per_sec);
+    $('#clkPower').textContent = fmtNum(d.per_click);
+    document.querySelectorAll('.clk-item').forEach(b => b.classList.toggle('afford', poly >= Number(b.dataset.cost)));
+    const s = d.salary, left = Math.max(0, Math.round(s.next_in - el / 1000));
+    $('#salReady').textContent = s.ready;
+    $('#salInfo').textContent = s.today >= s.cap ? `Dagplafond bereikt (${s.cap} 🪙). Morgen opnieuw.`
+      : `+${s.per_tick} 🪙 elke 10 min · volgende over ${fmtSecs(left)}${s.full ? ' (spaarpot vol: haal op!)' : ''} · vandaag ${s.today}/${s.cap}`;
+    $('#salCollect').disabled = !s.ready;
+    if (left === 0 && !clk.salRefresh) { clk.salRefresh = true; clkCall('clicker_sync').then(() => { clk.salRefresh = false; }); }
+  };
+
+  // Klikken: meteen zichtbaar, de server telt mee bij de volgende synchronisatie
+  $('#clkBtn').addEventListener('pointerdown', e => {
+    clk.pending++;
+    const btn = $('#clkBtn');
+    btn.classList.remove('press'); void btn.offsetWidth; btn.classList.add('press');
+    const r = $('#clkArena').getBoundingClientRect();
+    const pop = document.createElement('span');
+    pop.className = 'clk-pop';
+    pop.textContent = '+' + fmtNum(clk.data.per_click);
+    pop.style.left = (e.clientX - r.left) + 'px'; pop.style.top = (e.clientY - r.top) + 'px';
+    $('#clkArena').appendChild(pop);
+    setTimeout(() => pop.remove(), 900);
+    if (clk.pending % 3 === 0) SFX.play('tick');
+    tick();
+  });
+  $('#clkBtn').addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); $('#clkBtn').dispatchEvent(new PointerEvent('pointerdown', { clientX: 0, clientY: 0 })); } });
+
+  $('#salCollect').onclick = async () => {
+    $('#salCollect').disabled = true;
+    const { data, error: e2 } = await clkCall('clicker_collect');
+    if (e2) { toast(esc(e2.message)); tick(); return; }
+    setWallet(data.wallet);
+    SFX.play('jackpot');
+    toast(`💼 Salaris ontvangen: +${data.paid} 🪙`);
+    tick();
+  };
+
+  // Gouden polygoon: verschijnt af en toe even op een willekeurige plek
+  const scheduleGolden = () => {
+    clearTimeout(clk.golden);
+    clk.golden = setTimeout(() => {
+      const arena = $('#clkArena'); if (!arena) return;
+      const g = document.createElement('button');
+      g.type = 'button'; g.className = 'clk-golden'; g.setAttribute('aria-label', 'Gouden polygoon');
+      g.style.left = (10 + Math.random() * 70) + '%'; g.style.top = (10 + Math.random() * 60) + '%';
+      g.innerHTML = '<span>⬢</span>';
+      arena.appendChild(g);
+      const gone = setTimeout(() => { g.remove(); scheduleGolden(); }, 12000);
+      g.onclick = async () => {
+        clearTimeout(gone); g.remove();
+        const { data, error: e2 } = await clkCall('clicker_golden');
+        if (!e2) { SFX.play('jackpot'); toast(`✨ Gouden polygoon! +${fmtNum(data.bonus)} Poly's`); tick(); }
+        scheduleGolden();
+      };
+    }, (clk.data.golden_in + 10 + Math.random() * 90) * 1000);
+  };
+
+  drawItems(); tick();
+  clk.loop = setInterval(tick, 100);
+  clk.sync = setInterval(() => { if (!clk.busy) clkCall('clicker_sync').then(r => { if (!r.error && $('#clkItems')) drawItems(); }); }, 10000);
+  scheduleGolden();
+}
+
 // ---------- Updates: wat is er nieuw? (knop bovenaan) ----------
 // Nieuwste eerst. v13: true = enkel zichtbaar voor wie de voorproef heeft (tot het live staat).
 const UPDATES = [
+  { id: '2026-11-03', date: '3 november 2026', title: 'Clicker en Kattenpack', v13: true, items: [
+    '👆 <strong>Clicker</strong>: klik Poly\'s bij elkaar, koop stagiairs, koffiemachines en meer. Elke 10 minuten levert je kantoor een salaris in polycoins op (max 50 🪙 per dag).',
+    '✨ Af en toe verschijnt een gouden polygoon met een bonus.',
+    '🐱 <strong>Kattenpack</strong> in de Shop: 3 troostkatten voor 20 🪙.',
+    '🃏 Blackjack met fiches en kaarten die één voor één gedeeld worden.',
+  ] },
   { id: '2026-10-26', date: '26 oktober 2026', title: 'De grote update', v13: true, items: [
     '⚔️ <strong>Nieuwe Battle</strong>: elke ronde kies je 🧠 Brein, 😎 Swag of 😂 Humor. Brein wint van Swag, Swag van Humor en Humor van Brein. Wie de ronde wint, valt aan.',
     '🏆 <strong>Rangen</strong> van 🥉 Brons tot 💎 Diamant tegen vrienden, met een nieuw seizoen en een beloning elke maand.',
