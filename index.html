@@ -5304,6 +5304,10 @@ const UPDATES = [
     '🃏 Plak een sticker op je eigen kaarten (open een kaart in je album).',
     '📌 Hang tot 6 stickers op het prikbord van je bureau (Profiel).',
   ] },
+  { id: '2026-11-05c', date: '5 november 2026', title: 'Automatisch vernieuwen', items: [
+    '🔄 De site vernieuwt zichzelf om de 3 minuten (munten, meldingen, kaarten…), maar enkel als je even niets doet.',
+    '✨ Is er een nieuwe versie van de site? Dan laadt die vanzelf zodra je even stilzit.',
+  ] },
   { id: '2026-11-05b', date: '5 november 2026', title: 'Menu altijd zichtbaar', items: [
     '🧭 Op de computer staan alle pagina\'s nu rechts in een kolom: geen menuknop meer nodig. Op de gsm blijft het menu.',
     '🎰 Het casino staat netjes in een raster van 2 × 2.',
@@ -5715,6 +5719,37 @@ setInterval(() => { if (state.tab !== 'chat' && !document.hidden) refreshChatBad
 setInterval(checkForUpdate, 5 * 60000);
 document.addEventListener('visibilitychange', () => { if (!document.hidden) checkForUpdate(); });
 addEventListener('focus', checkForUpdate);
+
+// Automatisch vernieuwen: om de 3 minuten, maar enkel als je even niets doet (zo onderbreekt het nooit een spel of bericht)
+const AUTO_REFRESH_MS = 3 * 60000, IDLE_MS = 90000;
+let lastActivity = Date.now(), lastAutoRefresh = Date.now(), autoBusy = false;
+for (const ev of ['pointerdown', 'keydown', 'wheel', 'touchstart', 'input']) addEventListener(ev, () => { lastActivity = Date.now(); }, { passive: true, capture: true });
+async function autoRefresh(force = false) {
+  if (autoBusy || !state.session || !$('#view')) return;
+  if (!force && (Date.now() - lastAutoRefresh < AUTO_REFRESH_MS || Date.now() - lastActivity < IDLE_MS)) return;
+  if (document.querySelector('dialog[open]') || ['clicker', 'chat'].includes(state.tab)) { lastAutoRefresh = Date.now(); return; }
+  const active = document.activeElement;
+  if (wordle.input) return; // half getypt Wordle-woord niet wissen
+  if (active && /^(INPUT|TEXTAREA|SELECT)$/.test(active.tagName) && active.value) return;
+  // Nieuwe versie van de site? Dan meteen helemaal herladen.
+  if (updateAvailable) return hardReload();
+  autoBusy = true; lastAutoRefresh = Date.now();
+  try {
+    const y = scrollY;
+    await loadData();
+    if (Date.now() - lastActivity < 2000) { autoBusy = false; return; } // net weer begonnen: niet storen
+    renderMain();
+    requestAnimationFrame(() => scrollTo(0, y));
+  } catch (_) { /* offline: volgende keer opnieuw */ }
+  autoBusy = false;
+}
+setInterval(() => { if (!document.hidden) autoRefresh(); }, 30000);
+// Terug naar dit tabblad na een tijdje weg? Dan meteen verse gegevens.
+let hiddenSince = 0;
+document.addEventListener('visibilitychange', () => {
+  if (document.hidden) { hiddenSince = Date.now(); return; }
+  if (hiddenSince && Date.now() - hiddenSince > AUTO_REFRESH_MS) { lastActivity = 0; autoRefresh(true); }
+});
 
 // FPS-teller linksonder (voor iedereen): telt de beelden per seconde, pauzeert in een verborgen tabblad
 function initFps() {
