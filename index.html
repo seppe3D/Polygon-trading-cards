@@ -513,6 +513,25 @@ body.v13 .v13-hide{display:none !important}
 .casino-note{margin-top:16px;color:var(--muted);font-size:14px}
 
 
+/* ===== Stickers op kaarten en prikbord ===== */
+.card-sticker{position:absolute;right:-5%;top:36%;z-index:5;--s:clamp(30px,26cqw,92px);display:grid;place-items:center;width:var(--s);height:var(--s);transform:rotate(12deg);pointer-events:none}
+.card-sticker .sticker-face{font-size:calc(var(--s) * .78);line-height:1;
+  filter:drop-shadow(2px 0 0 #fff) drop-shadow(-2px 0 0 #fff) drop-shadow(0 2px 0 #fff) drop-shadow(0 -2px 0 #fff) drop-shadow(0 4px 6px rgba(0,0,0,.45))}
+.card-sticker.s-epic::after,.card-sticker.s-rare::after{content:"";position:absolute;inset:8%;z-index:-1;border-radius:50%;filter:blur(8px);opacity:.7;background:radial-gradient(circle,#7fd4ff,transparent 70%)}
+.card-sticker.s-epic::after{background:conic-gradient(#ff6b6b,#ffd93d,#6bff95,#4dd0ff,#b06bff,#ff6b6b)}
+.zoom-sticker{display:grid;gap:8px;justify-items:center;max-width:min(520px,92vw)}
+.sticker-pick{display:grid;grid-template-columns:repeat(auto-fill,minmax(62px,1fr));gap:6px;max-height:220px;overflow-y:auto;padding:8px;border-radius:14px;background:rgba(21,24,29,.7);border:1px solid var(--line);width:100%}
+.sp-item{position:relative;display:grid;place-items:center;padding:2px;border:2px solid transparent;border-radius:12px;background:none;cursor:pointer;transition:transform .12s}
+.sp-item:hover{transform:scale(1.08)}
+.sp-item.on{border-color:var(--yellow);background:rgba(201,180,88,.15)}
+.sp-num{position:absolute;top:-4px;right:-4px;width:18px;height:18px;border-radius:50%;background:var(--yellow);color:#15181D;font:900 11px var(--body);display:grid;place-items:center}
+.b-board{position:absolute;left:44%;top:9%;width:30%;height:48%;display:grid;grid-template-columns:repeat(3,1fr);grid-auto-rows:1fr;place-items:center;padding:4px;border-radius:6px;
+  background:#c79a62 radial-gradient(circle at 20% 30%,rgba(0,0,0,.12) 0 1px,transparent 2px) 0 0/9px 9px;border:5px solid #8a6a4a;box-shadow:0 6px 10px rgba(0,0,0,.35)}
+.pin-sticker{transform:rotate(var(--r));position:relative}
+.pin-sticker .sticker{--s:clamp(26px,5vw,40px)}
+.pin-sticker::before{content:"";position:absolute;top:2px;left:50%;width:7px;height:7px;margin-left:-3px;border-radius:50%;background:#E0584B;box-shadow:0 1px 2px rgba(0,0,0,.5);z-index:2}
+.board-editor{margin-top:10px}
+
 /* ===== Clicker 2.0 ===== */
 .clicker{--clk-glow:rgba(93,163,82,.35);transition:background .4s}
 .clicker.frenzy{--clk-glow:rgba(255,170,40,.6)}
@@ -1125,6 +1144,86 @@ dialog::backdrop{background:rgba(10,12,16,.78)}
 @media (prefers-reduced-motion:reduce){
   .r-legendary .art::after,.r-mythic .art::after,.card.r-legendary,.card.r-mythic,.card.r-legendary::after,.card.r-mythic::after,.cardflip,.pack,.pack-top,.glow,.page-body.turning,.shake,.particle,.confetti span{animation:none}
 }
+/* ===== Chat (v19) ===== */
+.chat-root{display:grid;grid-template-columns:290px 1fr;gap:14px;height:calc(100vh - 210px);min-height:440px}
+.chat-list{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:8px;overflow-y:auto;display:flex;flex-direction:column;gap:2px}
+.convo{display:flex;align-items:center;gap:10px;width:100%;text-align:left;background:none;border:0;border-radius:12px;padding:9px 10px;color:var(--ink);cursor:pointer;transition:background .15s ease}
+.convo:hover{background:var(--bg2)} .convo.on{background:linear-gradient(90deg,rgba(93,163,82,.28),rgba(93,163,82,.08));box-shadow:inset 3px 0 0 var(--green)}
+.convo .friend-av{width:42px;height:42px}
+.convo-group{background:linear-gradient(135deg,#2FA79E,#5DA352 60%,#C9B458);font-size:22px!important}
+.convo-main{flex:1;min-width:0;display:flex;flex-direction:column}
+.convo-main strong{font:700 14px var(--body);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.convo-main small{color:var(--muted);font-size:12.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.convo .tab-badge{position:static;margin-left:auto}
+.convo-sep{font:800 11px var(--body);letter-spacing:.08em;text-transform:uppercase;color:var(--muted);padding:12px 10px 4px}
+.chat-window{position:relative;overflow:hidden;display:flex;flex-direction:column;border:1px solid var(--line);border-radius:var(--r);
+  background:radial-gradient(circle at 15% 10%,rgba(93,163,82,.10),transparent 40%),radial-gradient(circle at 90% 85%,rgba(47,167,158,.10),transparent 45%),var(--bg2)}
+.chat-window::before{content:"";position:absolute;inset:0;pointer-events:none;opacity:.05;
+  background-image:radial-gradient(circle,#fff 1px,transparent 1.5px);background-size:22px 22px}
+.chat-head{display:flex;align-items:center;gap:10px;padding:10px 14px;border-bottom:1px solid var(--line);background:rgba(20,23,28,.6);backdrop-filter:blur(8px);position:relative;z-index:1}
+.chat-head>div{flex:1;min-width:0;display:flex;flex-direction:column} .chat-head small{color:var(--muted);font-size:12px}
+.chat-head .friend-av{width:40px;height:40px}
+.chat-back{display:none;font-size:22px;padding:0 6px}
+.chat-msgs{flex:1;overflow-y:auto;padding:14px 14px 6px;display:flex;flex-direction:column;gap:3px;position:relative;scroll-behavior:smooth}
+.chat-empty{margin:auto;text-align:center;color:var(--muted)} .chat-empty span{font-size:56px;display:block;animation:st-bounce 1.8s ease-in-out infinite}
+.chat-day{text-align:center;margin:12px 0 6px} .chat-day span{background:rgba(0,0,0,.35);color:var(--ink-soft);font:700 11.5px var(--body);padding:4px 12px;border-radius:999px;text-transform:capitalize}
+.chat-msg{display:flex;gap:8px;align-items:flex-end;max-width:78%;animation:msg-in .28s cubic-bezier(.2,1.4,.4,1) both;margin-top:8px}
+.chat-msg.grouped{margin-top:0}
+.chat-msg.mine{align-self:flex-end;flex-direction:row-reverse}
+.chat-msg.pending{opacity:.6}
+.msg-av{width:32px;flex-shrink:0} .msg-av .friend-av{width:32px;height:32px;font-size:13px}
+.msg-col{display:flex;flex-direction:column;min-width:0} .mine .msg-col{align-items:flex-end}
+.msg-name{font:700 12px var(--body);color:var(--green-soft);margin:0 0 2px 12px}
+.msg-row{display:flex;align-items:center;gap:6px;position:relative} .mine .msg-row{flex-direction:row-reverse}
+.bubble{background:var(--panel);color:var(--ink);padding:9px 13px;border-radius:18px 18px 18px 6px;font-size:15px;line-height:1.4;word-break:break-word;white-space:pre-wrap;box-shadow:0 2px 6px rgba(0,0,0,.25)}
+.grouped:not(.mine) .bubble{border-radius:6px 18px 18px 6px}
+.mine .bubble{background:linear-gradient(135deg,#6DB862,#4A8F41);color:#fff;border-radius:18px 18px 6px 18px}
+.mine.grouped .bubble{border-radius:18px 6px 6px 18px}
+.bubble a{color:inherit;text-decoration:underline}
+.bubble.big-emoji{background:none!important;box-shadow:none;font-size:44px;padding:0 4px;animation:emoji-pop .5s cubic-bezier(.2,1.6,.4,1) both}
+.msg-sticker .sticker{filter:drop-shadow(0 6px 10px rgba(0,0,0,.4));animation:sticker-slap .55s cubic-bezier(.2,1.6,.4,1) both}
+.msg-time{font-size:11px;color:var(--muted);margin:2px 8px 0;display:none} .read{color:var(--green-soft);font-weight:700}
+.chat-msg:not(.grouped) .msg-time,.chat-msg:hover .msg-time,.chat-msg:has(.read) .msg-time{display:block}
+.msg-react-btn{opacity:0;background:var(--panel);border:1px solid var(--line);border-radius:50%;width:28px;height:28px;font-size:14px;cursor:pointer;transition:opacity .15s ease,transform .15s ease;flex-shrink:0;padding:0}
+.chat-msg:hover .msg-react-btn{opacity:1} .msg-react-btn:hover{transform:scale(1.15)}
+@media (hover:none){.msg-react-btn{opacity:.55}}
+.react-bar{position:absolute;bottom:calc(100% + 4px);left:0;z-index:5;display:flex;gap:2px;background:var(--panel);border:1px solid var(--line);border-radius:999px;padding:4px 6px;box-shadow:0 10px 24px rgba(0,0,0,.5);animation:zoom-in .15s ease both}
+.mine .react-bar{left:auto;right:0}
+.react-bar button{background:none;border:0;font-size:22px;cursor:pointer;padding:2px 4px;border-radius:50%;transition:transform .12s ease}
+.react-bar button:hover{transform:scale(1.35) translateY(-3px)}
+.msg-reacts{display:flex;gap:4px;margin-top:-4px;flex-wrap:wrap;position:relative;z-index:1} .msg-reacts.pop{animation:emoji-pop .4s ease}
+.react-pill{background:var(--bg);border:1px solid var(--line);border-radius:999px;padding:1px 7px;font-size:13px;color:var(--ink);cursor:pointer}
+.react-pill.mine{border-color:var(--green);background:rgba(93,163,82,.2)}
+.chat-typing{min-height:20px;padding:0 18px;font-size:12.5px;color:var(--muted);position:relative}
+.typing-dots{display:inline-flex;gap:3px;margin-right:4px;vertical-align:middle}
+.typing-dots i{width:6px;height:6px;border-radius:50%;background:var(--green-soft);animation:typing 1s ease-in-out infinite}
+.typing-dots i:nth-child(2){animation-delay:.15s} .typing-dots i:nth-child(3){animation-delay:.3s}
+.chat-tray{border-top:1px solid var(--line);background:rgba(20,23,28,.85);max-height:230px;overflow-y:auto;padding:8px;position:relative;animation:tray-up .2s ease both}
+.tray-head{font:700 13px var(--body);margin:2px 4px 8px} .tray-head small{color:var(--muted);font-weight:400}
+.tray-grid .sp-item:hover{transform:scale(1.12) rotate(-4deg)}
+.emoji-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(42px,1fr));gap:4px}
+.emoji-grid button{background:none;border:0;font-size:26px;cursor:pointer;border-radius:10px;padding:4px;transition:transform .12s ease,background .12s ease}
+.emoji-grid button:hover{background:var(--panel);transform:scale(1.2)}
+.chat-compose{display:flex;gap:6px;align-items:center;padding:10px;border-top:1px solid var(--line);background:rgba(20,23,28,.7);position:relative}
+.chat-compose input{flex:1;min-width:0;background:var(--panel);border:1px solid var(--line);color:var(--ink);border-radius:999px;padding:11px 16px;font:16px var(--body);outline:none;transition:border-color .15s ease}
+.chat-compose input:focus{border-color:var(--green)}
+.cc-btn{background:none;border:0;font-size:22px;cursor:pointer;padding:4px;border-radius:50%;transition:transform .15s ease} .cc-btn:hover{transform:scale(1.2) rotate(-8deg)}
+.cc-send{width:44px;height:44px;border-radius:50%;border:0;background:linear-gradient(135deg,#7FC26F,#4A8F41);color:#fff;font-size:18px;cursor:pointer;flex-shrink:0;box-shadow:0 4px 14px rgba(93,163,82,.45);overflow:hidden;transition:transform .15s ease}
+.cc-send:hover{transform:scale(1.08)} .cc-send span{display:inline-block} .cc-send.fly span{animation:send-fly .5s ease}
+.sticker-drop{position:absolute;top:-40px;z-index:4;pointer-events:none;animation:sticker-fall 2.2s ease-in both}
+@keyframes msg-in{from{opacity:0;transform:translateY(12px) scale(.92)}to{opacity:1;transform:none}}
+@keyframes emoji-pop{0%{transform:scale(.3)}60%{transform:scale(1.25)}100%{transform:scale(1)}}
+@keyframes sticker-slap{0%{transform:scale(2.2) rotate(-25deg);opacity:0}60%{transform:scale(.9) rotate(6deg);opacity:1}100%{transform:none}}
+@keyframes typing{0%,60%,100%{transform:translateY(0);opacity:.5}30%{transform:translateY(-5px);opacity:1}}
+@keyframes tray-up{from{transform:translateY(20px);opacity:0}to{transform:none;opacity:1}}
+@keyframes send-fly{0%{transform:none}45%{transform:translate(30px,-30px) rotate(-30deg);opacity:0}55%{transform:translate(-30px,30px);opacity:0}100%{transform:none;opacity:1}}
+@keyframes sticker-fall{0%{transform:translateY(0) rotate(0);opacity:0}10%{opacity:1}100%{transform:translateY(560px) rotate(360deg);opacity:0}}
+@media (max-width:760px){
+  .chat-root{grid-template-columns:1fr;height:calc(100dvh - 190px)}
+  .chat-root.convo-open .chat-list{display:none} .chat-root:not(.convo-open) .chat-window{display:none}
+  .chat-back{display:block} .chat-msg{max-width:88%}
+}
+@media (prefers-reduced-motion:reduce){.chat-msg,.bubble.big-emoji,.msg-sticker .sticker{animation:none}}
 </style>
 </head>
 <body>
@@ -1164,7 +1263,7 @@ const PARTICLE_COLORS = {
 
 const state = { session: null, recovery: IS_RECOVERY_LINK, cards: [], owned: new Map(), play: null, name: '', avatarUrl: null, friendCode: '', wallet: 0, incomingRequests: 0, incomingBattles: 0, welcomeAvailable: false, isAdmin: false, tab: 'today', page: 0,
   levels: new Map(), badges: new Set(), equipped: { frame: null, ring: null, title: null }, v12: false,
-  v13: false, event: null };
+  v13: false, event: null, v19: false, stickerMeta: new Map(), cardStickers: new Map() };
 
 // Werkt alle plekken bij die het polycoins-saldo tonen (topbalk + account-tab)
 function syncCoinUI() {
@@ -1254,7 +1353,7 @@ async function route() {
 
 async function loadData() {
   const uid = state.session.user.id;
-  const [cards, mine, prof, wallet, requests, admin, battlesIn, welcome, cosm, levels, badges, weekEvent, v13] = await Promise.all([
+  const [cards, mine, prof, wallet, requests, admin, battlesIn, welcome, cosm, levels, badges, weekEvent, v13, cardSt, stCat] = await Promise.all([
     sb.from('cards').select('*').order('id'),
     sb.from('user_cards').select('card_id').eq('user_id', uid),
     sb.from('profiles').select('display_name, avatar_url, friend_code').eq('id', uid).maybeSingle(),
@@ -1270,6 +1369,9 @@ async function loadData() {
     // Uitbreiding v13 (types per collega en het event van de week)
     sb.rpc('week_event'),
     sb.rpc('v13_status'),
+    // Uitbreiding v19: stickers op je kaarten + je stickeralbum (voor de weergave)
+    sb.from('card_stickers').select('card_id, sticker_key').eq('user_id', uid),
+    sb.rpc('sticker_catalog'),
   ]);
   for (const r of [cards, mine, prof, wallet]) if (r.error) throw new Error(r.error.message);
   // Niet fataal: enkel voor het bolletje op de Vrienden-tab
@@ -1296,6 +1398,9 @@ async function loadData() {
   state.v13 = !v13.error && !!v13.data?.enabled;
   state.event = state.v13 ? (weekEvent.data || null) : null;
   document.body.classList.toggle('v13', state.v13);
+  state.stickerMeta = new Map((stCat.data || []).filter(x => x.count > 0).map(x => [x.key, x]));
+  state.cardStickers = new Map(state.v13 && !cardSt.error ? (cardSt.data || []).map(r => [r.card_id, r.sticker_key]) : []);
+  state.v19 = state.v13 && !cardSt.error;
 }
 
 // ---------- Battle met 3 keuzes en geluid (v13) ----------
@@ -1370,7 +1475,7 @@ const titleChip = key => TITLE_NAMES[key] ? `<span class="title-chip">${esc(TITL
 const myLevel = id => state.levels.get(id) || 1;
 const stars = n => '★'.repeat(n);
 // Opties voor renderCard bij je eigen kaarten: level + gekozen kaartrand
-const mineOpts = c => ({ level: myLevel(c.id), frame: state.equipped.frame });
+const mineOpts = c => ({ level: myLevel(c.id), frame: state.equipped.frame, sticker: state.stickerMeta.get(state.cardStickers.get(c.id)) || null });
 
 function toast(html, ms = 5000) {
   let box = $('#toasts');
@@ -1566,6 +1671,7 @@ function openZoom(card, { mine = false } = {}) {
     </button>
     <p class="zoomhint">Tik op de kaart om ze om te draaien</p>
     <div id="zoomUpBox">${upHtml()}</div>
+    <div id="zoomStickerBox"></div>
     <button type="button" class="link" id="zoomClose">Sluiten</button>
   </div>`;
   const bindUp = () => {
@@ -1587,7 +1693,35 @@ function openZoom(card, { mine = false } = {}) {
     };
   };
   bindUp();
-  dlg.onclose = () => { if (changed && ['book', 'today', 'shop'].includes(state.tab)) renderView(); };
+  // Sticker op de kaart plakken (de sticker blijft in je album)
+  const drawStickerBox = (open = false) => {
+    const box = $('#zoomStickerBox');
+    if (!box || !mine || !state.v19) return;
+    const cur = state.stickerMeta.get(state.cardStickers.get(card.id));
+    const owned = [...state.stickerMeta.values()];
+    box.innerHTML = `<div class="zoom-sticker">
+      <div class="battle-bar" style="justify-content:center">
+        <button class="btn small" id="zsToggle" type="button">🏷️ ${cur ? 'Andere sticker' : 'Sticker plakken'}</button>
+        ${cur ? '<button class="link" id="zsRemove" type="button">Sticker eraf</button>' : ''}
+      </div>
+      ${open ? (owned.length ? `<div class="sticker-pick">${owned.map(st => `<button type="button" class="sp-item${cur && cur.key === st.key ? ' on' : ''}" data-zs="${esc(st.key)}" title="${esc(st.name)}">${stickerHtml(st)}</button>`).join('')}</div>`
+        : '<p class="hint" style="margin:6px 0 0">Je hebt nog geen stickers. Los puzzels op of koop een stickerpakje!</p>') : ''}
+    </div>`;
+    $('#zsToggle').onclick = () => drawStickerBox(!open);
+    if ($('#zsRemove')) $('#zsRemove').onclick = () => setSticker(null);
+    box.querySelectorAll('[data-zs]').forEach(b => b.onclick = () => setSticker(b.dataset.zs));
+  };
+  const setSticker = async key => {
+    const { error } = await sb.rpc('set_card_sticker', { p_card_id: card.id, p_sticker: key });
+    if (error) { alert(error.message); return; }
+    if (key) state.cardStickers.set(card.id, key); else state.cardStickers.delete(card.id);
+    changed = true; showingBack = false;
+    $('#zoomInner').innerHTML = front();
+    SFX.play('coin');
+    drawStickerBox(false);
+  };
+  drawStickerBox();
+  dlg.onclose = () => { if (changed && ['book', 'today', 'shop', 'profile'].includes(state.tab)) renderView(); };
   const btn = $('#zoomCard'), inner = $('#zoomInner');
   const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
   btn.onclick = async () => {
@@ -1606,7 +1740,7 @@ function openZoom(card, { mine = false } = {}) {
   dlg.showModal();
 }
 
-function renderCard(c, { locked = false, count = 1, level = 1, frame = null } = {}) {
+function renderCard(c, { locked = false, count = 1, level = 1, frame = null, sticker = null } = {}) {
   const label = RARITY_LABEL[c.rarity];
   if (locked) {
     return `<div class="cw"><div class="card r-${c.rarity} locked" aria-label="Nog niet verzameld">
@@ -1631,6 +1765,7 @@ function renderCard(c, { locked = false, count = 1, level = 1, frame = null } = 
   return `<div class="cw${frameCls}">
     ${count > 1 ? `<span class="dupe">×${count}</span>` : ''}
     ${lv > 1 ? `<span class="lvl-badge" title="Level ${lv}">${stars(lv)}</span>` : ''}
+    ${sticker && sticker.emoji ? `<span class="card-sticker s-${sticker.rarity} a-${sticker.anim}" title="${esc(sticker.name)}"><span class="sticker-face">${sticker.emoji}</span></span>` : ''}
     <div class="card r-${c.rarity}">
       <div class="art">${art}</div>
       ${lv >= 3 ? '<span class="glitter" aria-hidden="true"></span>' : ''}
@@ -1653,6 +1788,7 @@ const TABS = [
   { id: 'clicker', label: 'Clicker', icon: '👆', v13: true },
   { id: 'stickers', label: 'Stickers', icon: '🏷️', v13: true },
   { id: 'profile', label: 'Profile', icon: '👤', v13: true },
+  { id: 'chat', label: 'Chat', icon: '💬', badge: 'chat', v19: true },
   { id: 'friends', label: 'Friends', icon: '👥', badge: 'friend' },
   { id: 'trade', label: 'Trade', icon: '🔁' },
   { id: 'shop', label: 'Shop', icon: '🛒' },
@@ -1663,7 +1799,7 @@ const TABS = [
 function renderMain() {
   const initial = esc((state.name || '?').trim().charAt(0).toUpperCase());
   const avStyle = state.avatarUrl ? ` style="background-image:url('${esc(state.avatarUrl)}')"` : '';
-  const tabs = TABS.filter(t => !t.v13 || state.v13);
+  const tabs = TABS.filter(t => (!t.v13 || state.v13) && (!t.v19 || state.v19));
   if (!tabs.some(t => t.id === state.tab)) state.tab = 'today';
   const cur = tabs.find(t => t.id === state.tab) || tabs[0];
   app.innerHTML = `
@@ -1715,13 +1851,14 @@ function renderMain() {
   syncBattleBadge();
   renderView();
   checkCollection();
+  refreshChatBadge(); chatRealtime();
 }
 
 // Bolletjes met meldingen: per menu-item en opgeteld op de menuknop
 function setBadge(sel, n) {
   document.querySelectorAll(sel).forEach(b => { b.textContent = n; b.hidden = !n; });
 }
-function syncMenuBadge() { setBadge('[data-menu-badge]', (state.incomingBattles || 0) + (state.incomingRequests || 0)); }
+function syncMenuBadge() { setBadge('[data-menu-badge]', (state.incomingBattles || 0) + (state.incomingRequests || 0) + (chat.unread || 0)); }
 function syncBattleBadge() { setBadge('[data-battle-badge]', state.incomingBattles); syncMenuBadge(); }
 function syncFriendBadge() { setBadge('[data-friend-badge]', state.incomingRequests); syncMenuBadge(); }
 
@@ -1801,6 +1938,12 @@ const INFO = {
     <li>🃏 <strong>Blackjack</strong>: kom zo dicht mogelijk bij 21. De dealer moet doorgaan tot 17. Blackjack betaalt 3:2, verdubbelen mag met je eerste 2 kaarten.</li>
     <li>📊 <strong>Stats</strong>: wie heeft geluk en wie heeft pech? Zie per speler hoeveel er werd ingezet en gewonnen, altijd, deze week of vandaag.</li>
     <li>🎟️ <strong>Krasbiljet</strong>: 25 🪙, kras 6 vakjes open. 3 dezelfde = prijs tot 250 🪙 of een zeldzame sticker.</li></ul>`],
+  chat: ['Chat', `
+    <p>Praat met <b>iedereen</b> in de groepschat, of privé met je <b>vrienden</b>.</p>
+    <ul><li>🏷️ Stuur stickers uit je album. Ze <b>blijven gewoon van jou</b>, versturen kost niets.</li>
+    <li>😊 Reageer op een bericht met een emoji (of dubbelklik voor een ❤️).</li>
+    <li>✓✓ In privégesprekken zie je wanneer je bericht gelezen is.</li>
+    <li>🗑️ Je kunt je eigen berichten verwijderen.</li></ul>`],
   clicker: ['Clicker', `
     <p>Klik op de grote polygoon om <strong>Poly's</strong> te verdienen (max 12 kliks per seconde; ingedrukt houden telt niet). Koop er upgrades mee: ze draaien rond je polygoon en maken automatisch Poly's, ook als je weg bent (tot 8 uur).</p>
     <ul><li>🛒 Koop per 1, per 10 of het <strong>maximum</strong>. Elke upgrade wordt 20% duurder per stuk. Nieuwe upgrades ontdek je naarmate je meer verdient.</li>
@@ -2062,6 +2205,7 @@ function openAccountModal() {
 function renderView() {
   const view = $('#view');
   if (state.tab !== 'clicker') stopClicker();
+  if (state.tab !== 'chat') stopChat();
   if (state.tab === 'today') renderToday(view);
   else if (state.tab === 'book') renderBook(view);
   else if (state.tab === 'stats') renderStats(view);
@@ -2075,6 +2219,7 @@ function renderView() {
   else if (state.tab === 'stickers') renderStickers(view);
   else if (state.tab === 'profile') renderProfile(view);
   else if (state.tab === 'clicker') renderClicker(view);
+  else if (state.tab === 'chat') renderChat(view);
 }
 
 // ---------- Tab: Today — eigen Wordle, 2 rondes per dag ----------
@@ -4645,11 +4790,12 @@ function petHtml(pet, big = false) {
   return `<span class="pet st-${pet.stage}${pet.variant && pet.variant !== 'normaal' ? ' v-' + pet.variant : ''}${big ? ' big' : ''}" title="${esc(pet.name)}">${face}</span>`;
 }
 
-function bureauHtml(b, pet) {
+function bureauHtml(b, pet, board = null) {
   const e = slot => (b[slot] && b[slot].emoji) || '';
   return `<div class="bureau" aria-label="Bureau">
     <div class="b-wall">
       <div class="b-window">${e('window')}</div>
+      ${board && board.length ? `<div class="b-board" aria-label="Prikbord">${board.map((st, i) => `<span class="pin-sticker" style="--r:${[-8, 6, -3, 9, -6, 4][i % 6]}deg">${stickerHtml(st)}</span>`).join('')}</div>` : ''}
       <div class="b-poster">${e('wall')}</div>
     </div>
     <div class="b-desk">
@@ -4684,7 +4830,7 @@ function showcaseHtml(p, own) {
     const c = cardById(s.id);
     if (!c) return '<div class="show-slot empty"></div>';
     const visible = own || state.owned.get(c.id) || state.isAdmin;
-    return `<div class="show-slot">${visible ? renderCard(c, { level: s.level }) : renderCard(c, { locked: true })}</div>`;
+    return `<div class="show-slot">${visible ? renderCard(c, { level: s.level, sticker: s.sticker }) : renderCard(c, { locked: true })}</div>`;
   });
   return `<div class="showcase">${slots.join('')}</div>`;
 }
@@ -4708,8 +4854,10 @@ async function renderProfile(view) {
         <div class="pet-panel" id="petPanel"></div>
       </div>
       <div>
-        <div class="battle-bar"><h3 style="margin:0">🪑 Bureau</h3><button class="link" id="editBureau" type="button">✏️ Inrichten</button></div>
-        ${bureauHtml(p.bureau, pet)}
+        <div class="battle-bar"><h3 style="margin:0">🪑 Bureau</h3><button class="link" id="editBureau" type="button">✏️ Inrichten</button>
+          ${p.board ? '<button class="link" id="editBoard" type="button">📌 Prikbord</button>' : ''}</div>
+        ${bureauHtml(p.bureau, pet, p.board)}
+        <div id="boardEditor" hidden></div>
         <div id="bureauEditor" hidden></div>
         <div class="battle-bar" style="margin-top:18px"><h3 style="margin:0">🏅 Prestaties</h3>${ready ? `<span class="pill pill-turn">${ready} klaar om op te halen</span>` : ''}</div>
         <ul class="quest-list ach-list">${achs.map(a => {
@@ -4787,6 +4935,33 @@ async function renderProfile(view) {
     };
   };
 
+  // Prikbord: tot 6 stickers ophangen (ze blijven in je album)
+  if ($('#editBoard')) $('#editBoard').onclick = () => {
+    const ed = $('#boardEditor');
+    ed.hidden = !ed.hidden;
+    if (ed.hidden) return;
+    const pick = (p.board || []).map(st => st.key);
+    const owned = [...state.stickerMeta.values()];
+    const draw = () => {
+      ed.innerHTML = `<div class="board-editor"><p class="hint" style="margin:0 0 8px">Kies tot 6 stickers voor je prikbord (${pick.length}/6). Je stickers blijven gewoon in je album.</p>
+        ${owned.length ? `<div class="sticker-pick">${owned.map(st => `<button type="button" class="sp-item${pick.includes(st.key) ? ' on' : ''}" data-bp="${esc(st.key)}" title="${esc(st.name)}">${stickerHtml(st)}${pick.includes(st.key) ? `<b class="sp-num">${pick.indexOf(st.key) + 1}</b>` : ''}</button>`).join('')}</div>`
+          : '<p class="hint">Je hebt nog geen stickers.</p>'}
+        <div class="battle-bar" style="margin-top:10px"><button class="btn small" id="saveBoard" type="button">Ophangen</button><button class="link" id="clearBoard" type="button">Prikbord leegmaken</button></div></div>`;
+      ed.querySelectorAll('[data-bp]').forEach(b => b.onclick = () => {
+        const k = b.dataset.bp, i = pick.indexOf(k);
+        if (i >= 0) pick.splice(i, 1); else if (pick.length < 6) pick.push(k);
+        SFX.play('tick'); draw();
+      });
+      $('#clearBoard').onclick = () => { pick.length = 0; draw(); };
+      $('#saveBoard').onclick = async () => {
+        const { error } = await sb.rpc('set_board', { p_stickers: pick });
+        if (error) return alert(error.message);
+        SFX.play('coin'); renderProfile(view);
+      };
+    };
+    draw();
+  };
+
   // Bureau inrichten
   $('#editBureau').onclick = () => {
     const ed = $('#bureauEditor');
@@ -4829,7 +5004,7 @@ async function openFriendProfile(f) {
     ${profileHeadHtml(p)}
     <h3>⭐ Favoriete kaarten</h3>${showcaseHtml(p, false)}
     <p class="hint" style="margin:4px 0 0;font-size:13px">Kaarten die jij nog niet hebt, blijven verborgen.</p>
-    <h3>🪑 Bureau</h3>${bureauHtml(p.bureau, p.pet)}
+    <h3>🪑 Bureau</h3>${bureauHtml(p.bureau, p.pet, p.board)}
     ${p.pet ? `<p class="hint" style="margin-top:8px">${petHtml(p.pet)} <strong>${esc(p.pet.name)}</strong> · ${PET_STAGE[p.pet.stage]}${p.pet.label ? ` ${esc(p.pet.label)}` : ''}</p>` : ''}
     <button type="button" class="link" id="fpClose">Sluiten</button>
   </div>`;
@@ -5100,6 +5275,12 @@ async function renderClicker(view) {
 // ---------- Updates: wat is er nieuw? (knop bovenaan) ----------
 // Nieuwste eerst. v13: true = enkel zichtbaar voor wie de voorproef heeft (tot het live staat).
 const UPDATES = [
+  { id: '2026-11-05', date: '5 november 2026', title: 'Chat en stickers plakken', v13: true, items: [
+    '💬 Nieuw: Chat! Praat met iedereen of privé met je vrienden, met reacties en "gelezen".',
+    '🏷️ Stuur je stickers in de chat. Ze blijven gewoon in je album.',
+    '🃏 Plak een sticker op je eigen kaarten (open een kaart in je album).',
+    '📌 Hang tot 6 stickers op het prikbord van je bureau (Profiel).',
+  ] },
   { id: '2026-11-04', date: '4 november 2026', title: 'Clicker 2.0', v13: true, items: [
     '🎖️ Rangen, upgrades die rond je polygoon draaien, deeltjes en een combo-teller.',
     '🔥 De gouden polygoon kan nu ook een FRENZY geven: 30 seconden ×7 per klik.',
@@ -5215,6 +5396,294 @@ function showUpdateBanner() {
   $('#updateLater').onclick = () => { bar.remove(); setTimeout(() => { updateShown = false; }, 15 * 60000); };
 }
 
+// ---------- Chat (v19): groepschat + privé met vrienden, stickers sturen zonder ze kwijt te raken ----------
+const REACTS = ['❤️', '😂', '😮', '👍', '🔥', '😢'];
+const QUICK_EMOJI = ['😀', '😂', '😍', '😎', '🤔', '😭', '🙌', '👏', '🎉', '🔥', '💯', '👀', '🍕', '☕', '🏆', '💀'];
+const chat = { convo: 'all', ov: null, msgs: [], lastId: 0, readUpto: null, poll: null, rpoll: null, ovPoll: null,
+  tray: false, emoji: false, sending: false, channel: null, typing: {}, lastTyping: 0, mobileOpen: false, unread: 0 };
+const isEmojiOnly = t => t && t.length <= 12 && /^(\p{Extended_Pictographic}|\p{Emoji_Component}|‍|️|\s)+$/u.test(t);
+const chatDay = iso => {
+  const d = new Date(iso), t = new Date(), y = new Date(Date.now() - 864e5);
+  if (d.toDateString() === t.toDateString()) return 'Vandaag';
+  if (d.toDateString() === y.toDateString()) return 'Gisteren';
+  return d.toLocaleDateString('nl-BE', { weekday: 'long', day: 'numeric', month: 'long' });
+};
+const chatTime = iso => new Date(iso).toLocaleTimeString('nl-BE', { hour: '2-digit', minute: '2-digit' });
+const chatAv = (m, cls = '') => `<span class="friend-av ${cls}${ringCls(m.ring)}" style="${m.avatar_url ? `background-image:url('${esc(m.avatar_url)}')` : ''}">${m.avatar_url ? '' : esc((m.name || '?').charAt(0).toUpperCase())}</span>`;
+const convoName = () => (chat.convo === 'all' ? 'Iedereen' : (chat.ov?.friends || []).find(f => f.id === chat.convo)?.name || 'Vriend');
+
+function setChatBadge(n) {
+  chat.unread = n || 0;
+  setBadge('[data-chat-badge]', chat.unread);
+  syncMenuBadge();
+}
+// Ongelezen berichten bijhouden, ook als de chat niet open is
+async function refreshChatBadge() {
+  if (!state.v19 || !state.session) return;
+  const { data, error } = await sb.rpc('chat_unread');
+  if (!error) setChatBadge(data);
+}
+function stopChat() {
+  clearInterval(chat.poll); clearInterval(chat.rpoll); clearInterval(chat.ovPoll);
+  chat.poll = chat.rpoll = chat.ovPoll = null;
+}
+// Live meekijken met Supabase Realtime (werkt dat niet, dan vangt het vernieuwen elke paar seconden het op)
+function chatRealtime() {
+  if (chat.channel || !state.v19) return;
+  try {
+    chat.channel = sb.channel('ptc-chat')
+      .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'chat_messages' }, p => {
+        const m = p.new || {};
+        if (m.sender_id === state.session.user.id) return;
+        if (state.tab === 'chat') { chatFetchNew(); chatLoadOverview(); }
+        else {
+          refreshChatBadge();
+          if (m.recipient_id === state.session.user.id || m.recipient_id == null) SFX.play('tick');
+        }
+      })
+      .on('broadcast', { event: 'typing' }, ({ payload }) => {
+        if (!payload || payload.from === state.session.user.id) return;
+        const forMe = payload.to === 'all' ? chat.convo === 'all' : payload.to === state.session.user.id && chat.convo === payload.from;
+        if (!forMe) return;
+        chat.typing[payload.from] = { name: payload.name, until: Date.now() + 3500 };
+        drawTyping();
+      })
+      .subscribe();
+  } catch (_) { chat.channel = null; }
+}
+function sendTyping() {
+  if (!chat.channel || Date.now() - chat.lastTyping < 2000) return;
+  chat.lastTyping = Date.now();
+  try { chat.channel.send({ type: 'broadcast', event: 'typing', payload: { from: state.session.user.id, name: state.name, to: chat.convo } }); } catch (_) {}
+}
+function drawTyping() {
+  const el = $('#chatTyping'); if (!el) return;
+  const names = Object.values(chat.typing).filter(t => t.until > Date.now()).map(t => t.name);
+  el.innerHTML = names.length ? `<span class="typing-dots"><i></i><i></i><i></i></span> ${esc(names.join(', '))} ${names.length > 1 ? 'zijn' : 'is'} aan het typen…` : '';
+  if (names.length) setTimeout(drawTyping, 1000);
+}
+
+async function chatLoadOverview() {
+  const { data, error } = await sb.rpc('chat_overview');
+  if (error || !$('#chatList')) return;
+  chat.ov = data;
+  const total = (data.group.unread || 0) + data.friends.reduce((n, f) => n + (f.unread || 0), 0);
+  setChatBadge(total);
+  const preview = l => (!l ? '<i>Nog geen berichten</i>' : (l.mine ? 'Jij: ' : '') + (l.sticker ? '🏷️ Sticker' : esc(l.body || '').slice(0, 40)));
+  const gl = data.group.last;
+  $('#chatList').innerHTML = `
+    <button type="button" class="convo${chat.convo === 'all' ? ' on' : ''}" data-convo="all">
+      <span class="friend-av convo-group">🌍</span>
+      <span class="convo-main"><strong>Iedereen</strong><small>${gl ? `${gl.sender === state.session.user.id ? 'Jij' : esc(gl.name)}: ${gl.sticker ? '🏷️ Sticker' : esc(gl.body || '').slice(0, 40)}` : '<i>Zeg hallo tegen iedereen!</i>'}</small></span>
+      ${data.group.unread ? `<span class="tab-badge">${data.group.unread}</span>` : ''}
+    </button>
+    <div class="convo-sep">Vrienden</div>
+    ${data.friends.length ? data.friends.map(f => `<button type="button" class="convo${chat.convo === f.id ? ' on' : ''}" data-convo="${f.id}">
+      ${chatAv(f)}<span class="convo-main"><strong>${esc(f.name)}${titleChip(f.title)}</strong><small>${preview(f.last)}</small></span>
+      ${f.unread ? `<span class="tab-badge">${f.unread}</span>` : ''}</button>`).join('')
+    : '<p class="hint" style="padding:6px 10px">Voeg vrienden toe om privé te chatten.</p>'}`;
+  $('#chatList').querySelectorAll('[data-convo]').forEach(b => b.onclick = () => openConvo(b.dataset.convo));
+}
+
+function msgHtml(m, prev) {
+  const me = m.sender === state.session.user.id;
+  const grouped = prev && prev.sender === m.sender && new Date(m.at) - new Date(prev.at) < 3 * 60000 && chatDay(prev.at) === chatDay(m.at);
+  const day = !prev || chatDay(prev.at) !== chatDay(m.at) ? `<div class="chat-day"><span>${chatDay(m.at)}</span></div>` : '';
+  const reacts = Object.entries(m.reactions || {});
+  const content = m.sticker
+    ? `<div class="msg-sticker">${stickerHtml(m.sticker, true)}</div>`
+    : `<div class="bubble${isEmojiOnly(m.body) ? ' big-emoji' : ''}">${esc(m.body).replace(/(https?:\/\/[^\s<]+)/g, '<a href="$1" target="_blank" rel="noopener">$1</a>')}</div>`;
+  return `${day}<div class="chat-msg${me ? ' mine' : ''}${grouped ? ' grouped' : ''}${m.pending ? ' pending' : ''}" data-mid="${m.id}">
+    ${me ? '' : `<div class="msg-av">${grouped ? '' : chatAv(m)}</div>`}
+    <div class="msg-col">
+      ${!me && !grouped && chat.convo === 'all' ? `<div class="msg-name">${esc(m.name)}</div>` : ''}
+      <div class="msg-row">${content}
+        ${m.pending ? '' : `<button type="button" class="msg-react-btn" data-react-open="${m.id}" aria-label="Reageren">😊</button>`}</div>
+      ${reacts.length ? `<div class="msg-reacts">${reacts.map(([e, r]) => `<button type="button" class="react-pill${r.mine ? ' mine' : ''}" data-react="${m.id}" data-emoji="${e}">${e}${r.n > 1 ? ` ${r.n}` : ''}</button>`).join('')}</div>` : ''}
+      <div class="msg-time">${chatTime(m.at)}${me && chat.convo !== 'all' && chat.readUpto >= m.id ? ' · <span class="read">✓✓ Gelezen</span>' : ''}</div>
+    </div></div>`;
+}
+function drawMessages(scroll = 'bottom') {
+  const box = $('#chatMsgs'); if (!box) return;
+  const nearBottom = box.scrollHeight - box.scrollTop - box.clientHeight < 120;
+  box.innerHTML = chat.msgs.length ? chat.msgs.map((m, i) => msgHtml(m, chat.msgs[i - 1])).join('')
+    : `<div class="chat-empty"><span>${chat.convo === 'all' ? '🌍' : '👋'}</span><p>${chat.convo === 'all' ? 'Nog niets gezegd. Wees de eerste!' : `Stuur ${esc(convoName())} een berichtje of een sticker!`}</p></div>`;
+  // Alleen "Gelezen" tonen bij je laatste gelezen bericht
+  const reads = [...box.querySelectorAll('.read')];
+  reads.slice(0, -1).forEach(r => r.parentElement.innerHTML = r.parentElement.innerHTML.replace(/ · <span class="read">.*<\/span>/, ''));
+  if (scroll === 'bottom' || (scroll === 'auto' && nearBottom)) box.scrollTop = box.scrollHeight;
+  bindMessages();
+}
+function bindMessages() {
+  const box = $('#chatMsgs');
+  box.querySelectorAll('[data-react-open]').forEach(b => b.onclick = e => {
+    e.stopPropagation();
+    document.querySelectorAll('.react-bar').forEach(x => x.remove());
+    const m = chat.msgs.find(x => String(x.id) === b.dataset.reactOpen);
+    const bar = document.createElement('div');
+    bar.className = 'react-bar';
+    bar.innerHTML = REACTS.map(r => `<button type="button" data-react="${m.id}" data-emoji="${r}">${r}</button>`).join('')
+      + (m.sender === state.session.user.id || (chat.convo === 'all' && state.isAdmin) ? `<button type="button" data-del="${m.id}" title="Verwijderen">🗑️</button>` : '');
+    b.closest('.msg-row').appendChild(bar);
+    bar.querySelectorAll('[data-react]').forEach(x => x.onclick = ev => { ev.stopPropagation(); react(x.dataset.react, x.dataset.emoji); bar.remove(); });
+    bar.querySelector('[data-del]')?.addEventListener('click', async ev => {
+      ev.stopPropagation(); bar.remove();
+      if (!confirm('Dit bericht verwijderen?')) return;
+      const { error } = await sb.rpc('chat_delete', { p_id: m.id });
+      if (error) return toast(esc(error.message));
+      chat.msgs = chat.msgs.filter(x => x.id !== m.id); drawMessages('none');
+    });
+  });
+  box.querySelectorAll('.react-pill').forEach(b => b.onclick = () => react(b.dataset.react, b.dataset.emoji));
+  box.querySelectorAll('.chat-msg').forEach(el => el.ondblclick = () => react(el.dataset.mid, '❤️'));
+}
+async function react(id, emoji) {
+  const { data, error } = await sb.rpc('chat_react', { p_id: Number(id), p_emoji: emoji });
+  if (error) return toast(esc(error.message));
+  const m = chat.msgs.find(x => String(x.id) === String(id));
+  if (m) { m.reactions = data; drawMessages('none'); }
+  SFX.play('tick');
+  const el = document.querySelector(`[data-mid="${id}"] .msg-reacts`);
+  el?.classList.add('pop');
+}
+
+async function chatFetchNew() {
+  const convo = chat.convo;
+  const { data, error } = await sb.rpc('chat_messages_list', { p_with: convo === 'all' ? null : convo, p_after: chat.lastId });
+  if (error || convo !== chat.convo || !$('#chatMsgs')) return;
+  const changedRead = data.read_upto !== chat.readUpto;
+  chat.readUpto = data.read_upto;
+  const fresh = data.messages.filter(m => !chat.msgs.some(x => x.id === m.id));
+  if (fresh.length) {
+    chat.msgs = chat.msgs.filter(m => !m.pending).concat(fresh).sort((a, b) => a.id - b.id);
+    chat.lastId = Math.max(chat.lastId, ...fresh.map(m => m.id));
+    const others = fresh.filter(m => m.sender !== state.session.user.id);
+    if (others.length) {
+      SFX.play('tick');
+      for (const m of others) delete chat.typing[m.sender];
+      const epic = others.find(m => m.sticker && m.sticker.rarity !== 'common');
+      if (epic) stickerRain(epic.sticker.emoji);
+    }
+    drawMessages('auto');
+  } else if (changedRead) drawMessages('none');
+}
+async function chatRefreshReactions() {
+  const ids = chat.msgs.slice(-30).filter(m => !m.pending).map(m => m.id);
+  if (!ids.length) return;
+  const { data, error } = await sb.rpc('chat_reactions_for', { p_ids: ids });
+  if (error || !$('#chatMsgs')) return;
+  let changed = false;
+  for (const m of chat.msgs) if (data[m.id] && JSON.stringify(data[m.id]) !== JSON.stringify(m.reactions)) { m.reactions = data[m.id]; changed = true; }
+  if (changed) drawMessages('none');
+}
+// Een zeldzame of epische sticker laat het even regenen
+function stickerRain(emoji) {
+  const box = $('#chatMsgs'); if (!box || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  const wrap = box.closest('.chat-window');
+  for (let i = 0; i < 18; i++) {
+    const s = document.createElement('span');
+    s.className = 'sticker-drop'; s.textContent = emoji;
+    s.style.left = Math.random() * 95 + '%'; s.style.animationDelay = Math.random() * .8 + 's'; s.style.fontSize = (20 + Math.random() * 24) + 'px';
+    wrap.appendChild(s); setTimeout(() => s.remove(), 2600);
+  }
+}
+
+async function openConvo(convo) {
+  chat.convo = convo; chat.msgs = []; chat.lastId = 0; chat.readUpto = null; chat.typing = {}; chat.tray = false; chat.emoji = false;
+  chat.mobileOpen = true;
+  const win = $('#chatWindow'); if (!win) return;
+  $('#chatRoot').classList.add('convo-open');
+  const f = (chat.ov?.friends || []).find(x => x.id === convo);
+  win.innerHTML = `
+    <div class="chat-head">
+      <button class="link chat-back" id="chatBack" type="button" aria-label="Terug">←</button>
+      ${convo === 'all' ? '<span class="friend-av convo-group">🌍</span>' : chatAv(f || { name: '?' })}
+      <div><strong>${esc(convoName())}</strong><small>${convo === 'all' ? 'Groepschat met alle spelers' : 'Privégesprek'}</small></div>
+      ${soundBtn()}
+    </div>
+    <div class="chat-msgs" id="chatMsgs"><p class="hint" style="text-align:center">Laden…</p></div>
+    <div class="chat-typing" id="chatTyping"></div>
+    <div class="chat-tray" id="chatTray" hidden></div>
+    <form class="chat-compose" id="chatForm">
+      <button type="button" class="cc-btn" id="ccEmoji" aria-label="Emoji">😊</button>
+      <button type="button" class="cc-btn" id="ccSticker" aria-label="Sticker">🏷️</button>
+      <input id="chatInput" maxlength="500" autocomplete="off" placeholder="Typ een bericht…" aria-label="Bericht">
+      <button type="submit" class="cc-send" id="ccSend" aria-label="Versturen"><span>➤</span></button>
+    </form>`;
+  $('#chatBack').onclick = () => { $('#chatRoot').classList.remove('convo-open'); chat.mobileOpen = false; };
+  document.querySelectorAll('#chatList .convo').forEach(b => b.classList.toggle('on', b.dataset.convo === convo));
+  const input = $('#chatInput');
+  input.oninput = () => sendTyping();
+  $('#chatForm').onsubmit = e => { e.preventDefault(); sendChat({ body: input.value }); };
+  $('#ccSticker').onclick = () => { chat.tray = !chat.tray; chat.emoji = false; drawTray(); };
+  $('#ccEmoji').onclick = () => { chat.emoji = !chat.emoji; chat.tray = false; drawTray(); };
+  $('#chatMsgs').onclick = () => { document.querySelectorAll('.react-bar').forEach(x => x.remove()); };
+  await chatFetchNew();
+  if (!chat.msgs.length) drawMessages();
+  chatLoadOverview();
+  if (innerWidth > 760) input.focus();
+}
+function drawTray() {
+  const tray = $('#chatTray'); if (!tray) return;
+  tray.hidden = !chat.tray && !chat.emoji;
+  if (chat.emoji) {
+    tray.innerHTML = `<div class="emoji-grid">${QUICK_EMOJI.map(e => `<button type="button" data-emo="${e}">${e}</button>`).join('')}</div>`;
+    tray.querySelectorAll('[data-emo]').forEach(b => b.onclick = () => { const i = $('#chatInput'); i.value += b.dataset.emo; i.focus(); });
+    return;
+  }
+  if (!chat.tray) return;
+  const owned = [...state.stickerMeta.values()];
+  tray.innerHTML = owned.length ? `<div class="tray-head">Jouw stickers <small>· versturen kost niets, ze blijven in je album</small></div>
+    <div class="sticker-pick tray-grid">${owned.map(st => `<button type="button" class="sp-item" data-send-st="${esc(st.key)}" title="${esc(st.name)}">${stickerHtml(st)}</button>`).join('')}</div>`
+    : '<p class="hint" style="margin:6px">Je hebt nog geen stickers. Los een puzzel op of koop een stickerpakje!</p>';
+  tray.querySelectorAll('[data-send-st]').forEach(b => b.onclick = () => { chat.tray = false; drawTray(); sendChat({ sticker: b.dataset.sendSt }); });
+}
+async function sendChat({ body = null, sticker = null }) {
+  body = (body || '').trim() || null;
+  if ((!body && !sticker) || chat.sending) return;
+  chat.sending = true;
+  const convo = chat.convo;
+  const temp = { id: Number.MAX_SAFE_INTEGER - chat.msgs.length, pending: true, sender: state.session.user.id, body, at: new Date().toISOString(),
+    sticker: sticker ? state.stickerMeta.get(sticker) : null, name: state.name, reactions: {} };
+  chat.msgs.push(temp);
+  if (body) $('#chatInput').value = '';
+  drawMessages('bottom');
+  $('#ccSend').classList.remove('fly'); void $('#ccSend').offsetWidth; $('#ccSend').classList.add('fly');
+  const { data, error } = await sb.rpc('chat_send', { p_to: convo === 'all' ? null : convo, p_body: body, p_sticker: sticker });
+  chat.sending = false;
+  chat.msgs = chat.msgs.filter(m => m !== temp);
+  if (error) { if (body && $('#chatInput')) $('#chatInput').value = body; drawMessages('none'); return toast(esc(error.message)); }
+  if (convo !== chat.convo) return;
+  chat.msgs.push(data); chat.lastId = Math.max(chat.lastId, data.id);
+  SFX.play(sticker ? 'coin' : 'tick');
+  drawMessages('bottom');
+  if (sticker && data.sticker && data.sticker.rarity !== 'common') stickerRain(data.sticker.emoji);
+  chatLoadOverview();
+}
+
+async function renderChat(view) {
+  stopChat();
+  view.innerHTML = '<section class="col" style="max-width:none"><p class="hint">Laden…</p></section>';
+  const { data, error } = await sb.rpc('chat_overview');
+  if (state.tab !== 'chat') return;
+  if (error) { view.innerHTML = `<section class="col">${pageHead('Chat', 'chat')}${notReady}</section>`; return; }
+  chat.ov = data;
+  view.innerHTML = `<section class="col chat-page" style="max-width:none">
+    <div class="battle-top">${pageHead('Chat', 'chat')}</div>
+    <div class="chat-root" id="chatRoot">
+      <aside class="chat-list" id="chatList"></aside>
+      <div class="chat-window" id="chatWindow"></div>
+    </div>
+  </section>`;
+  chatRealtime();
+  await chatLoadOverview();
+  if (innerWidth > 760 || chat.mobileOpen) openConvo(chat.convo);
+  chat.poll = setInterval(() => { if (state.tab === 'chat' && !document.hidden && $('#chatMsgs')) chatFetchNew(); }, 3000);
+  chat.rpoll = setInterval(() => { if (state.tab === 'chat' && !document.hidden && $('#chatMsgs')) chatRefreshReactions(); }, 7000);
+  chat.ovPoll = setInterval(() => { if (state.tab === 'chat' && !document.hidden) chatLoadOverview(); }, 15000);
+}
+
+setInterval(() => { if (state.tab !== 'chat' && !document.hidden) refreshChatBadge(); }, 30000);
 setInterval(checkForUpdate, 5 * 60000);
 document.addEventListener('visibilitychange', () => { if (!document.hidden) checkForUpdate(); });
 addEventListener('focus', checkForUpdate);
