@@ -482,6 +482,28 @@ body.v13 .v13-hide{display:none !important}
 .scratch-cell canvas{position:absolute;inset:0;width:100%;height:100%;cursor:crosshair;transition:opacity .4s}
 .scratch-cell canvas.gone{opacity:0;pointer-events:none}
 .scratch-cell.match{animation:reel-win .5s ease 3;outline:3px solid #2f6b3a}
+.casino-tabs button{font-size:14px;padding:6px 14px}
+.awards{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin:16px 0}
+.award{display:grid;justify-items:center;gap:4px;padding:14px 12px;border-radius:18px;text-align:center;
+  background:linear-gradient(170deg,#3a1323,#21101a);border:2px solid #c99a1e;box-shadow:0 10px 24px -12px rgba(0,0,0,.8)}
+.award.lucky{border-color:#5DA352;background:linear-gradient(170deg,#1f4a2a,#14261a)}
+.award.unlucky{border-color:#E0584B;background:linear-gradient(170deg,#4a1c1c,#241010)}
+.award-ico{font-size:34px;line-height:1}
+.award small{color:#e9cfd9;font-weight:700;letter-spacing:.04em;text-transform:uppercase;font-size:11.5px}
+.award strong{display:flex;align-items:center;gap:8px;font:800 17px var(--body);color:#fff}
+.award span:last-child{font:900 20px var(--display);color:#ffe9a8}
+.casino-table-wrap{overflow-x:auto}
+.casino-table{width:100%;min-width:620px}
+.casino-table td{vertical-align:middle}
+.cs-name{display:flex;align-items:center;gap:8px;font-weight:700}
+.casino-table .pos,.cs-game .pos{color:#9be89b}.casino-table .neg,.cs-game .neg{color:#ff9e93}
+.rtp-bar{display:inline-block;width:60px;height:8px;margin-right:6px;border-radius:999px;background:var(--wblack);overflow:hidden;vertical-align:middle}
+.rtp-bar span{display:block;height:100%}.rtp-bar .pos{background:#5DA352}.rtp-bar .neg{background:#E0584B}
+.cs-detail td{background:rgba(21,24,29,.5)}
+.cs-games{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:8px}
+.cs-game{display:grid;gap:2px;padding:8px 10px;border-radius:12px;border:1px solid var(--line);background:rgba(35,41,50,.9)}
+.cs-game.off{opacity:.45}
+.cs-game small{color:var(--muted);font-size:12px}
 .casino-note{margin-top:16px;color:var(--muted);font-size:14px}
 
 
@@ -1771,6 +1793,7 @@ const INFO = {
     <ul><li>🎡 <strong>Rad van fortuin</strong>: elke dag gratis draaien voor polycoins, een sticker of een pakje.</li>
     <li>🎰 <strong>Fruitautomaat</strong>: 3 dezelfde = je inzet maal 5 tot 100 (💎💎💎). 2 dezelfde = inzet terug.</li>
     <li>🃏 <strong>Blackjack</strong>: kom zo dicht mogelijk bij 21. De dealer moet doorgaan tot 17. Blackjack betaalt 3:2, verdubbelen mag met je eerste 2 kaarten.</li>
+    <li>📊 <strong>Stats</strong>: wie heeft geluk en wie heeft pech? Zie per speler hoeveel er werd ingezet en gewonnen, altijd, deze week of vandaag.</li>
     <li>🎟️ <strong>Krasbiljet</strong>: 25 🪙, kras 6 vakjes open. 3 dezelfde = prijs tot 250 🪙 of een zeldzame sticker.</li></ul>`],
   clicker: ['Clicker', `
     <p>Klik op de grote polygoon om <strong>Poly's</strong> te verdienen (max 12 kliks per seconde; ingedrukt houden telt niet). Koop er upgrades mee: ze draaien rond je polygoon en maken automatisch Poly's, ook als je weg bent (tot 8 uur).</p>
@@ -3965,7 +3988,75 @@ const WHEEL = ['10 🪙', '🏷️', '20 🪙', '🎴', '30 🪙', '100 🪙', '
 const WHEEL_COLORS = ['#5DA352', '#7C4FE0', '#C9B458', '#2FA79E', '#E0584B', '#D9A61C', '#3E7FD6', '#B04FC9'];
 const SLOT_SYMS = ['🍒', '☕', '📎', '🎴', '⭐', '💎'];
 const SCRATCH_SYMS = { c25: '🪙<b>25</b>', c50: '💰<b>50</b>', c100: '💵<b>100</b>', c250: '💎<b>250</b>', stk: '🏷️<b>sticker</b>' };
-const casino = { wheelAngle: 0, bet: 25, bjBet: 20 };
+const casino = { wheelAngle: 0, bet: 25, bjBet: 20, view: 'play', period: null };
+const CASINO_GAMES = { slots: '🎰 Fruitautomaat', blackjack: '🃏 Blackjack', scratch: '🎟️ Krasbiljet', wheel: '🎡 Rad' };
+const casinoTabs = () => `<div class="seg casino-tabs" role="tablist">${[['play', '🎰 Spelen'], ['stats', '📊 Stats']].map(([k, l]) =>
+  `<button type="button" role="tab" data-cview="${k}" class="${casino.view === k ? 'on' : ''}" aria-selected="${casino.view === k}">${l}</button>`).join('')}</div>`;
+const bindCasinoTabs = view => view.querySelectorAll('[data-cview]').forEach(b => b.onclick = () => { casino.view = b.dataset.cview; renderCasino(view); });
+
+// Casinostatistieken: wie heeft geluk, wie heeft pech?
+async function renderCasinoStats(view) {
+  view.innerHTML = `<section class="col casino" style="max-width:none">
+    <div class="battle-top">
+      <div class="page-head"><h2 class="casino-sign" aria-label="Casino">POLYGON <em>CASINO</em></h2>${infoBtn('casino')}</div>
+      ${casinoTabs()}
+    </div><p class="hint">Laden…</p></section>`;
+  bindCasinoTabs(view);
+  const { data, error } = await sb.rpc('casino_stats', { p_days: casino.period });
+  if (state.tab !== 'casino' || casino.view !== 'stats') return;
+  const me = state.session.user.id;
+  const sign = n => (n > 0 ? `+${fmtNum(n)}` : n < 0 ? `−${fmtNum(-n)}` : '0');
+  const rows = error ? [] : data;
+  const played = rows.filter(r => r.games > 0);
+  const lucky = played[0], unlucky = played[played.length - 1];
+  const bestWin = [...played].sort((a, b) => b.best - a.best)[0];
+  const mostPlayed = [...played].sort((a, b) => b.games - a.games)[0];
+  const av = r => `<span class="friend-av${ringCls(r.ring)}" style="${r.avatar_url ? `background-image:url('${esc(r.avatar_url)}')` : ''}">${r.avatar_url ? '' : esc((r.name || '?').charAt(0).toUpperCase())}</span>`;
+  const who = r => (r.user_id === me ? 'Jij' : esc(r.name));
+  const award = (icon, title, r, value, cls = '') => `<div class="award ${cls}"><span class="award-ico">${icon}</span><small>${title}</small>
+    ${r ? `<strong>${av(r)} ${who(r)}</strong><span>${value}</span>` : '<span>Nog niemand</span>'}</div>`;
+  const sec = view.querySelector('section');
+  sec.innerHTML = `<div class="battle-top">
+      <div class="page-head"><h2 class="casino-sign" aria-label="Casino">POLYGON <em>CASINO</em></h2>${infoBtn('casino')}</div>
+      ${casinoTabs()}
+    </div>
+    <div class="battle-bar" style="margin-top:12px">
+      <div class="seg" role="group" aria-label="Periode">${[[null, 'Altijd'], [7, 'Deze week'], [1, 'Vandaag']].map(([v, l]) =>
+        `<button type="button" data-period="${v ?? ''}" class="${casino.period === v ? 'on' : ''}">${l}</button>`).join('')}</div>
+      <small class="hint" style="margin:0">Saldo = gewonnen min ingezet (fruitautomaat, blackjack en krasbiljet). Het gratis rad telt apart.</small>
+    </div>
+    ${error ? `<p class="msg err">${esc(error.message)}</p>` : !played.length ? '<p class="hint" style="margin-top:14px">Nog niemand heeft in deze periode gespeeld.</p>' : `
+    <div class="awards">
+      ${award('🍀', 'Geluksvogel', lucky && lucky.net > 0 ? lucky : null, lucky ? `${sign(lucky.net)} 🪙` : '', 'lucky')}
+      ${award('💀', 'Grootste pechvogel', unlucky && unlucky.net < 0 ? unlucky : null, unlucky ? `${sign(unlucky.net)} 🪙` : '', 'unlucky')}
+      ${award('💎', 'Grootste winst in één spel', bestWin && bestWin.best > 0 ? bestWin : null, bestWin ? `+${fmtNum(bestWin.best)} 🪙` : '')}
+      ${award('🎲', 'Vaste klant', mostPlayed, mostPlayed ? `${mostPlayed.games} spelletjes` : '')}
+    </div>
+    <div class="casino-table-wrap"><table class="leaderboard casino-table">
+      <thead><tr><th>#</th><th>Speler</th><th>Gespeeld</th><th>Ingezet</th><th>Gewonnen</th><th>Saldo</th><th>Rendement</th><th></th></tr></thead>
+      <tbody>${rows.map((r, i) => `<tr class="${r.user_id === me ? 'me' : ''}" data-row="${i}">
+          <td>${i + 1}</td><td><span class="cs-name">${av(r)} ${who(r)}${r.jackpots ? ' 💎'.repeat(Math.min(3, r.jackpots)) : ''}</span></td>
+          <td>${r.games}</td><td>${fmtNum(r.bet)}</td><td>${fmtNum(r.win)}</td>
+          <td class="${r.net > 0 ? 'pos' : r.net < 0 ? 'neg' : ''}"><strong>${sign(r.net)}</strong></td>
+          <td>${r.rtp == null ? '–' : `<span class="rtp-bar"><span style="width:${Math.min(100, r.rtp / 2)}%" class="${r.rtp >= 100 ? 'pos' : 'neg'}"></span></span>${r.rtp}%`}</td>
+          <td><button class="link" type="button" data-more="${i}" aria-expanded="false">Details</button></td></tr>
+        <tr class="cs-detail" data-detail="${i}" hidden><td colspan="8"><div class="cs-games">${Object.entries(CASINO_GAMES).map(([g, label]) => {
+          const d = r.detail?.[g];
+          if (!d) return `<div class="cs-game off"><b>${label}</b><small>niet gespeeld</small></div>`;
+          if (g === 'wheel') return `<div class="cs-game"><b>${label}</b><small>${d.n}× gedraaid · ${fmtNum(d.win)} 🪙 gewonnen</small></div>`;
+          const net = d.win - d.bet;
+          return `<div class="cs-game"><b>${label}</b><small>${d.n}× · ingezet ${fmtNum(d.bet)} · gewonnen ${fmtNum(d.win)}</small>
+            <span class="${net > 0 ? 'pos' : net < 0 ? 'neg' : ''}">${sign(net)} 🪙</span>
+            ${g === 'blackjack' ? `<small>${d.wins} gewonnen · ${d.losses} verloren</small>` : ''}</div>`;
+        }).join('')}</div></td></tr>`).join('')}</tbody>
+    </table></div>`}`;
+  bindCasinoTabs(view);
+  sec.querySelectorAll('[data-period]').forEach(b => b.onclick = () => { casino.period = b.dataset.period ? Number(b.dataset.period) : null; renderCasinoStats(view); });
+  sec.querySelectorAll('[data-more]').forEach(b => b.onclick = () => {
+    const d = sec.querySelector(`[data-detail="${b.dataset.more}"]`);
+    d.hidden = !d.hidden; b.setAttribute('aria-expanded', !d.hidden); b.textContent = d.hidden ? 'Details' : 'Verbergen';
+  });
+}
 
 function playingCard(c, i = 0) {
   if (c < 0) return `<span class="pcard back" style="--i:${i}"></span>`;
@@ -3974,15 +4065,17 @@ function playingCard(c, i = 0) {
 }
 
 async function renderCasino(view) {
+  if (casino.view === 'stats') return renderCasinoStats(view);
   view.innerHTML = '<section class="col" style="max-width:none"><p class="hint">Laden…</p></section>';
   const [wheel, bj] = await Promise.all([sb.rpc('casino_wheel_state'), sb.rpc('bj_state')]);
   if (state.tab !== 'casino') return;
   if (wheel.error) { view.innerHTML = `<section class="col">${pageHead('Casino', 'casino')}${notReady}</section>`; return; }
   const seg = 360 / WHEEL.length;
+  setTimeout(() => bindCasinoTabs(view), 0);
   view.innerHTML = `<section class="col casino" style="max-width:none">
     <div class="battle-top">
       <div class="page-head"><h2 class="casino-sign" aria-label="Casino">POLYGON <em>CASINO</em></h2>${infoBtn('casino')}</div>
-      <div class="battle-bar"><span class="coinpill shop-balance">🪙 <span data-coin>${state.wallet}</span></span>${soundBtn()}</div>
+      <div class="battle-bar">${casinoTabs()}<span class="coinpill shop-balance">🪙 <span data-coin>${state.wallet}</span></span>${soundBtn()}</div>
     </div>
     <div class="casino-grid">
       <div class="game-panel">
