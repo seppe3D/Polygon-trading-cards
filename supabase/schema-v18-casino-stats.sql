@@ -2,7 +2,7 @@
 -- Voer dit volledige bestand in één keer uit in Supabase SQL Editor (ná v13). Kies "Run without RLS". Veilig om opnieuw uit te voeren.
 --
 -- Toont per speler hoeveel er ingezet en gewonnen werd (fruitautomaat, blackjack, krasbiljet)
--- en wat het gratis rad opleverde. Enkel totalen, geen afzonderlijke spelletjes.
+-- en wat het gratis rad opleverde. Enkel totalen, geen afzonderlijke spelletjes. Admin-accounts worden niet getoond.
 -- p_days = null: altijd · 7: laatste 7 dagen · 1: vandaag
 
 create or replace function public.casino_stats(p_days int default null) returns jsonb
@@ -35,7 +35,9 @@ language sql stable security definer set search_path = public as $$
       'detail', u.games_detail)
     order by u.win - u.bet desc), '[]'::jsonb)
   from per_user u join public.profiles p on p.id = u.user_id
-  where auth.uid() is not null;
+  where auth.uid() is not null
+    -- Admin-accounts tellen niet mee in de stats
+    and not exists (select 1 from public.admins a where a.user_id = u.user_id);
 $$;
 revoke all on function public.casino_stats(int) from public, anon;
 grant execute on function public.casino_stats(int) to authenticated;
