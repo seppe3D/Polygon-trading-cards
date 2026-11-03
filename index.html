@@ -587,7 +587,7 @@ body.v13 .v13-hide{display:none !important}
 .sal-text small{display:block;color:var(--ink-soft);font-size:13px;margin-top:4px}
 .sal-bar{height:6px;border-radius:999px;background:var(--wblack);overflow:hidden;margin-top:6px}
 .sal-bar span{display:block;height:100%;background:var(--yellow);transition:width .5s}
-#salCollect.glow{animation:pulse-ring 1.4s ease-out infinite}
+#salCollect.sal-ready{animation:pulse-ring 1.4s ease-out infinite}
 .clk-shop-head{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:10px}
 .clk-shop-head h3{margin:0}
 .clk-items{display:grid;gap:8px}
@@ -1224,6 +1224,23 @@ dialog::backdrop{background:rgba(10,12,16,.78)}
   .chat-back{display:block} .chat-msg{max-width:88%}
 }
 @media (prefers-reduced-motion:reduce){.chat-msg,.bubble.big-emoji,.msg-sticker .sticker{animation:none}}
+
+/* Vaste paginakolom rechts op grote schermen; op gsm blijft het menu */
+.main-grid{display:block}
+.side-nav{display:none}
+@media (min-width:900px){
+  .main-grid{display:grid;grid-template-columns:minmax(0,1fr) 200px;gap:22px;align-items:start}
+  .side-nav{display:grid;gap:2px;position:sticky;top:12px;padding:8px;background:rgba(29,34,41,.92);border:1px solid var(--line);border-radius:16px;
+    max-height:calc(100vh - 24px);overflow-y:auto;box-shadow:0 12px 30px -14px rgba(0,0,0,.7)}
+  .side-nav button{display:flex;align-items:center;gap:11px;width:100%;background:none;border:0;border-radius:10px;padding:10px 12px;color:var(--ink);
+    font:700 15px var(--body);cursor:pointer;text-align:left;transition:background .15s ease,transform .15s ease}
+  .side-nav button:hover{background:rgba(255,255,255,.07);transform:translateX(-2px)}
+  .side-nav button[aria-current="page"]{background:var(--yellow);color:#15181D}
+  .side-nav .tab-badge{margin-left:auto;position:static}
+  .menu{display:none}
+}
+.casino-grid{grid-template-columns:1fr}
+@media (min-width:760px){.casino-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 </style>
 </head>
 <body>
@@ -1824,7 +1841,13 @@ function renderMain() {
         <button class="avbtn${ringCls(state.equipped.ring)}" id="openAccount" aria-label="Account instellingen"${avStyle}>${state.avatarUrl ? '' : initial}</button>
       </div>
     </header>
-    <div id="view"></div>
+    <div class="main-grid">
+      <div id="view"></div>
+      <nav class="side-nav" aria-label="Pagina's">
+        ${tabs.map(t => `<button type="button" data-tab="${t.id}"${t.id === cur.id ? ' aria-current="page"' : ''}>
+          <span class="menu-ico">${t.icon}</span><span class="sn-label">${t.label}</span>${t.badge ? `<span class="tab-badge" data-${t.badge}-badge></span>` : ''}</button>`).join('')}
+      </nav>
+    </div>
   </div>
   <dialog id="accModal" aria-label="Accountinstellingen"></dialog>
   <dialog id="friendModal" aria-label="Statistieken van vriend"></dialog>
@@ -1838,7 +1861,7 @@ function renderMain() {
   const menuBtn = $('#menuBtn'), list = $('#menuList');
   const setMenu = open => { list.hidden = !open; menuBtn.setAttribute('aria-expanded', open); };
   menuBtn.onclick = e => { e.stopPropagation(); setMenu(list.hidden); };
-  list.querySelectorAll('[data-tab]').forEach(b => {
+  document.querySelectorAll('#menuList [data-tab], .side-nav [data-tab]').forEach(b => {
     b.onclick = () => { state.tab = b.dataset.tab; renderMain(); };
   });
   document.onclick = e => { if (!e.target.closest('.menu')) setMenu(false); };
@@ -2074,7 +2097,7 @@ function initBackground() {
   }, { passive: true });
   // Klik of tik op een lege plek: een regen van tegels
   addEventListener('pointerdown', e => {
-    if (reduce || e.target.closest('button,a,input,textarea,select,label,dialog,.card,.cw,.book,.menu,.stage,.hub,.game-panel,.conn,.memory-wrap,.sudoku-wrap,.album,.bureau,.prof-card,table,.friend-row,.trade-card,.battle-box,.battle-row,.stat-card,.pick,.mycode')) return;
+    if (reduce || e.target.closest('button,a,input,textarea,select,label,dialog,.card,.cw,.book,.menu,.side-nav,.stage,.hub,.game-panel,.conn,.memory-wrap,.sudoku-wrap,.album,.bureau,.prof-card,table,.friend-row,.trade-card,.battle-box,.battle-row,.stat-card,.pick,.mycode')) return;
     for (let i = 0; i < 16 && bits.length < 120; i++) {
       const a = rnd(0, Math.PI * 2), v = rnd(160, 420);
       bits.push({ x: e.clientX, y: e.clientY, vx: Math.cos(a) * v, vy: Math.sin(a) * v - 220, rot: rnd(0, 6.28), vr: rnd(-8, 8),
@@ -5160,7 +5183,7 @@ async function renderClicker(view) {
     $('#salInfo').textContent = s.today >= s.cap ? `Dagplafond bereikt (${s.cap} 🪙). Morgen opnieuw.`
       : `+${s.per_tick} 🪙 elke 10 min · volgende over ${fmtSecs(left)}${s.full ? ' (spaarpot vol: haal op!)' : ''} · vandaag ${s.today}/${s.cap}`;
     $('#salCollect').disabled = !s.ready;
-    $('#salCollect').classList.toggle('glow', s.ready > 0);
+    $('#salCollect').classList.toggle('sal-ready', s.ready > 0);
     if (left === 0 && !clk.salRefresh) { clk.salRefresh = true; clkCall('clicker_sync').then(() => { clk.salRefresh = false; }); }
   };
 
@@ -5280,6 +5303,11 @@ const UPDATES = [
     '🏷️ Stuur je stickers in de chat. Ze blijven gewoon in je album.',
     '🃏 Plak een sticker op je eigen kaarten (open een kaart in je album).',
     '📌 Hang tot 6 stickers op het prikbord van je bureau (Profiel).',
+  ] },
+  { id: '2026-11-05b', date: '5 november 2026', title: 'Menu altijd zichtbaar', items: [
+    '🧭 Op de computer staan alle pagina\'s nu rechts in een kolom: geen menuknop meer nodig. Op de gsm blijft het menu.',
+    '🎰 Het casino staat netjes in een raster van 2 × 2.',
+    '💼 Fix: je salaris in de Clicker ophalen werkt weer.',
   ] },
   { id: '2026-11-04', date: '4 november 2026', title: 'Clicker 2.0', v13: true, items: [
     '🎖️ Rangen, upgrades die rond je polygoon draaien, deeltjes en een combo-teller.',
