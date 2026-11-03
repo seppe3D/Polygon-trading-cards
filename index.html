@@ -2567,7 +2567,9 @@ function bookGroups() {
     if (!g) { g = { name: c.person, cards: [] }; groups.push(g); }
     g.cards.push(c);
   }
-  for (const g of groups) g.cards.sort((a, b) => a.slot - b.slot);
+  // Per pagina: eerst de commons, dan de epics, dan legendaries (en mythics); binnen elke groep op slot
+  const RANK = { common: 0, epic: 1, legendary: 2, mythic: 3, cat: 0 };
+  for (const g of groups) g.cards.sort((a, b) => (RANK[a.rarity] - RANK[b.rarity]) || (a.slot - b.slot));
   // Troostdieren altijd na de collega's, ook als er later nieuwe collega's bijkomen
   const isAnimals = g => g.cards.length && g.cards.every(c => c.rarity === 'cat');
   const cats = groups.findIndex(isAnimals);
@@ -2599,9 +2601,9 @@ function drawBook(view, groups, animate) {
   view.innerHTML = `<div class="book"><div class="spread">
     <nav class="index-page" aria-label="Collega's">
       <h3 class="index-title">Verzamelboek ${infoBtn('book')}</h3>
-      <p class="sub">${have}/${total} kaarten${dupes ? ` · ${dupes} dubbel` : ''}${state.badges.has('*BOOK*') ? ' · 🏆 volledig' : ''}</p>
+      <p class="sub">${have}/${total} kaarten${dupes ? ` · ${dupes} dubbel` : ''}${have === total && total ? ' · 🏆 volledig' : ''}</p>
       <ul class="index-list">${groups.map((x, i) =>
-        `<li${x.dupes ? ' class="index-dupes"' : ''}><button data-i="${i}" aria-current="${i === state.page}">${esc(x.name)}${state.badges.has(x.name) ? '<span class="badge" title="Pagina compleet">🏅</span>' : ''}<span class="frac">${x.dupes ? `${dupes} extra` : `${ownedIn(x)}/${x.cards.length}`}</span></button></li>`).join('')}</ul>
+        `<li${x.dupes ? ' class="index-dupes"' : ''}><button data-i="${i}" aria-current="${i === state.page}">${esc(x.name)}${!x.dupes && x.cards.length && ownedIn(x) === x.cards.length ? '<span class="badge" title="Pagina compleet">🏅</span>' : ''}<span class="frac">${x.dupes ? `${dupes} extra` : `${ownedIn(x)}/${x.cards.length}`}</span></button></li>`).join('')}</ul>
     </nav>
     <div class="page-body${animate ? ' turning' : ''}">
       <h3 class="pname">${esc(g.name)}</h3>
