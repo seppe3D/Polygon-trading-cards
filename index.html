@@ -165,6 +165,12 @@ a{color:var(--amber-soft)}
 .whelp .link:disabled{opacity:.4;cursor:default}
 .hint-chip{background:rgba(201,180,88,.18);border:1px solid var(--yellow);color:var(--yellow-soft);border-radius:999px;padding:3px 10px;font:700 13px var(--body)}
 
+/* FPS-teller */
+.fps-meter{position:fixed;left:10px;bottom:10px;z-index:999;padding:3px 9px;border-radius:999px;background:rgba(15,18,23,.75);border:1px solid var(--line);
+  color:var(--ink-soft);font:800 12px ui-monospace,Menlo,Consolas,monospace;pointer-events:none;font-variant-numeric:tabular-nums}
+.fps-meter.good{color:#9be89b}.fps-meter.ok{color:#ffd75e}.fps-meter.bad{color:#ff9e93}
+@media (max-width:640px){.fps-meter{top:3px;bottom:auto;left:50%;transform:translateX(-50%);font-size:10px;padding:1px 7px}}
+
 /* Melding nieuwe versie */
 .update-bar{position:fixed;left:0;right:0;margin:0 auto;bottom:18px;z-index:1000;display:flex;align-items:center;gap:12px;flex-wrap:wrap;justify-content:center;
   width:max-content;max-width:calc(100vw - 24px);padding:12px 16px;background:rgba(29,34,41,.97);border:1px solid var(--yellow);border-radius:16px;
@@ -5213,7 +5219,30 @@ setInterval(checkForUpdate, 5 * 60000);
 document.addEventListener('visibilitychange', () => { if (!document.hidden) checkForUpdate(); });
 addEventListener('focus', checkForUpdate);
 
+// FPS-teller linksonder (voor iedereen): telt de beelden per seconde, pauzeert in een verborgen tabblad
+function initFps() {
+  const el = document.createElement('div');
+  el.className = 'fps-meter'; el.setAttribute('aria-hidden', 'true'); el.textContent = '– FPS';
+  document.body.appendChild(el);
+  let frames = 0, since = performance.now(), running = false;
+  const loop = now => {
+    frames++;
+    if (now - since >= 500) {
+      const fps = Math.round(frames * 1000 / (now - since));
+      el.textContent = fps + ' FPS';
+      el.className = 'fps-meter ' + (fps >= 50 ? 'good' : fps >= 30 ? 'ok' : 'bad');
+      frames = 0; since = now;
+    }
+    if (document.hidden) { running = false; return; }
+    requestAnimationFrame(loop);
+  };
+  const start = () => { if (running) return; running = true; frames = 0; since = performance.now(); requestAnimationFrame(loop); };
+  document.addEventListener('visibilitychange', () => { if (!document.hidden) start(); });
+  start();
+}
+
 initBackground();
+initFps();
 init();
 </script>
 </body>
