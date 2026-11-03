@@ -5051,7 +5051,7 @@ const clkRank = total => { let i = 0; while (i + 1 < CLK_RANKS.length && total >
 function stopClicker(flush = true) {
   clearInterval(clk.loop); clearInterval(clk.sync); clearTimeout(clk.golden);
   clk.loop = clk.sync = clk.golden = null;
-  if (flush && clk.pending) { const n = clk.pending; clk.pending = 0; sb.rpc('clicker_sync', { p_clicks: n }); }
+  if (flush && clk.pending) { const n = clk.pending; clk.pending = 0; sb.rpc('clicker2_sync', { p_clicks: n }); }
 }
 // Kliks meesturen met elke serveraanroep; mislukt die, dan blijven de kliks bewaard
 async function clkCall(fn, args = {}) {
@@ -5066,7 +5066,7 @@ addEventListener('pagehide', () => { if (clk.pending) stopClicker(true); });
 async function renderClicker(view) {
   stopClicker();
   view.innerHTML = '<section class="col" style="max-width:none"><p class="hint">Laden…</p></section>';
-  const { error } = await clkCall('clicker_sync');
+  const { error } = await clkCall('clicker2_sync');
   if (state.tab !== 'clicker') return;
   if (error) { view.innerHTML = `<section class="col">${pageHead('Clicker', 'clicker')}${notReady}</section>`; return; }
   clk.lastLevels = -1;
@@ -5134,7 +5134,7 @@ async function renderClicker(view) {
     $('#clkItems').querySelectorAll('[data-item]').forEach(b => b.onclick = async () => {
       if (clk.busy) return;
       clk.busy = true;
-      const { data, error: e2 } = await clkCall('clicker_buy', { p_key: b.dataset.item, p_count: clk.mode });
+      const { data, error: e2 } = await clkCall('clicker2_buy', { p_key: b.dataset.item, p_count: clk.mode });
       clk.busy = false;
       if (e2) { b.classList.remove('nope'); void b.offsetWidth; b.classList.add('nope'); toast(esc(e2.message)); return; }
       SFX.play('coin');
@@ -5184,7 +5184,7 @@ async function renderClicker(view) {
       : `+${s.per_tick} 🪙 elke 10 min · volgende over ${fmtSecs(left)}${s.full ? ' (spaarpot vol: haal op!)' : ''} · vandaag ${s.today}/${s.cap}`;
     $('#salCollect').disabled = !s.ready;
     $('#salCollect').classList.toggle('sal-ready', s.ready > 0);
-    if (left === 0 && !clk.salRefresh) { clk.salRefresh = true; clkCall('clicker_sync').then(() => { clk.salRefresh = false; }); }
+    if (left === 0 && !clk.salRefresh) { clk.salRefresh = true; clkCall('clicker2_sync').then(() => { clk.salRefresh = false; }); }
   };
 
   // Deeltjes rond de polygoon
@@ -5242,7 +5242,7 @@ async function renderClicker(view) {
 
   $('#salCollect').onclick = async () => {
     $('#salCollect').disabled = true;
-    const { data, error: e2 } = await clkCall('clicker_collect');
+    const { data, error: e2 } = await clkCall('clicker2_collect');
     if (e2) { toast(esc(e2.message)); tick(); return; }
     setWallet(data.wallet);
     SFX.play('jackpot');
@@ -5265,7 +5265,7 @@ async function renderClicker(view) {
       const gone = setTimeout(() => { g.remove(); scheduleGolden(); }, 12000);
       g.onclick = async e => {
         e.stopPropagation(); clearTimeout(gone); g.remove();
-        const { data, error: e2 } = await clkCall('clicker_golden');
+        const { data, error: e2 } = await clkCall('clicker2_golden');
         if (!e2) {
           SFX.play('jackpot'); burst(50, true);
           toast(data.kind === 'frenzy' ? '🔥 <strong>FRENZY!</strong> 30 seconden ×7 per klik. Klikken maar!' : `✨ Gouden polygoon! +${fmtNum(data.bonus)} Poly's`, 4000);
@@ -5291,7 +5291,7 @@ async function renderClicker(view) {
       setTimeout(() => p.remove(), 900);
     }
   }, 100);
-  clk.sync = setInterval(() => { if (!clk.busy) clkCall('clicker_sync').then(r => { if (!r.error && $('#clkItems')) drawItems(); }); }, 10000);
+  clk.sync = setInterval(() => { if (!clk.busy) clkCall('clicker2_sync').then(r => { if (!r.error && $('#clkItems')) drawItems(); }); }, 10000);
   scheduleGolden();
 }
 
