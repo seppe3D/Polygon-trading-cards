@@ -1241,6 +1241,121 @@ dialog::backdrop{background:rgba(10,12,16,.78)}
 }
 .casino-grid{grid-template-columns:1fr}
 @media (min-width:760px){.casino-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+
+/* Clicker 3.0 */
+.clicker-grid>*{min-width:0}
+.clk-main{overflow-x:clip}
+@media (max-width:640px){.clk-stats{gap:5px}.clk-stats b{font-size:15px}}
+.clicker.rush{--clk-glow:rgba(80,180,255,.55)}
+.clk-frenzy.rush{background:linear-gradient(90deg,#8fd3ff,#3a8dff,#8fd3ff);background-size:200% 100%;color:#06203d;box-shadow:0 0 24px rgba(80,160,255,.7)}
+.clk-stats{grid-template-columns:repeat(4,1fr)!important}
+.clk-tabs{display:flex;gap:4px;background:rgba(21,24,29,.8);border:1px solid var(--line);border-radius:14px;padding:4px;margin-bottom:12px;overflow-x:auto}
+.clk-tabs button{flex:1;position:relative;border:0;background:none;color:var(--ink-soft);font:700 13.5px var(--body);padding:8px 10px;border-radius:10px;cursor:pointer;white-space:nowrap}
+.clk-tabs button.on{background:var(--yellow);color:#15181D}
+.clk-tab-dot{position:absolute;top:4px;right:6px;width:9px;height:9px;border-radius:50%;background:#E0584B;animation:pulse-ring 1.4s ease-out infinite}
+.clk-note{margin:0 0 10px;font-size:13.5px}
+.clk-tiers{color:var(--yellow);font-size:12px;letter-spacing:1px}
+.clk-icon{position:relative}
+.clk-tierbadge{position:absolute;bottom:-6px;left:50%;transform:translateX(-50%);font:900 9px var(--body);color:#ffd75e;font-style:normal;white-space:nowrap;text-shadow:0 1px 2px #000}
+.clk-item.research{border-color:rgba(127,194,111,.35)}
+.troph-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:8px}
+.troph{display:grid;justify-items:center;text-align:center;gap:2px;padding:10px 8px;border-radius:14px;background:rgba(35,41,50,.9);border:1px solid var(--line);opacity:.5;filter:grayscale(1)}
+.troph span{font-size:28px} .troph b{font-size:13px} .troph small{font-size:11px;color:var(--muted)}
+.troph.got{opacity:1;filter:none;border-color:var(--yellow);background:linear-gradient(160deg,rgba(201,180,88,.22),rgba(35,41,50,.9));box-shadow:0 0 18px -6px rgba(255,215,94,.6)}
+.clk-top{list-style:none;margin:0;padding:0;display:grid;gap:6px}
+.clk-top li{display:flex;align-items:center;gap:10px;padding:8px 12px;border-radius:14px;background:rgba(35,41,50,.9);border:1px solid var(--line)}
+.clk-top li.me{border-color:var(--green);background:rgba(93,163,82,.15)}
+.clk-pos{width:28px;text-align:center;font:800 16px var(--body)}
+.clk-top-name{flex:1;min-width:0;display:flex;flex-direction:column} .clk-top-name small{color:var(--muted);font-size:12px}
+.clk-top li>b{color:var(--yellow-soft)}
+.promo-card{width:min(460px,100%);padding:12px 16px;border-radius:16px;text-align:left;display:grid;gap:8px;
+  background:linear-gradient(120deg,rgba(80,160,255,.18),rgba(160,90,255,.14));border:1px solid rgba(140,150,255,.6)}
+.promo-head{display:flex;gap:10px;align-items:center} .promo-ico{font-size:28px}
+.promo-head small{display:block;color:var(--ink-soft);font-size:13px}
+.promo-next{color:var(--muted);font-size:12px}
+.promo-card .sal-bar span{background:linear-gradient(90deg,#8fd3ff,#a77bff)}
+.promo-btn{background:linear-gradient(135deg,#a77bff,#3a8dff)!important;color:#fff!important;animation:pulse-ring 1.4s ease-out infinite}
+
+/* Bedelhoek */
+.beg-street{display:grid;gap:18px;grid-template-columns:1fr;margin-top:10px;padding:18px;border-radius:var(--r);border:1px solid var(--line);
+  background:linear-gradient(180deg,#1b2233 0%,#232937 60%,#3a3330 60.5%,#2c2622 100%)}
+@media (min-width:900px){.beg-street{grid-template-columns:260px 1fr}}
+.beg-scene{position:relative;height:200px;font-size:54px}
+.beg-scene span{position:absolute;bottom:6px}
+.beg-lamp{left:6px;bottom:auto!important;top:0;font-size:40px;animation:st-swing 3s ease-in-out infinite;transform-origin:50% 0}
+.beg-bum{left:70px;font-size:80px;animation:st-bounce 3s ease-in-out infinite}
+.beg-dog{left:150px;font-size:44px;animation:st-wobble 2.4s ease-in-out infinite}
+.beg-bin{left:205px;font-size:40px}
+.beg-form h3{margin:0 0 10px}
+.beg-new{display:grid;gap:10px}
+.beg-new label{display:grid;gap:6px;font-weight:700}
+.beg-new input[type=range]{accent-color:var(--yellow)}
+.beg-new input:not([type]){background:var(--panel);border:1px solid var(--line);color:var(--ink);border-radius:12px;padding:11px 14px;font:16px var(--body)}
+.beg-ideas{display:flex;flex-wrap:wrap;gap:6px}
+.beg-ideas .beg-idea{background:var(--panel);border:1px solid var(--line);color:var(--ink-soft);border-radius:999px;padding:5px 10px;font:600 12.5px var(--body);cursor:pointer}
+.beg-ideas .beg-idea:hover{border-color:var(--yellow);color:var(--ink)}
+.beg-rules{font-size:12.5px;margin-top:10px}
+.beg-h{margin:22px 0 10px} .beg-h small{color:var(--muted);font-weight:600}
+.beg-list{display:grid;gap:14px;grid-template-columns:repeat(auto-fill,minmax(min(100%,300px),1fr))}
+.beg-card{position:relative;display:grid;gap:8px;padding:14px;border-radius:16px;background:var(--panel);border:1px solid var(--line);animation:msg-in .3s ease both}
+.beg-card.mine{border-color:var(--yellow)} .beg-card.done{opacity:.8}
+.beg-who{display:flex;align-items:center;gap:10px} .beg-who>div{flex:1;display:flex;flex-direction:column} .beg-who small{color:var(--muted);font-size:12px}
+.beg-cup{position:relative;font-size:34px;animation:st-wobble 2.6s ease-in-out infinite}
+.beg-cup i{position:absolute;right:-8px;bottom:-4px;font:900 11px var(--body);font-style:normal;background:var(--yellow);color:#15181D;border-radius:999px;padding:1px 6px}
+.beg-sign{margin:0;padding:12px 14px;background:#c8a46e;color:#3a2410;border-radius:6px;font:700 16px/1.35 'Comic Sans MS','Chalkboard SE',var(--body);
+  transform:rotate(-1.2deg);box-shadow:0 6px 12px -6px rgba(0,0,0,.6),inset 0 0 0 2px rgba(80,50,20,.2);word-break:break-word}
+.beg-card:nth-child(even) .beg-sign{transform:rotate(1deg)}
+.beg-prog{height:10px;border-radius:999px;background:var(--wblack);overflow:hidden}
+.beg-prog span{display:block;height:100%;background:linear-gradient(90deg,#ffd75e,#7FC26F);transition:width .6s ease}
+.beg-nums{display:flex;justify-content:space-between;align-items:center}
+.beg-gifts{margin:0;font-size:12.5px;color:var(--ink-soft)}
+.beg-give{display:flex;gap:6px;flex-wrap:wrap}
+.beg-give .btn{padding:7px 12px;font-size:13px}
+.beg-coin{position:fixed;z-index:200;font-size:22px;pointer-events:none;animation:beg-fly .8s cubic-bezier(.3,.7,.4,1) both}
+@keyframes beg-fly{0%{transform:translate(0,0) scale(1)}60%{transform:translate(calc(var(--dx) * .6),calc(var(--dy) - 60px)) scale(1.2)}100%{transform:translate(var(--dx),var(--dy)) scale(.5);opacity:0}}
+
+/* Roulette */
+.roulette-panel{grid-column:1/-1;background:linear-gradient(170deg,#0f4d2c,#0b3a21 60%,#082a18)!important}
+.rl-layout{display:grid;gap:22px;width:100%;align-items:center;grid-template-columns:1fr}
+@media (min-width:900px){.rl-layout{grid-template-columns:300px 1fr}}
+.rl-wheel-wrap{position:relative;width:280px;aspect-ratio:1;margin:0 auto}
+.rl-wheel{position:absolute;inset:10px;border-radius:50%;border:10px solid #6b3f1c;box-shadow:0 0 0 4px #c99a1e,0 14px 30px rgba(0,0,0,.6),inset 0 0 0 26px rgba(0,0,0,.18)}
+.rl-num{position:absolute;left:50%;top:50%;font:800 10px var(--body);color:#fff;transform:rotate(var(--a)) translateY(-104px) translateX(-50%);transform-origin:0 0;width:16px;text-align:center}
+.rl-hub{position:absolute;inset:32%;border-radius:50%;background:radial-gradient(circle at 35% 30%,#f3d77a,#b8860b 55%,#6b4a08);box-shadow:0 4px 10px rgba(0,0,0,.6)}
+.rl-ball-track{position:absolute;inset:0;z-index:2;pointer-events:none}
+.rl-ball{position:absolute;left:50%;top:22px;width:14px;height:14px;margin-left:-7px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#fff,#bbb 60%,#777);box-shadow:0 2px 4px rgba(0,0,0,.6)}
+.rl-ball-track.spin{animation:rl-ball 5s cubic-bezier(.2,.6,.25,1) both}
+@keyframes rl-ball{0%{transform:rotate(0)}100%{transform:rotate(1800deg)}}
+.rl-result{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);z-index:3}
+.rl-result b{display:grid;place-items:center;width:58px;height:58px;border-radius:50%;font:900 26px var(--display);color:#fff;border:3px solid #ffe58a;box-shadow:0 0 24px rgba(255,220,120,.7)}
+.rl-result b.pop{animation:emoji-pop .5s ease both}
+.rl-red{background:#c0262d!important} .rl-black{background:#17171b!important} .rl-green{background:#1f8a4c!important}
+.rl-table{display:grid;grid-template-columns:44px 1fr 44px;grid-template-rows:auto auto auto;gap:3px;width:100%}
+.rl-zero{grid-row:1;grid-column:1;min-height:100%}
+.rl-nums{grid-row:1;grid-column:2;display:grid;grid-template-columns:repeat(12,1fr);gap:3px}
+.rl-cols{grid-row:1;grid-column:3;display:grid;gap:3px}
+.rl-dozens{grid-row:2;grid-column:2;display:grid;grid-template-columns:repeat(3,1fr);gap:3px}
+.rl-outside{grid-row:3;grid-column:2;display:grid;grid-template-columns:repeat(6,1fr);gap:3px}
+.rl-cell{position:relative;min-height:38px;border:1px solid rgba(255,255,255,.35);background:rgba(255,255,255,.04);color:#fff;font:800 14px var(--body);border-radius:6px;cursor:pointer;padding:0;transition:transform .1s,box-shadow .15s}
+.rl-cell:hover{box-shadow:inset 0 0 0 2px #ffe58a}
+.rl-cell.rl-win{box-shadow:0 0 0 3px #ffe58a,0 0 18px #ffd75e;animation:pulse-ring 1s ease-out 3}
+.rl-dia{display:inline-block;width:22px;height:14px;clip-path:polygon(50% 0,100% 50%,50% 100%,0 50%)} .rl-dia.red{background:#e0333b} .rl-dia.black{background:#000}
+.rl-stake{position:absolute;right:-4px;top:-6px;z-index:2;min-width:24px;height:24px;border-radius:50%;display:grid;place-items:center;font:900 10px var(--body);color:#fff;
+  background:#2f6b3a;border:2px dashed rgba(255,255,255,.8);box-shadow:0 2px 5px rgba(0,0,0,.6);animation:emoji-pop .25s ease both}
+.rl-stake[data-v="10"]{background:#2f6b3a} .rl-stake[data-v="25"]{background:#3E7FD6} .rl-stake[data-v="50"]{background:#d1185f} .rl-stake[data-v="5"]{background:#8a8f99}
+.rchip[data-rchip="5"]{background:#8a8f99;box-shadow:0 0 0 3px #555,0 4px 8px rgba(0,0,0,.5)}
+.rchip[data-rchip="25"]{background:#3E7FD6;box-shadow:0 0 0 3px #244f8f,0 4px 8px rgba(0,0,0,.5)}
+.rchip[data-rchip="50"]{background:#d1185f;box-shadow:0 0 0 3px #7d0e39,0 4px 8px rgba(0,0,0,.5)}
+.rchip.on{transform:translateY(-6px);outline:3px solid #ffe58a;outline-offset:3px}
+.rl-hist{display:flex;gap:4px;align-items:center;flex-wrap:wrap;justify-content:center;margin:10px 0 4px;min-height:24px}
+.rl-hist small{color:#d9e9d9;margin-right:4px} .rl-hist b{display:grid;place-items:center;width:24px;height:24px;border-radius:50%;font:800 11px var(--body);color:#fff}
+.rl-controls{display:grid;gap:10px;justify-items:center}
+@media (max-width:640px){
+  .rl-table{grid-template-columns:30px 1fr 30px}
+  .rl-nums,.rl-dozens,.rl-outside,.rl-cols{gap:2px}
+  .rl-outside .rl-cell{font-size:10.5px}
+  .rl-cell{min-height:34px;font-size:11px;border-radius:4px}
+}
 </style>
 </head>
 <body>
@@ -1809,6 +1924,7 @@ const TABS = [
   { id: 'friends', label: 'Friends', icon: '👥', badge: 'friend' },
   { id: 'trade', label: 'Trade', icon: '🔁' },
   { id: 'shop', label: 'Shop', icon: '🛒' },
+  { id: 'beg', label: 'Bedelen', icon: '🥺', v13: true },
   { id: 'stats', label: 'Stats', icon: '📊' },
   { id: 'ideas', label: 'Ideas', icon: '💡' },
 ];
@@ -1967,12 +2083,20 @@ const INFO = {
     <li>😊 Reageer op een bericht met een emoji (of dubbelklik voor een ❤️).</li>
     <li>✓✓ In privégesprekken zie je wanneer je bericht gelezen is.</li>
     <li>🗑️ Je kunt je eigen berichten verwijderen.</li></ul>`],
+  beg: ['Bedelhoek', `
+    <p>Blut? Hou een bordje omhoog en vraag je collega's om coins.</p>
+    <ul><li>🪧 Eén oproep per dag, tussen 5 en 100 🪙, en enkel als je minder dan 100 🪙 hebt.</li>
+    <li>💝 Anderen geven uit hun eigen portemonnee (max 50 per keer). Er worden geen coins bijgemaakt.</li>
+    <li>⏳ Een oproep sluit vanzelf als het bedrag bereikt is, of na 3 dagen. Wat je kreeg, mag je altijd houden.</li></ul>`],
   clicker: ['Clicker', `
-    <p>Klik op de grote polygoon om <strong>Poly's</strong> te verdienen (max 12 kliks per seconde; ingedrukt houden telt niet). Koop er upgrades mee: ze draaien rond je polygoon en maken automatisch Poly's, ook als je weg bent (tot 8 uur).</p>
-    <ul><li>🛒 Koop per 1, per 10 of het <strong>maximum</strong>. Elke upgrade wordt 20% duurder per stuk. Nieuwe upgrades ontdek je naarmate je meer verdient.</li>
-    <li>✨ <strong>Gouden polygoon</strong>: verschijnt af en toe. Klik erop voor een flinke bonus of 30 seconden <strong>🔥 FRENZY</strong> (×7 per klik).</li>
-    <li>🎖️ <strong>Rangen</strong> van Nieuwe stagiair tot Heerser van het Polyversum, volgens wat je ooit verdiende.</li>
-    <li>💼 <strong>Salaris</strong>: elke 10 minuten verdient je kantoor echte polycoins: 1 🪙 plus 1 per 15 upgrades. Je spaarpot houdt tot 6 uur bij, en je haalt max 50 🪙 per dag op.</li></ul>`],
+    <p>Klik op de grote polygoon om <strong>Poly's</strong> te verdienen (max 12 kliks per seconde; ingedrukt houden telt niet). Koop er upgrades mee: ze maken automatisch Poly's, ook als je weg bent (tot 8 uur).</p>
+    <ul><li>🛒 <strong>12 upgrades</strong>, van Gamingmuis tot Poly-god. Elke upgrade wordt 20% duurder per stuk.</li>
+    <li>🔬 <strong>Onderzoek</strong>: bij 10, 25, 50 en 75 stuks van een upgrade kan je die verdubbelen. 48 onderzoeken in totaal.</li>
+    <li>🏆 <strong>Trofeeën</strong>: 25 stuks, elk +2% productie voor altijd.</li>
+    <li>📈 <strong>Promotie</strong>: vanaf 10 miljard ooit verdiend kan je opnieuw beginnen. Je krijgt <strong>aandelen</strong> (+10% productie per aandeel, voor altijd). Hoe meer je ooit verdiende, hoe meer aandelen.</li>
+    <li>✨ <strong>Gouden polygoon</strong>: een bonus, 30 s <strong>🔥 FRENZY</strong> (×7 per klik) of 45 s <strong>⏰ OVERUREN</strong> (×5 productie).</li>
+    <li>💼 <strong>Salaris</strong>: 1 🪙 per 20 minuten (spaarpot max 4 uur). Dagplafond 10 🪙, +5 per promotie (max 40).</li>
+    <li>🥇 <strong>Top</strong>: wie heeft er ooit het meest verdiend?</li></ul>`],
   stickers: ['Stickeralbum', `
     <p>Verzamel 48 geanimeerde stickers in 6 thema's. Stickers die je nog niet hebt, blijven geheim.</p>
     <ul><li>Je krijgt stickers bij elke opgeloste puzzel, prestatie, op het rad van fortuin, met een krasbiljet of met een stickerpakje (3 stickers voor 40 🪙).</li>
@@ -2243,6 +2367,7 @@ function renderView() {
   else if (state.tab === 'profile') renderProfile(view);
   else if (state.tab === 'clicker') renderClicker(view);
   else if (state.tab === 'chat') renderChat(view);
+  else if (state.tab === 'beg') renderBeg(view);
 }
 
 // ---------- Tab: Today — eigen Wordle, 2 rondes per dag ----------
@@ -2474,6 +2599,8 @@ function newsLine(a) {
     case 'max_level': return ['⭐', `${who} waardeerde ${cardTxt} op tot ${stars(3)}.`];
     case 'achievement': if (!state.v13) return null; return [a.data?.icon || '🏅', `${who} behaalde de prestatie <strong>${esc(a.data?.title || '')}</strong>.`];
     case 'jackpot': if (!state.v13) return null; return ['💎', `${who} draaide de JACKPOT op de fruitautomaat: +${a.data?.win || 0} 🪙!`];
+    case 'roulette_win': if (!state.v13) return null; return ['🎡', `${who} won <strong>${a.data?.win || 0} 🪙</strong> aan de roulette (${a.data?.n ?? '?'})!`];
+    case 'clicker_promo': if (!state.v13) return null; return ['📈', `${who} maakte promotie in de Clicker en heeft nu <strong>${a.data?.shares || 0} aandelen</strong>.`];
     case 'sticker_theme': if (!state.v13) return null; return ['📒', `${who} vervolledigde het stickerthema <strong>${esc(STICKER_THEMES[a.data?.theme] || a.data?.theme || '')}</strong>.`];
     default: return null;
   }
@@ -4163,7 +4290,7 @@ const WHEEL_COLORS = ['#5DA352', '#7C4FE0', '#C9B458', '#2FA79E', '#E0584B', '#D
 const SLOT_SYMS = ['🍒', '☕', '📎', '🎴', '⭐', '💎'];
 const SCRATCH_SYMS = { c25: '🪙<b>25</b>', c50: '💰<b>50</b>', c100: '💵<b>100</b>', c250: '💎<b>250</b>', stk: '🏷️<b>sticker</b>' };
 const casino = { wheelAngle: 0, bet: 25, bjBet: 20, view: 'play', period: null };
-const CASINO_GAMES = { slots: '🎰 Fruitautomaat', blackjack: '🃏 Blackjack', scratch: '🎟️ Krasbiljet', wheel: '🎡 Rad' };
+const CASINO_GAMES = { slots: '🎰 Fruitautomaat', blackjack: '🃏 Blackjack', roulette: '🔴 Roulette', scratch: '🎟️ Krasbiljet', wheel: '🎡 Rad' };
 const casinoTabs = () => `<div class="seg casino-tabs" role="tablist">${[['play', '🎰 Spelen'], ['stats', '📊 Stats']].map(([k, l]) =>
   `<button type="button" role="tab" data-cview="${k}" class="${casino.view === k ? 'on' : ''}" aria-selected="${casino.view === k}">${l}</button>`).join('')}</div>`;
 const bindCasinoTabs = view => view.querySelectorAll('[data-cview]').forEach(b => b.onclick = () => { casino.view = b.dataset.cview; renderCasino(view); });
@@ -4297,10 +4424,12 @@ async function renderCasino(view) {
         </div>
         <p class="msg" id="scratchMsg" role="status"></p>
       </div>
+      ${rouletteHtml()}
     </div>
     <p class="casino-note">Je speelt enkel met polycoins. Gemiddeld wint het casino een klein beetje, dus speel met mate 😉</p>
   </section>`;
 
+  bindRoulette();
   // Rad
   $('#spinWheel').onclick = async () => {
     const b = $('#spinWheel'); b.disabled = true;
@@ -5036,17 +5165,24 @@ async function openFriendProfile(f) {
 
 // ---------- Clicker 2.0 (v14/v16): Poly's klikken, upgrades, frenzy, rangen en salaris ----------
 const clk = { data: null, at: 0, pending: 0, loop: null, sync: null, golden: null, busy: false, salRefresh: false,
-  mode: 1, hist: [], streak: 0, lastClick: 0, keyDown: false, lastLevels: -1 };
+  mode: 1, hist: [], streak: 0, lastClick: 0, keyDown: false, lastLevels: -1, panel: 'items', top: null, lastTroph: -1 };
 const CLK_MAX_CPS = 12;
 const CLK_RANKS = [
   [0, '🐣', 'Nieuwe stagiair'], [1e3, '🖱️', 'Klikker'], [1e4, '📎', 'Teamleider'], [1e5, '📈', 'Afdelingshoofd'],
   [1e6, '💼', 'Directeur'], [1e7, '🏢', 'CEO'], [1e8, '🌍', 'Wereldleider'], [1e9, '🌌', 'Heerser van het Polyversum'],
+  [1e11, '🛸', 'Galactisch magnaat'], [1e13, '⏳', 'Meester van de tijd'], [1e15, '🕳️', 'Zwart-gatbaron'],
+  [1e17, '🪐', 'Keizer van het multiversum'], [1e19, '👁️', 'Poly-godheid'],
 ];
-const fmtNum = n => (n >= 1e12 ? (n / 1e12).toFixed(2).replace('.', ',') + ' bln' : n >= 1e9 ? (n / 1e9).toFixed(2).replace('.', ',') + ' mld'
+const fmtNum = n => (n >= 1e21 ? (n / 1e21).toFixed(2).replace('.', ',') + ' trld' : n >= 1e18 ? (n / 1e18).toFixed(2).replace('.', ',') + ' trln'
+  : n >= 1e15 ? (n / 1e15).toFixed(2).replace('.', ',') + ' brd' : n >= 1e12 ? (n / 1e12).toFixed(2).replace('.', ',') + ' bln' : n >= 1e9 ? (n / 1e9).toFixed(2).replace('.', ',') + ' mld'
   : n >= 1e6 ? (n / 1e6).toFixed(2).replace('.', ',') + ' mln' : Math.floor(n).toLocaleString('nl-BE'));
 const clkFrenzy = () => (clk.data ? Math.max(0, clk.data.frenzy_left - (performance.now() - clk.at) / 1000) : 0);
-const clkPoly = () => (clk.data ? clk.data.poly + clk.pending * clk.data.per_click * (clkFrenzy() > 0 ? 7 : 1)
-  + clk.data.per_sec * (performance.now() - clk.at) / 1000 : 0);
+const clkRush = () => (clk.data ? Math.max(0, (clk.data.rush_left || 0) - (performance.now() - clk.at) / 1000) : 0);
+const clkPoly = () => {
+  if (!clk.data) return 0;
+  const el = (performance.now() - clk.at) / 1000, rush = Math.min(el, clk.data.rush_left || 0);
+  return clk.data.poly + clk.pending * clk.data.per_click * (clkFrenzy() > 0 ? 7 : 1) + clk.data.per_sec * (el + 4 * rush);
+};
 const clkRank = total => { let i = 0; while (i + 1 < CLK_RANKS.length && total >= CLK_RANKS[i + 1][0]) i++; return i; };
 function stopClicker(flush = true) {
   clearInterval(clk.loop); clearInterval(clk.sync); clearTimeout(clk.golden);
@@ -5082,6 +5218,7 @@ async function renderClicker(view) {
         <div class="clk-poly"><strong id="clkPoly">0</strong><span>Poly's</span></div>
         <div class="clk-rate"><b id="clkRate"></b>/sec · <b id="clkPower"></b>/klik</div>
         <div class="clk-frenzy" id="clkFrenzy" hidden>🔥 FRENZY ×7 · <span id="clkFrenzyLeft"></span>s</div>
+        <div class="clk-frenzy rush" id="clkRush" hidden>⏰ OVERUREN ×5 productie · <span id="clkRushLeft"></span>s</div>
         <div class="clk-arena" id="clkArena">
           <div class="clk-rays" aria-hidden="true"></div>
           <div class="clk-orbit o1" id="clkOrbit1" aria-hidden="true"></div>
@@ -5093,6 +5230,7 @@ async function renderClicker(view) {
           <div><b id="clkTotal"></b><small>ooit verdiend</small></div>
           <div><b id="clkClicks"></b><small>kliks</small></div>
           <div><b id="clkLevels"></b><small>upgrades</small></div>
+          <div><b id="clkMult"></b><small>bonus</small></div>
         </div>
         <div class="salary-card">
           <div class="sal-text">💼 <strong>Salaris</strong>: <span id="salReady"></span> 🪙 klaar
@@ -5100,9 +5238,12 @@ async function renderClicker(view) {
             <small id="salInfo"></small></div>
           <button class="btn small" id="salCollect" type="button">Ophalen</button>
         </div>
+        <div class="promo-card" id="promoCard"></div>
       </div>
       <div class="clk-shop">
-        <div class="clk-shop-head"><h3>Upgrades</h3>
+        <div class="clk-tabs" role="tablist">${[['items', '🛒 Upgrades'], ['research', '🔬 Onderzoek'], ['trophies', '🏆 Trofeeën'], ['top', '🥇 Top']].map(([k, l]) =>
+          `<button type="button" role="tab" data-panel="${k}" class="${clk.panel === k ? 'on' : ''}">${l}<span class="clk-tab-dot" data-dot="${k}" hidden></span></button>`).join('')}</div>
+        <div class="clk-shop-head" id="clkModeBar"><h3>Upgrades</h3>
           <div class="seg" role="group" aria-label="Hoeveel kopen">${[[1, '×1'], [10, '×10'], [-1, 'MAX']].map(([v, l]) =>
             `<button type="button" data-mode="${v}" class="${clk.mode === v ? 'on' : ''}">${l}</button>`).join('')}</div></div>
         <div class="clk-items" id="clkItems"></div>
@@ -5119,15 +5260,83 @@ async function renderClicker(view) {
     ring($('#clkOrbit1'), list.slice(0, 10));
     ring($('#clkOrbit2'), list.slice(10));
   };
+  const drawResearch = () => {
+    const rs = clk.data.research, poly = clkPoly();
+    // Per upgrade enkel de eerstvolgende trap tonen
+    const next = clk.data.items.map(i => rs.filter(r => r.item === i.key && !r.done).sort((a, b) => a.tier - b.tier)[0]).filter(Boolean);
+    const done = rs.filter(r => r.done).length;
+    $('#clkItems').innerHTML = `<p class="hint clk-note">🔬 Elk onderzoek verdubbelt een upgrade. Nieuwe trappen komen vrij bij 10, 25, 50 en 75 stuks. Voltooid: <b>${done}/${rs.length}</b></p>`
+      + (next.length ? next.sort((a, b) => (a.have >= a.need ? 0 : 1) - (b.have >= b.need ? 0 : 1) || a.cost - b.cost).map(r => {
+        const open = r.have >= r.need;
+        return `<button type="button" class="clk-item research${open ? '' : ' mystery'}" data-research="${esc(r.key)}" data-cost="${r.cost}" ${open ? '' : 'disabled'}>
+          <span class="clk-icon">${r.icon}<i class="clk-tierbadge">${'★'.repeat(r.tier)}</i></span>
+          <span class="clk-info"><strong>${esc(r.name)}</strong><small>${open ? esc(r.desc) : `Vrij bij ${r.need} stuks (je hebt er ${r.have})`}</small></span>
+          <span class="clk-meta"><b>${fmtNum(r.cost)}</b><small>trap ${r.tier}/4</small></span></button>`;
+      }).join('') : '<p class="hint">Alles onderzocht. Wat een professor! 🧬</p>');
+    $('#clkItems').querySelectorAll('[data-research]').forEach(b => b.onclick = async () => {
+      if (clk.busy) return;
+      clk.busy = true;
+      const { error: e2 } = await clkCall('clicker2_research', { p_key: b.dataset.research });
+      clk.busy = false;
+      if (e2) { b.classList.remove('nope'); void b.offsetWidth; b.classList.add('nope'); toast(esc(e2.message)); return; }
+      SFX.play('jackpot'); burst(30, true);
+      toast(`🔬 Onderzoek voltooid: <strong>${esc(rs.find(r => r.key === b.dataset.research).name)}</strong>`, 3000);
+      drawItems(); tick();
+    });
+  };
+  const drawTrophies = () => {
+    const t = clk.data.trophies, got = t.filter(x => x.got).length;
+    $('#clkItems').innerHTML = `<p class="hint clk-note">🏆 Elke trofee geeft <b>+2%</b> productie, voor altijd (ook na een promotie). Behaald: <b>${got}/${t.length}</b></p>
+      <div class="troph-grid">${t.map(x => `<div class="troph${x.got ? ' got' : ''}" title="${esc(x.desc)}"><span>${x.got ? x.icon : '🔒'}</span><b>${esc(x.name)}</b><small>${esc(x.desc)}</small></div>`).join('')}</div>`;
+  };
+  const drawTop = async () => {
+    if (!clk.top) $('#clkItems').innerHTML = '<p class="hint">Laden…</p>';
+    const { data, error: e2 } = await sb.rpc('clicker2_top');
+    if (e2 || clk.panel !== 'top' || !$('#clkItems')) return;
+    clk.top = data;
+    $('#clkItems').innerHTML = `<p class="hint clk-note">🥇 De beste klikkers van Polygon, op "ooit verdiend".</p>
+      <ol class="clk-top">${data.map((p, i) => `<li class="${p.me ? 'me' : ''}"><span class="clk-pos">${['🥇', '🥈', '🥉'][i] || i + 1}</span>
+        <span class="friend-av${ringCls(p.ring)}" style="${p.avatar_url ? `background-image:url('${esc(p.avatar_url)}')` : ''}">${p.avatar_url ? '' : esc((p.name || '?').charAt(0).toUpperCase())}</span>
+        <span class="clk-top-name"><strong>${esc(p.name)}</strong><small>${p.aandelen ? `📈 ${p.aandelen} aandelen · ${p.promotions}× promotie` : 'nog geen promotie'}</small></span>
+        <b>${fmtNum(p.total)}</b></li>`).join('')}</ol>`;
+  };
+  const drawPromo = () => {
+    const sh = clk.data.shares, total = clk.data.total + (clkPoly() - clk.data.poly);
+    const prevAt = 1e10 * Math.max(sh.total, sh.have) ** 3, pct = Math.min(100, Math.max(0, (total - prevAt) / (sh.next_at - prevAt) * 100));
+    const key = `${sh.have}|${sh.gain}|${Math.floor(pct)}`;
+    if (clk.promoKey === key) return;
+    clk.promoKey = key;
+    $('#promoCard').innerHTML = `<div class="promo-head"><span class="promo-ico">📈</span><div><strong>Promotie</strong>
+        <small>${sh.have ? `Je hebt <b>${sh.have}</b> aandelen (+${sh.have * 10}% productie) · ${sh.promotions}× promotie` : 'Begin opnieuw en krijg aandelen: elk aandeel geeft +10% productie, voor altijd.'}</small></div></div>
+      ${sh.gain ? `<button class="btn small promo-btn" id="promoBtn" type="button">Promotie maken: +${sh.gain} ${sh.gain > 1 ? 'aandelen' : 'aandeel'}</button>`
+        : `<div class="sal-bar"><span style="width:${pct}%"></span></div><small class="promo-next">Volgend aandeel bij ${fmtNum(sh.next_at)} ooit verdiend</small>`}`;
+    $('#promoBtn')?.addEventListener('click', async () => {
+      if (!confirm(`Promotie maken?\n\nJe begint opnieuw: je Poly's, upgrades en onderzoek worden gewist.\nJe krijgt ${sh.gain} ${sh.gain > 1 ? 'aandelen' : 'aandeel'} erbij (+${sh.gain * 10}% productie, voor altijd).\nTrofeeën, "ooit verdiend" en salaris blijven.`)) return;
+      const { data, error: e2 } = await clkCall('clicker2_promote');
+      if (e2) return toast(esc(e2.message));
+      SFX.play('jackpot'); burst(80, true);
+      toast(`📈 <strong>Promotie!</strong> +${data.gained} aandelen. Alles produceert nu ×${(data.mult).toFixed(2).replace('.', ',')}`, 6000);
+      clk.promoKey = null; clk.lastLevels = -1; drawItems(); tick();
+    });
+  };
+  view.querySelectorAll('[data-panel]').forEach(b => b.onclick = () => {
+    clk.panel = b.dataset.panel;
+    view.querySelectorAll('[data-panel]').forEach(x => x.classList.toggle('on', x === b));
+    drawItems();
+  });
   const drawItems = () => {
-    const poly = clkPoly();
+    $('#clkModeBar').hidden = clk.panel !== 'items';
+    if (clk.panel === 'research') return drawResearch();
+    if (clk.panel === 'trophies') return drawTrophies();
+    if (clk.panel === 'top') return drawTop();
     $('#clkItems').innerHTML = clk.data.items.map((i, idx) => {
       const prev = clk.data.items[idx - 1];
       const hidden = idx > 1 && prev && prev.level === 0 && clk.data.total < i.cost / 4;
       const cost = clk.mode === 10 ? i.cost10 : i.cost;
       return `<button type="button" class="clk-item${hidden ? ' mystery' : ''}" data-item="${esc(i.key)}" data-cost="${cost}" ${hidden ? 'disabled' : ''}>
         <span class="clk-icon">${hidden ? '❔' : i.icon}</span>
-        <span class="clk-info"><strong>${hidden ? '???' : esc(i.name)}</strong><small>${hidden ? 'Verdien meer Poly\'s om dit te ontdekken' : esc(i.desc)}</small></span>
+        <span class="clk-info"><strong>${hidden ? '???' : esc(i.name)}${!hidden && i.tiers ? ` <span class="clk-tiers">${'★'.repeat(i.tiers)}</span>` : ''}</strong><small>${hidden ? 'Verdien meer Poly\'s om dit te ontdekken'
+          : i.key === 'muis' ? esc(i.desc) + (i.tiers ? ` · ×${2 ** Math.min(i.tiers, 2)}` : '') : `+${fmtNum(i.each)}/sec per stuk${i.level ? ` · samen ${fmtNum(i.each * i.level)}/sec` : ''}`}</small></span>
         <span class="clk-meta"><b>${clk.mode === -1 ? 'MAX' : fmtNum(cost)}</b><small>${i.level ? `bezit: ${i.level}` : 'nieuw'}</small></span>
         ${i.level ? `<span class="clk-lvl">${i.level}</span>` : ''}</button>`;
     }).join('');
@@ -5159,6 +5368,22 @@ async function renderClicker(view) {
     $('#clkTotal').textContent = fmtNum(total);
     $('#clkClicks').textContent = fmtNum(d.clicks + clk.pending);
     $('#clkLevels').textContent = d.levels;
+    $('#clkMult').textContent = '×' + d.mult.toFixed(2).replace('.', ',');
+    const rz = clkRush();
+    $('#clkRush').hidden = rz <= 0;
+    if (rz > 0) $('#clkRushLeft').textContent = Math.ceil(rz);
+    $('#clkRoot').classList.toggle('rush', rz > 0);
+    drawPromo();
+    // Bolletje: onderzoek dat je nu kan betalen / nieuwe trofee
+    const canRes = d.research.some(r => !r.done && r.have >= r.need && r.cost <= poly && !d.research.some(q => q.item === r.item && !q.done && q.tier < r.tier));
+    const dotR = document.querySelector('[data-dot="research"]'); if (dotR) dotR.hidden = !canRes || clk.panel === 'research';
+    const ntr = d.trophies.filter(x => x.got).length;
+    if (clk.lastTroph >= 0 && ntr > clk.lastTroph) {
+      const nw = d.trophies.filter(x => x.got).slice(-1)[0];
+      toast(`🏆 Nieuwe trofee! <strong>${esc(nw.name)}</strong> (+2% productie)`, 5000); SFX.play('jackpot');
+      if (clk.panel === 'trophies') drawTrophies();
+    }
+    clk.lastTroph = ntr;
     // Rang
     const ri = clkRank(total), r = CLK_RANKS[ri], nx = CLK_RANKS[ri + 1];
     $('#clkRank').textContent = `${r[1]} ${r[2]}`;
@@ -5171,7 +5396,7 @@ async function renderClicker(view) {
     $('#clkRoot').classList.toggle('frenzy', fz > 0);
     if (fz > 0) $('#clkFrenzyLeft').textContent = Math.ceil(fz);
     // Upgrades
-    document.querySelectorAll('.clk-item:not(.mystery)').forEach(b => b.classList.toggle('afford', clk.mode === -1 ? poly >= clk.data.items.find(i => i.key === b.dataset.item).cost : poly >= Number(b.dataset.cost)));
+    document.querySelectorAll('.clk-item:not(.mystery)').forEach(b => b.classList.toggle('afford', clk.mode === -1 && b.dataset.item ? poly >= clk.data.items.find(i => i.key === b.dataset.item).cost : poly >= Number(b.dataset.cost)));
     if (d.levels !== clk.lastLevels) { clk.lastLevels = d.levels; drawOrbit(); }
     // Combo-teller (enkel weergave)
     if (performance.now() - clk.lastClick > 900) clk.streak = 0;
@@ -5179,9 +5404,10 @@ async function renderClicker(view) {
     // Salaris
     const s = d.salary, left = Math.max(0, Math.round(s.next_in - el / 1000));
     $('#salReady').textContent = s.ready;
-    $('#salFill').style.width = `${s.today >= s.cap ? 100 : (600 - left) / 6}%`;
-    $('#salInfo').textContent = s.today >= s.cap ? `Dagplafond bereikt (${s.cap} 🪙). Morgen opnieuw.`
-      : `+${s.per_tick} 🪙 elke 10 min · volgende over ${fmtSecs(left)}${s.full ? ' (spaarpot vol: haal op!)' : ''} · vandaag ${s.today}/${s.cap}`;
+    const iv = s.interval || 600;
+    $('#salFill').style.width = `${s.today >= s.cap ? 100 : (iv - left) / iv * 100}%`;
+    $('#salInfo').textContent = s.today >= s.cap ? `Dagplafond bereikt (${s.cap} 🪙). Morgen opnieuw. Meer promoties = hoger plafond.`
+      : `+${s.per_tick} 🪙 elke ${iv / 60} min · volgende over ${fmtSecs(left)}${s.full ? ' (spaarpot vol: haal op!)' : ''} · vandaag ${s.today}/${s.cap}`;
     $('#salCollect').disabled = !s.ready;
     $('#salCollect').classList.toggle('sal-ready', s.ready > 0);
     if (left === 0 && !clk.salRefresh) { clk.salRefresh = true; clkCall('clicker2_sync').then(() => { clk.salRefresh = false; }); }
@@ -5268,7 +5494,8 @@ async function renderClicker(view) {
         const { data, error: e2 } = await clkCall('clicker2_golden');
         if (!e2) {
           SFX.play('jackpot'); burst(50, true);
-          toast(data.kind === 'frenzy' ? '🔥 <strong>FRENZY!</strong> 30 seconden ×7 per klik. Klikken maar!' : `✨ Gouden polygoon! +${fmtNum(data.bonus)} Poly's`, 4000);
+          toast(data.kind === 'frenzy' ? '🔥 <strong>FRENZY!</strong> 30 seconden ×7 per klik. Klikken maar!'
+            : data.kind === 'rush' ? '⏰ <strong>OVERUREN!</strong> 45 seconden ×5 productie.' : `✨ Gouden polygoon! +${fmtNum(data.bonus)} Poly's`, 4000);
           tick();
         }
         scheduleGolden();
@@ -5278,7 +5505,7 @@ async function renderClicker(view) {
 
   // Passief inkomen zichtbaar maken: om de 2 s stijgt er een getal op
   let passive = 0;
-  clk.rank = null;
+  clk.rank = null; clk.promoKey = null; clk.lastTroph = -1;
   drawItems(); tick();
   clk.loop = setInterval(() => {
     tick();
@@ -5291,13 +5518,238 @@ async function renderClicker(view) {
       setTimeout(() => p.remove(), 900);
     }
   }, 100);
-  clk.sync = setInterval(() => { if (!clk.busy) clkCall('clicker2_sync').then(r => { if (!r.error && $('#clkItems')) drawItems(); }); }, 10000);
+  clk.sync = setInterval(() => { if (!clk.busy) clkCall('clicker2_sync').then(r => { if (!r.error && $('#clkItems') && clk.panel !== 'top') drawItems(); }); }, 10000);
   scheduleGolden();
+}
+
+// ---------- Roulette (v21): Europees, 0-36. De server trekt het getal. ----------
+const RL_ORDER = [0, 32, 15, 19, 4, 21, 2, 25, 17, 34, 6, 27, 13, 36, 11, 30, 8, 23, 10, 5, 24, 16, 33, 1, 20, 14, 31, 9, 22, 18, 29, 7, 28, 12, 35, 3, 26];
+const RL_RED = new Set([1, 3, 5, 7, 9, 12, 14, 16, 18, 19, 21, 23, 25, 27, 30, 32, 34, 36]);
+const rlColor = n => (n === 0 ? 'green' : RL_RED.has(n) ? 'red' : 'black');
+const rl = { chip: 10, bets: new Map(), last: null, hist: [], angle: 0, busy: false };
+const rlKey = (t, v) => (v == null ? t : `${t}:${v}`);
+const rlTotal = () => [...rl.bets.values()].reduce((a, b) => a + b, 0);
+function rouletteHtml() {
+  const seg = 360 / 37;
+  const grad = RL_ORDER.map((n, i) => `${n === 0 ? '#1f8a4c' : RL_RED.has(n) ? '#c0262d' : '#17171b'} ${i * seg}deg ${(i + 1) * seg}deg`).join(',');
+  const cell = (t, v, label, cls = '') => `<button type="button" class="rl-cell ${cls}" data-rt="${t}"${v != null ? ` data-rv="${v}"` : ''}>${label}<span class="rl-stake" hidden></span></button>`;
+  let nums = '';
+  for (let row = 3; row >= 1; row--) for (let c = 0; c < 12; c++) { const n = c * 3 + row; nums += cell('num', n, n, `rl-${rlColor(n)}`); }
+  return `<div class="game-panel roulette-panel">
+    <h3>🔴 Roulette ⚫</h3>
+    <p class="hint">Leg fiches op de tafel en draai. Getal ×36 · rood/zwart, even/oneven, 1-18/19-36 ×2 · dozijn of kolom ×3. Max 200 🪙.</p>
+    <div class="rl-layout">
+      <div class="rl-wheel-wrap">
+        <div class="rl-ball-track" id="rlBallTrack"><span class="rl-ball"></span></div>
+        <div class="rl-wheel" id="rlWheel" style="background:conic-gradient(${grad});transform:rotate(${rl.angle}deg)">
+          ${RL_ORDER.map((n, i) => `<span class="rl-num" style="--a:${i * seg + seg / 2}deg">${n}</span>`).join('')}
+          <span class="rl-hub"></span>
+        </div>
+        <div class="rl-result" id="rlResult">${rl.last == null ? '' : `<b class="rl-${rlColor(rl.last)}">${rl.last}</b>`}</div>
+      </div>
+      <div class="rl-right">
+        <div class="rl-table">
+          ${cell('num', 0, '0', 'rl-green rl-zero')}
+          <div class="rl-nums">${nums}</div>
+          <div class="rl-cols">${[3, 2, 1].map(c => cell('col', c, '2:1')).join('')}</div>
+          <div class="rl-dozens">${[1, 2, 3].map(d => cell('dozen', d, `${d === 1 ? '1e' : d === 2 ? '2e' : '3e'} 12`)).join('')}</div>
+          <div class="rl-outside">${cell('low', null, '1-18')}${cell('even', null, 'Even')}${cell('red', null, '<i class="rl-dia red"></i>')}${cell('black', null, '<i class="rl-dia black"></i>')}${cell('odd', null, 'Oneven')}${cell('high', null, '19-36')}</div>
+        </div>
+        <div class="rl-hist" id="rlHist"></div>
+        <div class="rl-controls">
+          <div class="bj-chips">${[5, 10, 25, 50].map(v => `<button type="button" class="chip rchip${rl.chip === v ? ' on' : ''}" data-rchip="${v}">${v}</button>`).join('')}</div>
+          <div class="battle-bar" style="justify-content:center">
+            <button class="link" type="button" id="rlClear">Wis</button>
+            <button class="link" type="button" id="rlRepeat">Herhaal</button>
+            <button class="btn small" type="button" id="rlSpin">Draai</button>
+          </div>
+        </div>
+        <p class="msg" id="rlMsg" role="status"></p>
+      </div>
+    </div>
+  </div>`;
+}
+function bindRoulette() {
+  const panel = document.querySelector('.roulette-panel'); if (!panel) return;
+  const draw = () => {
+    panel.querySelectorAll('.rl-cell').forEach(c => {
+      const a = rl.bets.get(rlKey(c.dataset.rt, c.dataset.rv)) || 0, st = c.querySelector('.rl-stake');
+      st.hidden = !a; st.textContent = a;
+      st.dataset.v = a >= 50 ? 50 : a >= 25 ? 25 : a >= 10 ? 10 : 5;
+    });
+    const t = rlTotal();
+    $('#rlSpin').textContent = t ? `Draai · ${t} 🪙` : 'Draai';
+    $('#rlSpin').disabled = !t || rl.busy;
+    $('#rlRepeat').hidden = !rl.prev || !!t;
+    $('#rlHist').innerHTML = rl.hist.length ? `<small>Laatste:</small>${rl.hist.map(n => `<b class="rl-${rlColor(n)}">${n}</b>`).join('')}` : '';
+  };
+  panel.querySelectorAll('[data-rchip]').forEach(b => b.onclick = () => {
+    rl.chip = Number(b.dataset.rchip);
+    panel.querySelectorAll('[data-rchip]').forEach(x => x.classList.toggle('on', x === b));
+    SFX.play('tick');
+  });
+  panel.querySelectorAll('.rl-cell').forEach(c => {
+    c.onclick = () => {
+      if (rl.busy) return;
+      const k = rlKey(c.dataset.rt, c.dataset.rv), t = rlTotal();
+      if (t + rl.chip > 200) return toast('Maximaal 200 🪙 per draai.');
+      if (t + rl.chip > state.wallet) return toast('Niet genoeg polycoins.');
+      rl.bets.set(k, (rl.bets.get(k) || 0) + rl.chip);
+      panel.querySelectorAll('.rl-win').forEach(x => x.classList.remove('rl-win'));
+      SFX.play('tick'); draw();
+    };
+    c.oncontextmenu = e => { e.preventDefault(); if (rl.busy) return; rl.bets.delete(rlKey(c.dataset.rt, c.dataset.rv)); draw(); };
+  });
+  $('#rlClear').onclick = () => { if (!rl.busy) { rl.bets.clear(); draw(); } };
+  $('#rlRepeat').onclick = () => { if (rl.prev && !rl.busy) { rl.bets = new Map(rl.prev); draw(); } };
+  $('#rlSpin').onclick = async () => {
+    if (rl.busy || !rlTotal()) return;
+    rl.busy = true; draw();
+    const bets = [...rl.bets.entries()].map(([k, a]) => { const [t, v] = k.split(':'); return v == null ? { t, a } : { t, v: Number(v), a }; });
+    $('#rlMsg').className = 'msg'; $('#rlMsg').textContent = '';
+    const { data, error } = await sb.rpc('casino_roulette', { p_bets: bets });
+    if (error) { rl.busy = false; draw(); $('#rlMsg').className = 'msg err'; $('#rlMsg').textContent = error.message; return; }
+    setWallet(data.wallet - data.win); // de winst komt pas na het draaien
+    rl.prev = new Map(rl.bets);
+    // Wiel draait zodat het winnende vakje bovenaan onder het balletje stopt
+    const seg = 360 / 37, idx = RL_ORDER.indexOf(data.n);
+    const target = -(idx * seg + seg / 2);
+    rl.angle = rl.angle - (rl.angle % 360) - 360 * 5 + target;
+    const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    $('#rlWheel').style.transition = reduce ? 'none' : 'transform 5s cubic-bezier(.15,.7,.2,1)';
+    $('#rlWheel').style.transform = `rotate(${rl.angle}deg)`;
+    const ball = $('#rlBallTrack');
+    ball.classList.remove('spin'); void ball.offsetWidth; if (!reduce) ball.classList.add('spin');
+    $('#rlResult').innerHTML = '';
+    SFX.play('flip');
+    const ticks = reduce ? [] : Array.from({ length: 16 }, (_, i) => setTimeout(() => SFX.play('tick'), 300 + i * i * 17));
+    setTimeout(() => {
+      ticks.forEach(clearTimeout);
+      rl.busy = false; rl.last = data.n;
+      rl.hist = [data.n, ...rl.hist].slice(0, 12);
+      setWallet(data.wallet);
+      $('#rlResult').innerHTML = `<b class="rl-${rlColor(data.n)} pop">${data.n}</b>`;
+      panel.querySelectorAll('.rl-cell').forEach(c => {
+        const t = c.dataset.rt, v = Number(c.dataset.rv), n = data.n;
+        const hit = t === 'num' ? v === n : n === 0 ? false : t === 'red' ? RL_RED.has(n) : t === 'black' ? !RL_RED.has(n)
+          : t === 'even' ? n % 2 === 0 : t === 'odd' ? n % 2 === 1 : t === 'low' ? n <= 18 : t === 'high' ? n >= 19
+          : t === 'dozen' ? Math.ceil(n / 12) === v : t === 'col' ? ((n - 1) % 3) + 1 === v : false;
+        c.classList.toggle('rl-win', hit);
+      });
+      const net = data.win - data.bet;
+      $('#rlMsg').className = 'msg' + (data.win > 0 ? ' ok' : ' err');
+      $('#rlMsg').innerHTML = data.win > 0 ? `${data.n} ${rlColor(data.n) === 'red' ? 'rood' : rlColor(data.n) === 'black' ? 'zwart' : 'groen'}! Je wint <b>${data.win} 🪙</b> (${net >= 0 ? '+' : ''}${net})`
+        : `${data.n} ${rlColor(data.n) === 'red' ? 'rood' : rlColor(data.n) === 'black' ? 'zwart' : 'groen'}. Helaas, ${data.bet} 🪙 kwijt.`;
+      SFX.play(data.win >= data.bet * 10 ? 'jackpot' : data.win > 0 ? 'coin' : 'lose');
+      rl.bets.clear(); draw();
+    }, reduce ? 50 : 5200);
+  };
+  draw();
+}
+
+// ---------- Bedelhoek (v21): vraag om coins, anderen geven uit hun eigen portemonnee ----------
+const BEG_IDEAS = ['Ik heb alles verloren in het casino 🎰', 'Mijn kat wil een Troostdieren-pakje 🐱', 'Nog 1 legendary en mijn pagina is vol 🙏',
+  'Ik heb geen geld meer voor koffie ☕', 'Mijn clicker is gestaakt 😭', 'Voor een goed doel: ik'];
+const begAv = r => `<span class="friend-av${ringCls(r.ring)}" style="${r.avatar_url ? `background-image:url('${esc(r.avatar_url)}')` : ''}">${r.avatar_url ? '' : esc((r.name || '?').charAt(0).toUpperCase())}</span>`;
+function begCard(r, done = false) {
+  const pct = Math.min(100, Math.round(r.raised / r.amount * 100));
+  const mine = r.mine;
+  return `<article class="beg-card${mine ? ' mine' : ''}${done ? ' done' : ''}" data-beg="${r.id}">
+    <div class="beg-who">${begAv(r)}<div><strong>${esc(r.name)}${mine ? ' (jij)' : ''}</strong><small>${timeAgo(r.at)}</small></div>
+      <span class="beg-cup" aria-hidden="true">🥫<i>${r.raised}</i></span></div>
+    <p class="beg-sign">${esc(r.reason)}</p>
+    <div class="beg-prog"><span style="width:${pct}%"></span></div>
+    <div class="beg-nums"><b>${r.raised} / ${r.amount} 🪙</b>${done ? `<span class="pill">${r.status === 'done' ? '🎉 Gelukt!' : 'Gesloten'}</span>` : ''}</div>
+    ${r.gifts.length ? `<p class="beg-gifts">💝 ${r.gifts.map(g => `${esc(g.name)} <b>+${g.amount}</b>`).join(' · ')}</p>` : ''}
+    ${done ? '' : mine ? `<button class="link" type="button" data-beg-close="${r.id}">Oproep sluiten (je houdt wat je kreeg)</button>`
+      : `<div class="beg-give">${[1, 5, 10, 25].filter(a => a <= r.amount - r.raised || a === 1).map(a => `<button class="btn small" type="button" data-give="${r.id}" data-amt="${a}">Geef ${a} 🪙</button>`).join('')}</div>`}
+  </article>`;
+}
+async function renderBeg(view) {
+  view.innerHTML = '<section class="col"><p class="hint">Laden…</p></section>';
+  const { data, error } = await sb.rpc('beg_list');
+  if (state.tab !== 'beg') return;
+  if (error) { view.innerHTML = `<section class="col">${pageHead('Bedelhoek', 'beg')}${notReady}</section>`; return; }
+  setWallet(data.wallet);
+  const mineOpen = data.open.find(r => r.mine);
+  const others = data.open.filter(r => !r.mine);
+  const rich = data.wallet >= 100;
+  view.innerHTML = `<section class="col beg-page" style="max-width:none">
+    <div class="battle-top">${pageHead('Bedelhoek', 'beg')}<div class="battle-bar"><span class="coinpill shop-balance">🪙 <span data-coin>${data.wallet}</span></span>${soundBtn()}</div></div>
+    <div class="beg-street">
+      <div class="beg-scene" aria-hidden="true"><span class="beg-lamp">🏮</span><span class="beg-bum">🧍</span><span class="beg-dog">🐕</span><span class="beg-bin">🗑️</span></div>
+      <div class="beg-form">
+        ${mineOpen ? `<h3>Je houdt je bordje omhoog…</h3>${begCard(mineOpen)}`
+        : rich ? `<h3>Jij bent te rijk om te bedelen 🧐</h3><p class="hint">Bedelen mag enkel met minder dan 100 🪙. Je hebt er ${data.wallet}. Misschien kan je iemand anders helpen?</p>`
+        : !data.can_beg ? '<h3>Je hebt vandaag al gebedeld</h3><p class="hint">Eén oproep per dag. Morgen mag je weer met je bordje op straat.</p>'
+        : `<h3>🪧 Schrijf je bordje</h3>
+          <form id="begForm" class="beg-new">
+            <label>Hoeveel heb je nodig? <b id="begAmtLbl">25 🪙</b><input type="range" id="begAmt" min="5" max="100" step="5" value="25"></label>
+            <label>Waarom? <input id="begReason" maxlength="140" placeholder="${esc(BEG_IDEAS[Math.floor(Math.random() * BEG_IDEAS.length)])}"></label>
+            <div class="beg-ideas">${BEG_IDEAS.slice(0, 4).map(i => `<button type="button" class="beg-idea" data-idea="${esc(i)}">${esc(i)}</button>`).join('')}</div>
+            <button class="btn" type="submit">🥺 Bordje omhoog houden</button>
+            <p class="msg" id="begMsg" role="status"></p>
+          </form>`}
+        <p class="hint beg-rules">Max 1 oproep per dag, 5 tot 100 🪙, enkel als je minder dan 100 🪙 hebt. Wie geeft, betaalt uit eigen zak (max 50 per keer).${data.given_today ? ` Jij gaf vandaag al <b>${data.given_today} 🪙</b>. Wat een held!` : ''}</p>
+      </div>
+    </div>
+    <h3 class="beg-h">🙏 Wie heeft er coins nodig? <small>(${others.length})</small></h3>
+    <div class="beg-list">${others.length ? others.map(r => begCard(r)).join('') : '<p class="hint">Niemand bedelt op dit moment. Iedereen is rijk! 🤑</p>'}</div>
+    ${data.done.length ? `<h3 class="beg-h">✨ Onlangs geholpen</h3><div class="beg-list">${data.done.map(r => begCard(r, true)).join('')}</div>` : ''}
+  </section>`;
+  const f = $('#begForm');
+  if (f) {
+    $('#begAmt').oninput = () => { $('#begAmtLbl').textContent = $('#begAmt').value + ' 🪙'; };
+    f.querySelectorAll('[data-idea]').forEach(b => b.onclick = () => { $('#begReason').value = b.dataset.idea; });
+    f.onsubmit = async e => {
+      e.preventDefault();
+      const reason = $('#begReason').value.trim() || $('#begReason').placeholder;
+      const { error: e2 } = await sb.rpc('beg_create', { p_amount: Number($('#begAmt').value), p_reason: reason });
+      if (e2) { $('#begMsg').className = 'msg err'; $('#begMsg').textContent = e2.message; return; }
+      SFX.play('coin'); toast('🪧 Je bordje hangt! Nu maar hopen op gulle collega\'s…');
+      renderBeg(view);
+    };
+  }
+  view.querySelectorAll('[data-beg-close]').forEach(b => b.onclick = async () => {
+    if (!confirm('Je oproep sluiten? Wat je al kreeg, mag je houden.')) return;
+    const { error: e2 } = await sb.rpc('beg_close', { p_id: Number(b.dataset.begClose) });
+    if (e2) return toast(esc(e2.message));
+    renderBeg(view);
+  });
+  view.querySelectorAll('[data-give]').forEach(b => b.onclick = async () => {
+    const card = b.closest('.beg-card'), amt = Number(b.dataset.amt);
+    if (!confirm(`${amt} 🪙 geven aan ${card.querySelector('strong').textContent}?`)) return;
+    card.querySelectorAll('[data-give]').forEach(x => x.disabled = true);
+    const { data: d, error: e2 } = await sb.rpc('beg_give', { p_id: Number(b.dataset.give), p_amount: amt });
+    if (e2) { card.querySelectorAll('[data-give]').forEach(x => x.disabled = false); return toast(esc(e2.message)); }
+    setWallet(d.wallet);
+    SFX.play('coin');
+    // Muntjes vliegen in het blikje
+    const cup = card.querySelector('.beg-cup'), from = b.getBoundingClientRect(), to = cup.getBoundingClientRect();
+    for (let i = 0; i < Math.min(8, d.given); i++) {
+      const c = document.createElement('span');
+      c.className = 'beg-coin'; c.textContent = '🪙';
+      c.style.left = from.left + from.width / 2 + 'px'; c.style.top = from.top + 'px';
+      c.style.setProperty('--dx', to.left - from.left - from.width / 2 + 10 + 'px'); c.style.setProperty('--dy', to.top - from.top + 'px');
+      c.style.animationDelay = i * 70 + 'ms';
+      document.body.appendChild(c); setTimeout(() => c.remove(), 1200);
+    }
+    toast(d.request.status === 'done' ? `🎉 Dankzij jou is het gelukt voor ${esc(d.request.name)}!` : `💝 Je gaf ${d.given} 🪙. Wat lief!`);
+    setTimeout(() => { if (state.tab === 'beg') renderBeg(view); }, 1100);
+  });
 }
 
 // ---------- Updates: wat is er nieuw? (knop bovenaan) ----------
 // Nieuwste eerst. v13: true = enkel zichtbaar voor wie de voorproef heeft (tot het live staat).
 const UPDATES = [
+  { id: '2026-11-06', date: '6 november 2026', title: 'Clicker 3.0, Bedelhoek en Roulette', v13: true, items: [
+    '🔬 Clicker: 4 nieuwe upgrades (tot de Poly-god), 48 onderzoeken die upgrades verdubbelen en 25 trofeeën (+2% elk).',
+    '📈 Promotie: begin opnieuw en krijg aandelen (+10% productie per aandeel, voor altijd). Plus een klassement van de beste klikkers.',
+    '⏰ Gouden polygoon kan nu ook OVERUREN geven: 45 seconden ×5 productie.',
+    '💼 Salaris is trager: 1 🪙 per 20 min, max 10 per dag (+5 per promotie).',
+    '🥺 Nieuw: de Bedelhoek. Blut? Vraag je collega\'s om coins.',
+    '🔴 Nieuw in het casino: Roulette!',
+  ] },
   { id: '2026-11-05', date: '5 november 2026', title: 'Chat en stickers plakken', v13: true, items: [
     '💬 Nieuw: Chat! Praat met iedereen of privé met je vrienden, met reacties en "gelezen".',
     '🏷️ Stuur je stickers in de chat. Ze blijven gewoon in je album.',
